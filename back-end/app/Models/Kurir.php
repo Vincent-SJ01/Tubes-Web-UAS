@@ -4,20 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-class Kurir extends Model
+class Kurir extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
+        'nama',
         'username',
         'password',
         'email',
         'alamat',
         'nik',
         'noTelp',
-        'alamat',
         'tanggalLahir',
         'gender',
         'status'

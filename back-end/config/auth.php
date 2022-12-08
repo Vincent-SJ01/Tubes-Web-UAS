@@ -41,9 +41,14 @@ return [
             'provider' => 'users',
         ],
 
+        // 'api' => [
+        //     'driver' => 'passport',
+        //     'provider' => 'users',
+        // ],
+
         'api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
+            'driver' => 'session',
+            'provider' => 'kurirs',
         ],
     ],
 
@@ -70,6 +75,11 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'kurirs' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Kurir::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -94,6 +104,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'kurirs' => [
+            'provider' => 'kurirs',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

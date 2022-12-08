@@ -4,8 +4,149 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Kurir;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    //
+    public function registerUser(Request $request){
+        $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
+         $validate = Validator::make($registrationData, [
+            'nama' => 'required',
+            'username' => 'required|unique:users', 
+            'password' => 'required',
+            'email' => 'required|email:rfc,dns|unique:users',
+            'alamat' => 'required'
+            
+         ]);    // rule validasi input saat register
+
+         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
+
+        $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
+
+        $user = User::create($registrationData);    // Membuat user baru
+
+        return response([
+            'message' => 'Register Success',
+            'user' => $user
+        ], 200); // return data user dalam bentuk json
+
+    }
+
+    public function registerKurir(Request $request){
+        $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
+        $validate = Validator::make($registrationData, [
+            'nama' => 'required',
+            'username' => 'required|unique:users', 
+            'password' => 'required',
+            'email' => 'required|email:rfc,dns|unique:users',
+            'alamat' => 'required',
+            'nik' => 'required',
+            'noTelp' => 'required',
+            'tanggalLahir' => 'required',
+            'gender' => 'required',
+            'status' => 'required'
+            
+         ]);    // rule validasi input saat register
+
+         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
+
+        $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
+
+        $kurir = Kurir::create($registrationData);    // Membuat user baru
+
+        return response([
+            'message' => 'Register Success',
+            'user' => $kurir
+        ], 200); // return data user dalam bentuk json
+
+    }
+
+    public function login (Request $request){
+        $loginData = $request->all();
+        $status = 0;
+ 
+        $validate = Validator::make($loginData, [
+            'email' => 'required|email:rfc, dns',
+            'password' => 'required'
+        ]);
+
+        if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
+
+        if(Auth::attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            $status = 1;
+            $user = Auth::user();
+        }else 
+        if(Auth('api')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            $status = 1;
+            $user = Auth('api')->user();
+        }
+
+        if($status == 1){
+            
+            $token = $user->createToken('Authentication Token')->accessToken;   //generate token
+
+            return response([
+                'message' => 'Authenticated',
+                'user' => $user,
+                'token_type' => 'Bearer',
+                'access_token' => $token,
+            ]); // return data user dan token dalam bentuk json
+        }else{
+            return response(['message' => 'Invalid Credentials user'], 401);  // Mengembalikan error gagal login
+        }
+        
+
+    }
+
+    public function loginUser (Request $request){
+        $loginData = $request->all();
+ 
+        $validate = Validator::make($loginData, [
+            'email' => 'required|email:rfc, dns',
+            'password' => 'required'
+        ]);
+
+        if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
+
+        if(!Auth::guard('web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            return response(['message' => 'Invalid Credentials user'], 401);   // Mengembalikan error gagal login
+        }
+        $user = Auth::user();
+        $token = $user->createToken('Authentication Token')->accessToken;   //generate token
+
+        return response([
+            'message' => 'Authenticated',
+            'user' => $user,
+            'token_type' => 'Bearer',
+            'access_token' => $token
+        ]); // return data user dan token dalam bentuk json
+
+    }
+
+    public function logoutUser(Request $request){
+        $user = Auth::user()->token();
+        $dataUser = Auth::user();
+        $user->revoke();
+        return response([
+            'message' => 'Logout Succes',
+            'user' => $dataUser
+        ]);
+    }
+
+    public function logoutKurir(Request $request){
+        $kurir = Auth::kurir()->token();
+        $dataKurir = Auth::kurir();
+        $kurir->revoke();
+        return response([
+            'message' => 'Logout Succes',
+            'user' => $dataKurir
+        ]);
+    }
 }
