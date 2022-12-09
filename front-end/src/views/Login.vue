@@ -1,7 +1,6 @@
 <template>
     <v-main style="height: 100%">
         <center>
-
             <div class="d-flex justify-content-center" style="margin-top: 100px">
                 <v-form v-model="valid" ref="form">
                     <v-card persistent min-width="400px" elevation="8">
@@ -35,29 +34,27 @@
     background-color: #3ebfe2;
     justify-content: center;
 
-
-
 }
 </style>
 
 <script>
 export default {
-    name: "ListItem",
-    data() {
-        return {
-            color: "",
-            valid: false,
-            password: "",
-            email: "",
-        };
-    },
-    methods: {
-        login() {
+  name: 'ListItem',
+  data () {
+    return {
+      color: '',
+      valid: false,
+      password: '',
+      email: ''
+    }
+  },
+  methods: {
+    login () {
 
-        },
-       clear() {
-            this.$refs.form.reset(); // clear form login
-        },
     },
-};
+    clear () {
+      this.$refs.form.reset() // clear form login
+    }
+  }
+}
 </script>
