@@ -15,9 +15,9 @@ class AuthController extends Controller
         $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
          $validate = Validator::make($registrationData, [
             'nama' => 'required',
-            'username' => 'required|unique:users', 
+            'username' => 'required|unique:users|unique:kurirs', 
             'password' => 'required',
-            'email' => 'required|email:rfc,dns|unique:users',
+            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs',
             'alamat' => 'required'
             
          ]);    // rule validasi input saat register
@@ -40,9 +40,9 @@ class AuthController extends Controller
         $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
         $validate = Validator::make($registrationData, [
             'nama' => 'required',
-            'username' => 'required|unique:users', 
+            'username' => 'required|unique:users|unique:kurirs', 
             'password' => 'required',
-            'email' => 'required|email:rfc,dns|unique:users',
+            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs',
             'alamat' => 'required',
             'nik' => 'required',
             'noTelp' => 'required',
@@ -78,13 +78,13 @@ class AuthController extends Controller
         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
 
-        if(Auth::attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+        if(Auth::guard('web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
             $user = Auth::user();
         }else 
-        if(Auth('api')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+        if(Auth::guard('kurirs-web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
-            $user = Auth('api')->user();
+            $user = Auth('kurirs-web')->user();
         }
 
         if($status == 1){

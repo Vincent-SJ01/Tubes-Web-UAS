@@ -12,6 +12,8 @@ class Kurir extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $guard = 'kurir';
+
     protected $fillable = [
         'nama',
         'username',
@@ -22,6 +24,11 @@ class Kurir extends Authenticatable
         'noTelp',
         'tanggalLahir',
         'gender',
-        'status'
+        'status',
+        'idRole'
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 }

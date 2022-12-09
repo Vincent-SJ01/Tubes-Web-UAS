@@ -147,6 +147,8 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
         'H' => 
         array (
             'Http\\Message\\' => 13,
+            'Hesto\\MultiAuth\\' => 16,
+            'Hesto\\Core\\' => 11,
         ),
         'G' => 
         array (
@@ -421,8 +423,8 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces/src',
-            1 => __DIR__ . '/..' . '/league/uri/src',
+            0 => __DIR__ . '/..' . '/league/uri/src',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces/src',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -493,6 +495,14 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
         'Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/php-http/message-factory/src',
+        ),
+        'Hesto\\MultiAuth\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hesto/multi-auth/src',
+        ),
+        'Hesto\\Core\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/hesto/core/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -598,13 +608,11 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Http\\Controllers\\Api\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AuthController.php',
+        'App\\Http\\Controllers\\Api\\DropPointController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/DropPointController.php',
+        'App\\Http\\Controllers\\Api\\KurirController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/KurirController.php',
+        'App\\Http\\Controllers\\Api\\PaketController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/PaketController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
-        'App\\Http\\Controllers\\DropPointController' => __DIR__ . '/../..' . '/app/Http/Controllers/DropPointController.php',
-        'App\\Http\\Controllers\\KotaController' => __DIR__ . '/../..' . '/app/Http/Controllers/KotaController.php',
-        'App\\Http\\Controllers\\KurirController' => __DIR__ . '/../..' . '/app/Http/Controllers/KurirController.php',
-        'App\\Http\\Controllers\\PaketController' => __DIR__ . '/../..' . '/app/Http/Controllers/PaketController.php',
-        'App\\Http\\Controllers\\PenghantaranController' => __DIR__ . '/../..' . '/app/Http/Controllers/PenghantaranController.php',
-        'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
@@ -614,6 +622,7 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
         'App\\Http\\Middleware\\TrustHosts' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustHosts.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Models\\Admin' => __DIR__ . '/../..' . '/app/Models/Admin.php',
         'App\\Models\\DropPoint' => __DIR__ . '/../..' . '/app/Models/DropPoint.php',
         'App\\Models\\Gender' => __DIR__ . '/../..' . '/app/Models/Gender.php',
         'App\\Models\\JenisPaket' => __DIR__ . '/../..' . '/app/Models/JenisPaket.php',
@@ -621,6 +630,8 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
         'App\\Models\\Kurir' => __DIR__ . '/../..' . '/app/Models/Kurir.php',
         'App\\Models\\Paket' => __DIR__ . '/../..' . '/app/Models/Paket.php',
         'App\\Models\\Penghantaran' => __DIR__ . '/../..' . '/app/Models/Penghantaran.php',
+        'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
+        'App\\Models\\Service' => __DIR__ . '/../..' . '/app/Models/Service.php',
         'App\\Models\\Status' => __DIR__ . '/../..' . '/app/Models/Status.php',
         'App\\Models\\StatusPaket' => __DIR__ . '/../..' . '/app/Models/StatusPaket.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
@@ -1633,6 +1644,25 @@ class ComposerStaticInit1d2d97e01346f0c5dfd1f44f862afb73
         'Hamcrest\\Type\\IsString' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Type/IsString.php',
         'Hamcrest\\Util' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Util.php',
         'Hamcrest\\Xml\\HasXPath' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest/Xml/HasXPath.php',
+        'Hesto\\Core\\Commands\\AppendContentCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/AppendContentCommand.php',
+        'Hesto\\Core\\Commands\\InstallAndReplaceCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/InstallAndReplaceCommand.php',
+        'Hesto\\Core\\Commands\\InstallCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/InstallCommand.php',
+        'Hesto\\Core\\Commands\\InstallContentCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/InstallContentCommand.php',
+        'Hesto\\Core\\Commands\\InstallFilesCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/InstallFilesCommand.php',
+        'Hesto\\Core\\Commands\\SimpleReplaceContentCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/SimpleReplaceContentCommand.php',
+        'Hesto\\Core\\Commands\\TemplateGeneratorCommand' => __DIR__ . '/..' . '/hesto/core/src/Commands/TemplateGeneratorCommand.php',
+        'Hesto\\Core\\Parsers\\NameParser' => __DIR__ . '/..' . '/hesto/core/src/Parsers/NameParser.php',
+        'Hesto\\Core\\Traits\\CanReplaceKeywords' => __DIR__ . '/..' . '/hesto/core/src/Traits/CanReplaceKeywords.php',
+        'Hesto\\MultiAuth\\Commands\\AuthFilesInstallCommand' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/AuthFilesInstallCommand.php',
+        'Hesto\\MultiAuth\\Commands\\AuthModelInstallCommand' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/AuthModelInstallCommand.php',
+        'Hesto\\MultiAuth\\Commands\\AuthSettingsInstallCommand' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/AuthSettingsInstallCommand.php',
+        'Hesto\\MultiAuth\\Commands\\AuthViewsInstallCommand' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/AuthViewsInstallCommand.php',
+        'Hesto\\MultiAuth\\Commands\\MultiAuthInstallCommand' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/MultiAuthInstallCommand.php',
+        'Hesto\\MultiAuth\\Commands\\Traits\\OverridesCanReplaceKeywords' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/Traits/OverridesCanReplaceKeywords.php',
+        'Hesto\\MultiAuth\\Commands\\Traits\\OverridesGetArguments' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/Traits/OverridesGetArguments.php',
+        'Hesto\\MultiAuth\\Commands\\Traits\\ParsesServiceInput' => __DIR__ . '/..' . '/hesto/multi-auth/src/Commands/Traits/ParsesServiceInput.php',
+        'Hesto\\MultiAuth\\MultiAuthServiceProvider' => __DIR__ . '/..' . '/hesto/multi-auth/src/MultiAuthServiceProvider.php',
+        'Hesto\\MultiAuth\\Traits\\LogsoutGuard' => __DIR__ . '/..' . '/hesto/multi-auth/src/Traits/LogsoutGuard.php',
         'Http\\Message\\MessageFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/MessageFactory.php',
         'Http\\Message\\RequestFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/RequestFactory.php',
         'Http\\Message\\ResponseFactory' => __DIR__ . '/..' . '/php-http/message-factory/src/ResponseFactory.php',

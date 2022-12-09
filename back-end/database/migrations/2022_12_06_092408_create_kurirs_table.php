@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreign('gender')->references('id')->on('genders')->onDelete('cascade');
             $table->Integer('status');
             $table->foreign('status')->references('id')->on('status_kurirs')->onDelete('cascade');
+            $table->unsignedBigInteger('idRole')->default(2);
+            $table->foreign('idRole')->references('id')->on('roles')->onDelete('cascade');
             
             $table->timestamps();
         });
