@@ -37,15 +37,13 @@
 		
         <v-card>
 			<v-data-table
+                dense
 				:headers="headers"
 				:items="dataPaket"
 				:search="search"
 				item-key="noResi"
                 show-expand
-				class="elevation-1"
-			>
-
-            
+				class="elevation-1">
 				
                 <template v-slot:[`item.actions`]="{ item }">
 
@@ -74,10 +72,107 @@
                 </template>
 
                 <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">
-                        {{item.noResi}}
-                    </td>
+                    
+                    <td :colspan="headers.length" class="pb-5 mb-5">
+
+                        <div class="row mb-0 mt-0">
+                            <div class="col-12 my-0 py-0">
+
+                                <v-card 
+                                    elevation="2" 
+                                    class= "col-4 my-4 mx-4 pt-0 float-left"
+                                    width= "31%"
+                                    height="90px"
+                                    color="#BBDEFB">
+
+                                    <v-card-text class="mb-0 pb-0 black--text">
+                                        Nama Penerima
+                                    </v-card-text>
+
+                                    <v-card-title class="mt-0 pt-1 ">
+                                        {{ item.namaPenerima }}
+                                    </v-card-title>
+
+                                </v-card>
+
+                                <v-card 
+                                    elevation="2" 
+                                    class= "col-4 my-4 mx-4 pt-0 float-left"
+                                    width= "31%"
+                                    height="90px"
+                                    color="#BBDEFB">
+
+                                    <v-card-text class="mb-0 pb-0 black--text">
+                                        Nomor Telepon Penerima
+                                    </v-card-text>
+
+                                    <v-card-title class="mt-0 pt-1">
+                                        {{ item.noTelp }}
+                                    </v-card-title>
+                                    
+                                </v-card>
+
+                                <v-card 
+                                    elevation="2" 
+                                    class= "col-4 my-4 mx-4 pt-0 float-left"
+                                    width= "31%"
+                                    height="90px"
+                                    color="#BBDEFB">
+
+
+                                    <v-card-text class="mb-0 pb-0 black--text">
+                                        Alamat Penerima
+                                    </v-card-text>
+
+                                    <v-card-title class="mt-0 pt-1">
+                                        {{ item.alamatTujuan }}
+                                    </v-card-title>
+                                    
+                                </v-card>
+                            </div>
+
+                        </div>
+
+                        <div class="row mt-0 py-0">
+                            <div class="col-12 my-0 py-0">
+                                <v-simple-table
+                                    fixed-header
+                                    height="200px">
+
+                                    <template v-slot:default>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Kurir</th>
+                                                <th class="text-left">Drop Point</th>
+                                                <th class="text-left">Keterangan</th>
+                                                <th class="text-left">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                v-for="antar in item.pengantaran"
+                                                :key="antar.dropPoint"
+                                            >
+                                                    <td>{{ antar.kurir }}</td>
+                                                    <td>{{ antar.dropPoint }}</td>
+                                                    <td>{{ antar.keterangan }}</td>
+                                                    <td>{{ antar.status }}</td>
+                                            </tr>
+                                        </tbody>
+
+                                    </template>
+
+                                </v-simple-table>
+                            </div>
+                        </div>
+                        
+                    </td>      
+                
+
                 </template>
+
+
+
 
             </v-data-table>
 
@@ -129,19 +224,24 @@
             persistent max-width="600px">
 			<v-card>
 				<v-card-title>
-					<span class="headline"
-						>Apakah Yakin Ingin Menghapus Kota</span
-					>
+					
+                    <span class="headline">
+                        Apakah Yakin Ingin Menghapus Kota
+                    </span>
+
 				</v-card-title>
 
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="blue darken-1" text @click="cancelConfirmation()"
-						>Cancel</v-btn
-					>
-					<v-btn color="red darken-1" text @click="confirmDelete()"
-						>Delete</v-btn
-					>
+					
+                    <v-btn color="blue darken-1" text @click="cancelConfirmation()">
+                        Cancel
+                    </v-btn>
+					
+                    <v-btn color="red darken-1" text @click="confirmDelete()">
+                        Delete
+                    </v-btn>
+
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -174,7 +274,6 @@
 						sortable: true,
 
 						value: "noResi",
-                        width : "15%"
 					},
 
                     {
@@ -182,7 +281,6 @@
                         sortable : true,
 
                         value : "idPengirim",
-                        width : "20%"
                     },
 
                     {
@@ -190,19 +288,16 @@
                         sortable : true,
 
                         value : "jenisPaket",
-                        width : "15%"
                     },
 
                     {
                         text : "Berat",
                         value : "berat",
-                        width : "8%"
                     },
 
                     {
                         text : "Volume",
                         value : "volume",
-                        width : "8%"
                     }, 
 
                     { 
@@ -213,6 +308,29 @@
                     },
 				],
 
+                pengantaranHeaders : [
+                    {
+                        text : "Kurir",
+                        value : "kurir",
+                    },
+                    
+                    {
+                        text : "Drop Point",
+                        value : "dropPoint",
+                    }, 
+                    
+                    {
+                        text : "Keterangan",
+                        value : "keterangan",
+                    },
+
+                    {
+                        text : "Status",
+                        value : "status",
+                    },
+                    
+                ],
+
 				dataPaket: [
 					{
 						noResi : "000000000",
@@ -220,7 +338,43 @@
                         jenisPaket : "Express", 
                         berat : 12,
                         volume : 14, 
-                        penerima : "0",
+                        
+                        namaPenerima : "Penerima 1",
+                        noTelp : "081247342838",
+                        alamatTujuan : "Alamat 1",
+
+                        pengantaran : [
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 1",
+                                keterangan : "Keterangan 1",
+                                status : "Status 1",
+                            },
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 1",
+                                keterangan : "Keterangan 1",
+                                status : "Status 1",
+                            }, 
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 1",
+                                keterangan : "Keterangan 1",
+                                status : "Status 1",
+                            }, 
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 1",
+                                keterangan : "Keterangan 1",
+                                status : "Status 1",
+                            }, 
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 1",
+                                keterangan : "Keterangan 1",
+                                status : "Status 1",
+                            }
+                        ],
 					},
                     
                     {
@@ -229,7 +383,20 @@
                         jenisPaket : "Reguler",
                         berat : 12,
                         volume : 14,
-                        penerima : "1",
+                        
+                        namaPenerima : "Penerima 2",
+                        noTelp : "081247342838",
+                        alamatTujuan : "Alamat 2",
+
+                        pengantaran : [
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 2",
+                                keterangan : "Keterangan 2",
+                                status : "Status 2",
+                            }
+                        ],
+
                     },
 
                     {
@@ -238,7 +405,19 @@
                         jenisPaket : "Express",
                         berat : 12,
                         volume : 14,
-                        penerima : "2",
+                        
+                        namaPenerima : "Penerima 3",
+                        noTelp : "081247342838",
+                        alamatTujuan : "Alamat 3",
+
+                        pengantaran : [
+                            {
+                                kurir : "JNE",
+                                dropPoint : "Drop Point 3",
+                                keterangan : "Keterangan 3",
+                                status : "Status 3",
+                            }
+                        ],
                     }
 				],
 
