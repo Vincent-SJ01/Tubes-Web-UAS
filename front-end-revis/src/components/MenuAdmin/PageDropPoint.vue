@@ -68,7 +68,7 @@
                 <template 
                     v-slot:[`item.kota`] ="{ item }"
                 >
-                    <td class="text-left">{{ item.kota }}</td>
+                    <td class="text-left">{{ item.kota.namaKota }}</td>
                 </template>
 				
                 <template v-slot:[`item.actions`]="{ item }">
@@ -160,21 +160,27 @@
 		<v-dialog 
             v-model="dialogDelete" 
             persistent max-width="600px">
-			<v-card>
+			
+            <v-card>
 				<v-card-title>
-					<span class="headline"
-						>Apakah Yakin Ingin Menghapus Kota</span
-					>
+					
+                    <span class="headline">
+                        Apakah Yakin Ingin Menghapus Kota
+                    </span>
+
 				</v-card-title>
 
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="blue darken-1" text @click="cancelConfirmation()"
-						>Cancel</v-btn
-					>
-					<v-btn color="red darken-1" text @click="confirmDelete()"
-						>Delete</v-btn
-					>
+					
+                    <v-btn color="blue darken-1" text @click="cancelConfirmation()">
+                        Cancel
+                    </v-btn>
+
+					<v-btn color="red darken-1" text @click="confirmDelete()">
+                        Delete
+                    </v-btn>
+
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -218,7 +224,7 @@
 
                     {
                         text : "Kota",
-                        value : "idKota",
+                        value : "kota",
 
                         sortable : true,
                     },
@@ -238,6 +244,10 @@
                         namaDropPoint : "Drop Point A",
                         alamat : "Alamat 1",
                         idKota : 0,
+                        kota : {
+                            id : 0,
+                            namaKota : "Sleman",
+                        }
 					},
 
                     {
@@ -245,6 +255,10 @@
                         namaDropPoint : "Drop Point B",
                         alamat : "Alamat 2",
                         idKota : 1,
+                        kota : {
+                            id : 1,
+                            namaKota : "Bantul",
+                        }
                     },
 
                     {
@@ -252,6 +266,10 @@
                         namaDropPoint : "Drop Point C",
                         alamat : "Alamat 3",
                         idKota : 2,
+                        kota : {
+                            id : 2,
+                            namaKota : "Yogyakarta",
+                        }
 
                     }
                     
@@ -261,16 +279,22 @@
                     {
                         id: 0,
                         namaKota: "Jakarta",
+                        idKota : null, 
+                       
                     },
 
                     {
                         id: 1,
                         namaKota: "Bandung",
+                        idKota : null,
+                        
                     },
 
                     {
                         id: 2,
                         namaKota: "Surabaya",
+                        idKota : null,
+                        
                     },
                 ],
 
@@ -279,9 +303,14 @@
                     namaDropPoint : "",
                     alamat : "",
                     idKota : null,
+                    kota : {
+                        id : null,
+                        namaKota : "",
+                    }
 				},
 			};
 		},
+
 		methods: {
             
             openDialog(message){
@@ -321,6 +350,10 @@
 					namaDropPoint : null,
                     alamat : null,
                     idKota : null,
+                    kota : {
+                        id : null,
+                        namaKota : null,
+                    }   
 				};
 
 			},
