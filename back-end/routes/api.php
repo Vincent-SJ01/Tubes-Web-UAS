@@ -63,11 +63,11 @@ Route::post('penghantaran', 'Api\PenghantaranController@store')->middleware(['au
 Route::put('penghantaran/{id}', 'Api\PenghantaranController@update')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::delete('penghantaran/{id}', 'Api\PenghantaranController@destroy')->middleware(['auth:admins-api,kurirs-api,api']);
 
-Route::get('service', 'Api\ServiceController@index')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::get('service/{id}', 'Api\ServiceController@show')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::post('service', 'Api\ServiceController@store')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::put('service/{id}', 'Api\ServiceController@update')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::delete('service/{id}', 'Api\ServiceController@destroy')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('paket', 'Api\PaketController@index')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('paket/{id}', 'Api\PaketController@show')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::post('paket', 'Api\PaketController@store')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::put('paket/{id}', 'Api\PaketController@update')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::delete('paket/{id}', 'Api\PaketController@destroy')->middleware(['auth:admins-api,kurirs-api,api']);
 
 Route::get('kota', 'Api\KotaController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::get('kota/{id}', 'Api\KotaController@show')->middleware(['auth:admins-api,kurirs-api,api']);
@@ -75,11 +75,17 @@ Route::post('kota', 'Api\KotaController@store')->middleware(['auth:admins-api'])
 Route::put('kota/{id}', 'Api\KotaController@update')->middleware(['auth:admins-api']);
 Route::delete('kota/{id}', 'Api\KotaController@destroy')->middleware(['auth:admins-api']);
 
+Route::get('service', 'Api\ServiceController@index')->middleware(['auth:admins-api,kurirs-api,api']);
+
 Route::get('role', 'Api\RoleController@index')->middleware(['auth:admins-api']);
 
 Route::get('gender', 'Api\GenderController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 
 Route::get('status', 'Api\StatusController@index')->middleware(['auth:admins-api,kurirs-api,api']);
+
+Route::get('statuspaket', 'Api\StatusPaketController@index')->middleware(['auth:admins-api,kurirs-api']);
+
+Route::get('jenispaket', 'Api\JenisPaketController@index')->middleware(['auth:admins-api,kurirs-api']);
 
 // Route::group(['middleware' => ['auth:api']], function(){
 //     Route::get('user', 'Api\AuthController@user');

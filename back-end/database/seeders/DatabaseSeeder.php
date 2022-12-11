@@ -30,5 +30,22 @@ class DatabaseSeeder extends Seeder
                 'status' => 1,
             ]);
         }
+
+        $faker = Faker::create();
+        foreach(range(1, 10) as $index)
+        {
+            DB::table('kurir')->insert([
+                'nama' => $faker->name,
+                'username' => $faker->username,
+                'password' => $faker->password,
+                'email' => $faker->email,
+                'alamat' => $faker->address,
+                'tanggalLahir' => $faker->date,
+                'gender' => $faker->numberBetween(1, 0),
+                'nik' => $faker->nik,
+                'idRole' => 1,
+                'status' => 1,
+            ]);
+        }
     }
 }

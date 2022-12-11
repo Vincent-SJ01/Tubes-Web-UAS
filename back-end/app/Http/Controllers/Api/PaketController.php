@@ -28,7 +28,7 @@ class PaketController extends Controller
 
     public function show($id) // Method read atau menampilkan data customer berdasarkan id
     {
-        $customer = Paket::find($id); //  Mengambil data customer berdasarkan id
+        $customer = Paket::all()->where('noResi', '=', $id); //  Mengambil data customer berdasarkan id
 
         if(!is_null($customer)){
             return response([

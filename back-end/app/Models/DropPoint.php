@@ -14,4 +14,9 @@ class DropPoint extends Model
         'namaDropPoint',
         'alamat'
     ];
+
+    public function kota()
+    {
+        return $this->belongsTo(Kota::class, 'idKota', 'id');
+    }
 }

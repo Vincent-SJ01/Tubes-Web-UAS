@@ -25,7 +25,6 @@ class KotaController extends Controller
             'data' => null
         ], 400);    // return message data course kosong
     }
-<<<<<<< Updated upstream
     public function show($id) // Method read atau menampilkan data kota berdasarkan id
     {
         $kotas = Kota::find($id); //  Mengambil data kota berdasarkan id
@@ -80,66 +79,11 @@ class KotaController extends Controller
                 'message' => 'Delete Kota Success',
                 'data' => $kotas,
             ], 200); // return data kota dalam bentuk json
-=======
-
-    public function show($id) // Method read atau menampilkan data customer berdasarkan id
-    {
-        $paket = Kota::find($id); //  Mengambil data paket berdasarkan id
-
-        if(!is_null($paket)){
-            return response([
-                'message' => 'Retrieve Paket Success',
-                'data' => $paket
-            ], 200);
-        }// return data paket dalam bentuk json
-
-        return response([
-            'message' => 'Paket Not Found',
-            'data' => null
-        ], 404);    // return message data paket tidak ditemukan
-    }
-
-    public function store(Request $request) // Method create atau menambah data customer
-    {
-        $storeData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel storeData
-        $validate = Validator::make($storeData, [
-            'namaKota' => 'required',
-        ]);
-
-        if($validate->fails())
-            return response(['message' => $validate->errors()], 400); // return error validasi
-
-        $paket = Kota::create($storeData); // Menambah data paket baru
-
-        return response([
-            'message' => 'Add Kota Success',
-            'data' => $paket,
-        ], 200); // return data paket yang baru saja ditambahkan
-    }
-
-    public function destroy($id) // Method delete atau menghapus data customer berdasarkan id
-    {
-        $paket = Kota::find($id); //  Mengambil data paket berdasarkan id
-
-        if(is_null($paket)){
-            return response([
-                'message' => 'Paket Not Found',
-                'data' => null
-            ], 404);    // return message data paket tidak ditemukan
-        }
-
-        if($paket->delete()){
-            return response([
-                'message' => 'Delete Kota Success',
-                'data' => $paket,
-            ], 200); // return data paket yang baru saja dihapus
->>>>>>> Stashed changes
         }
 
         return response([
             'message' => 'Delete Kota Failed',
             'data' => null,
-<<<<<<< Updated upstream
         ], 400); // return data kota dalam bentuk json
     }
 
@@ -169,52 +113,12 @@ class KotaController extends Controller
                 'message' => 'Update Kota Success',
                 'data' => $kotas,
             ], 200); 
-=======
-        ], 400); // return message data paket gagal dihapus
-    }
-
-    public function update(Request $request, $id) // Method update atau mengubah data customer berdasarkan id
-    {
-        $kota = Kota::find($id); //  Mengambil data paket berdasarkan id
-
-        if(!is_null($kota)){
-            return response([
-                'message' => 'Retrieve Kota Success',
-                'data' => $kota
-            ], 200);
-        }// return data paket dalam bentuk json
-
-        return response([
-            'message' => 'Kota Not Found',
-            'data' => null
-        ], 404);    // return message data paket tidak ditemukan
-
-        $updateData = $request->all(); // Mengambil seluruh data input dan menyimpan dalam variabel updateData
-        $validate = Validator::make($updateData, [
-            'namaKota' => 'required',
-        ]);
-
-        if($validate->fails())
-            return response(['message' => $validate->errors()], 400); // return error validasi
-
-        $kota->namaKota = $updateData['namaKota'];
-        if($kota->save()){
-            return response([
-                'message' => 'Update Kota Success',
-                'data' => $kota,
-            ], 200); // return data paket yang baru saja diubah
->>>>>>> Stashed changes
         }
 
         return response([
             'message' => 'Update Kota Failed',
             'data' => null,
-<<<<<<< Updated upstream
         ], 400); 
     }
 
-=======
-        ], 400); // return message data paket gagal diubah
-    }
->>>>>>> Stashed changes
 }
