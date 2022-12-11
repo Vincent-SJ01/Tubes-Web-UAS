@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
+
 class UserController extends Controller
 {
     public function index() // Method read atau menampilkan semua data user

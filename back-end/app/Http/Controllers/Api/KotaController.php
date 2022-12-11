@@ -48,6 +48,8 @@ class KotaController extends Controller
             'namaKota' => 'required'
         ]);    // rule validasi input saat register
 
+        
+
         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
 
