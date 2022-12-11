@@ -1,5 +1,5 @@
 <template>
-    <v-main class="list">
+    <v-main>
         <v-card>
             <v-card-title>Drop Point</v-card-title>
 
@@ -41,13 +41,15 @@
             </v-data-table>
         </v-card>
 
+        <p>testing</p>
 
         <v-dialog 
-            v-model='dialog' 
+            v-model="dialog" 
             persistent 
             max-width="600px"
         >
-            <v-card >
+
+            <v-card>
                 
                 <v-card-title>
                     <span class="headline">Drop Point</span>
@@ -85,10 +87,12 @@
                     
             </v-card>
         </v-dialog>
+
+        <p>testing 2s</p>
         
     </v-main>
 
-    
+
 </template>
 
 <script>
