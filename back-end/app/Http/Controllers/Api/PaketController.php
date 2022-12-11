@@ -11,7 +11,7 @@ class PaketController extends Controller
 {
     public function index() // Method read atau menampilkan semua data customer
     {
-        $customers = Paket::all(); //  Mengambil semua data customer
+        $customers = Paket::with('pengirim', 'jenisPaket', 'service')->get(); //  Mengambil semua data customer
 
         if(count($customers) > 0){
             return response([
@@ -28,17 +28,17 @@ class PaketController extends Controller
 
     public function show($id) // Method read atau menampilkan data customer berdasarkan id
     {
-        $customer = Paket::all()->where('noResi', '=', $id); //  Mengambil data customer berdasarkan id
+        $customer = Paket::with('pengirim', 'jenisPaket', 'service')->where('noResi', '=', $id)->first(); //  Mengambil data customer berdasarkan id
 
         if(!is_null($customer)){
             return response([
-                'message' => 'Retrieve Customer Success',
+                'message' => 'Retrieve Paket Success',
                 'data' => $customer
             ], 200);
         }// return data customer dalam bentuk json
 
         return response([
-            'message' => 'Customer Not Found',
+            'message' => 'Paket Not Found',
             'data' => null
         ], 404);    // return message data customer tidak ditemukan
     }
@@ -49,6 +49,7 @@ class PaketController extends Controller
         $validate = Validator::make($storeData, [
             'noResi' => 'required',
             'idPengirim' => 'required',
+            'idService' => 'required',
             'jenisPaket' => 'required',
             'berat' => 'required',
             'volume' => 'required',
@@ -62,14 +63,14 @@ class PaketController extends Controller
         
         $paket = Paket::create($storeData); // Menambah data customer baru
         return response([
-            'message' => 'Add Customer Success',
+            'message' => 'Add Paket Success',
             'data' => $paket,
         ], 200); // return data customer yang baru saja ditambahkan dalam bentuk json
     }
     
     public function destroy($id) // Method delete atau menghapus data customer berdasarkan id
     {
-        $paket = Paket::find($id); //  Mengambil data customer berdasarkan id
+        $paket = Paket::where('noResi', '=', $id)->first(); //  Mengambil data customer berdasarkan id
 
         if(is_null($paket)){
             return response([
@@ -93,7 +94,7 @@ class PaketController extends Controller
 
     public function update(Request $request, $id) // Method update atau mengubah data customer berdasarkan id
     {
-        $paket = Paket::find($id); //  Mengambil data customer berdasarkan id
+        $paket = Paket::where('noResi', '=', $id)->first(); //  Mengambil data customer berdasarkan id
 
         if(is_null($paket)){
             return response([
@@ -104,9 +105,9 @@ class PaketController extends Controller
 
         $updateData = $request->all(); // Mengambil seluruh data input dan menyimpan dalam variabel updateData
         $validate = Validator::make($updateData, [
-            'noResi' => 'required',
             'idPengirim' => 'required',
             'jenisPaket' => 'required',
+            'idService' => 'required',
             'berat' => 'required',
             'volume' => 'required',
             'namaPenerima' => 'required',
@@ -117,8 +118,8 @@ class PaketController extends Controller
         if($validate->fails())
             return response(['message' => $validate->errors()], 400);
 
-        $paket->noResi = $updateData['noResi'];
         $paket->idPengirim = $updateData['idPengirim'];
+        $paket->idService = $updateData['idService'];
         $paket->jenisPaket = $updateData['jenisPaket'];
         $paket->berat = $updateData['berat'];
         $paket->volume = $updateData['volume'];

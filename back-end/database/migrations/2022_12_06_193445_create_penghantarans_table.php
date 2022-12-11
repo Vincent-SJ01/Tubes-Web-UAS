@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('penghantarans', function (Blueprint $table) {
             $table->string('noResi');
             $table->foreign('noResi')->references('noResi')->on('pakets')->onDelete('cascade');
-            $table->unsignedBigInteger('idKurir');
-            $table->foreign('idKurir')->references('id')->on('kurirs')->onDelete('cascade');
+            $table->string('nikKurir');
+            $table->foreign('nikKurir')->references('nik')->on('kurirs')->onDelete('cascade');
             $table->unsignedBigInteger('idDropPoint');
             $table->foreign('idDropPoint')->references('id')->on('drop_points')->onDelete('cascade');
             $table->unsignedBigInteger('status');

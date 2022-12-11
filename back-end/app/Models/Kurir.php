@@ -14,6 +14,8 @@ class Kurir extends Authenticatable
 
     protected $guard = 'kurir';
 
+    protected $primaryKey = 'nik';
+
     protected $fillable = [
         'nama',
         'username',
@@ -24,11 +26,28 @@ class Kurir extends Authenticatable
         'noTelp',
         'tanggalLahir',
         'gender',
-        'status',
+        'idStatus',
         'idRole'
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    public function gender()
+    {
+        return $this->belongsTo(Gender::class, 'gender', 'id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'idStatus', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'idRole', 'id');
+    }
+
+
 }
