@@ -104,3 +104,4 @@ Route::get('status', 'Api\StatusController@index')->middleware(['auth:admins-api
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
