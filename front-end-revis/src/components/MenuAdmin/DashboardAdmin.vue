@@ -76,7 +76,7 @@
 					
                     { 
                         title: "Kurir", 
-                        name: "" 
+                        name: "Admin.Kurir" 
                     },
 					
                     { 

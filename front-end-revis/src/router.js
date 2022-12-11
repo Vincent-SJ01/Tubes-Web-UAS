@@ -66,10 +66,17 @@ const router = new VueRouter({
                 },
 
                 {
-                    path: "/admin/PageKurir",
+                    path: "/admin/PageKota",
                     name: "Admin.Kota",
 
                     component: importComponent("MenuAdmin/PageKota"),
+                },
+
+                {
+                    path: "/admin/PageKurir",
+                    name: "Admin.Kurir",
+
+                    component: importComponent("MenuAdmin/PageKurir"),
                 },
 
                 {
