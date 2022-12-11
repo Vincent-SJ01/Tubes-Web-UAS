@@ -57,6 +57,13 @@ module.exports = {
     'vue/no-unused-properties': 'off',
     'vue/no-unused-methods': 'off',
     'vue/no-unused-refs': 'off',
+    'vue/no-multiple-template-root': 'off',
+    'camelcase': 'off',
+    'prefer-const': 'off',
+    'padded-blocks': 'off',
+    'object-curly-spacing': 'off',
+    'eqeqeq': 'off',
+    'no-empty': 'off',
               
     
   }
