@@ -6,9 +6,34 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'loginAdmin',
+    name: 'LoginAdmin',
     component: () => import('../views/Login.vue')
   },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../components/DashboardAdmin.vue'),
+
+    children: [
+        {
+            path: '',
+            name: 'Admin.Home',
+            
+            component: () => import('../views/MenuAdmin/HomeAdmin.vue')
+        },
+        {
+            path: 'paket',
+            name: 'Admin.Paket',
+
+            component: () => import('../views/MenuAdmin/PagePaket.vue')
+        }
+    ]
+  }
+
+
+
+
+  
 
 ]
 
