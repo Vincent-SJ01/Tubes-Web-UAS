@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('status_kurirs', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->Integer('id')->primary();
             $table->string('namaStatus');
             $table->timestamps();

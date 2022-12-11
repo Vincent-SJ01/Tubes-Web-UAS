@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Kurir;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Mail;
@@ -18,7 +19,7 @@ class AuthController extends Controller
         $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
          $validate = Validator::make($registrationData, [
             'nama' => 'required',
-            'username' => 'required|unique:users|unique:kurirs', 
+            'username' => 'required|unique:users|unique:kurirs|unique:admins', 
             'password' => 'required',
             'email' => 'required|email:rfc,dns|unique:users|unique:kurirs',
             'alamat' => 'required'
@@ -85,6 +86,30 @@ class AuthController extends Controller
 
     }
 
+    public function registerAdmin(Request $request){
+        $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
+        $validate = Validator::make($registrationData, [
+            'nama' => 'required',
+            'username' => 'required|unique:users|unique:kurirs|unique:admins', 
+            'password' => 'required',
+            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs|unique:admins',
+            
+         ]);    // rule validasi input saat register
+
+         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
+
+        $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
+
+        $admin = Admin::create($registrationData);    // Membuat user baru
+
+        return response([
+            'message' => 'Register Success',
+            'user' => $admin
+        ], 200); // return data user dalam bentuk json
+
+    }
+
     public function login (Request $request){
         $loginData = $request->all();
         $status = 0;
@@ -104,6 +129,10 @@ class AuthController extends Controller
         if(Auth::guard('kurirs-web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
             $user = Auth('kurirs-web')->user();
+        }
+        if(Auth::guard('admins-web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
+            $status = 1;
+            $user = Auth('admins-web')->user();
         }
 
         if($status == 1){

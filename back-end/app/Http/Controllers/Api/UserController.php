@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade as PDF;
 
 
 class UserController extends Controller
@@ -131,4 +132,16 @@ class UserController extends Controller
             'data' => null,
         ], 400); // return message data user gagal diupdate
     }
+
+    public function createPDF() {
+        // retreive all records from db
+        $data = User::all();
+  
+        // share data to view
+        view()->share('user',$data);
+        $pdf = PDF::loadView('pdf_view', $data);
+  
+        // download PDF file with download method
+        return $pdf->download('pdf_file.pdf');
+      }
 }

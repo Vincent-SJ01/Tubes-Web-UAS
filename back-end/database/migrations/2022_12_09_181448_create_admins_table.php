@@ -15,9 +15,14 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
+            $table->string('nama');
             $table->string('username');
             $table->string('email');
             $table->string('password');
+            $table->integer('idStatus')->default(0);
+            $table->foreign('idStatus')->references('id')->on('statuses')->onDelete('cascade');
+            $table->unsignedBigInteger('idRole')->default(1);
+            $table->foreign('idRole')->references('id')->on('roles')->onDelete('cascade');
             $table->timestamps();
         });
     }

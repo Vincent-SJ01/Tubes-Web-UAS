@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('registerUser', 'Api\AuthController@registerUser');
 Route::post('registerKurir', 'Api\AuthController@registerKurir');
+Route::post('registerAdmin', 'Api\AuthController@registerAdmin');
 Route::post('login', 'Api\AuthController@login');
 Route::post('logoutUser', 'Api\AuthController@logoutUser');
 Route::post('logoutKurir', 'Api\AuthController@logoutKurir');
@@ -38,13 +39,19 @@ Route::post('droppoint', 'Api\DroppointController@store')->middleware(['auth:adm
 Route::put('droppoint/{id}', 'Api\DroppointController@update')->middleware(['auth:admins-api']);
 Route::delete('droppoint/{id}', 'Api\DroppointController@destroy')->middleware(['auth:admins-api']);
 
-Route::get('user', 'Api\UserController@index')->middleware(['auth:admins-api']);
+Route::get('user', 'Api\UserController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::get('user/{id}', 'Api\UserController@show')->middleware(['auth:admins-api']);
 Route::post('user', 'Api\UserController@store')->middleware(['auth:admins-api']);
 Route::put('user/{id}', 'Api\UserController@update')->middleware(['auth:admins-api']);
 Route::delete('user/{id}', 'Api\UserController@destroy')->middleware(['auth:admins-api']);
 
-Route::get('kurir', 'Api\KurirController@index')->middleware(['auth:admins-api']);
+Route::get('admin', 'Api\AdminController@index')->middleware(['auth:admins-api']);
+Route::get('admin/{id}', 'Api\AdminController@show')->middleware(['auth:admins-api']);
+Route::post('admin', 'Api\AdminController@store')->middleware(['auth:admins-api']);
+Route::put('admin/{id}', 'Api\AdminController@update')->middleware(['auth:admins-api']);
+Route::delete('admin/{id}', 'Api\AdminController@destroy')->middleware(['auth:admins-api']);
+
+Route::get('kurir', 'Api\KurirController@index')->middleware(['auth:admins-api, kurirs-api']);
 Route::get('kurir/{id}', 'Api\KurirController@show')->middleware(['auth:admins-api']);
 Route::post('kurir', 'Api\KurirController@store')->middleware(['auth:admins-api']);
 Route::put('kurir/{id}', 'Api\KurirController@update')->middleware(['auth:admins-api']);

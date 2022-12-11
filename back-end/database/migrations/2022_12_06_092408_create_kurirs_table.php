@@ -25,8 +25,8 @@ return new class extends Migration
             $table->date('tanggalLahir');
             $table->Integer('gender');
             $table->foreign('gender')->references('id')->on('genders')->onDelete('cascade');
-            $table->Integer('status');
-            $table->foreign('status')->references('id')->on('status_kurirs')->onDelete('cascade');
+            $table->Integer('idStatus')->default(0);
+            $table->foreign('idStatus')->references('id')->on('statuses')->onDelete('cascade');
             $table->unsignedBigInteger('idRole')->default(2);
             $table->foreign('idRole')->references('id')->on('roles')->onDelete('cascade');
             
