@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 use App\Models\Paket;
 use App\Models\Kurir;
-use App\Models\Droppoint;
+use App\Models\DropPoint;
 use App\Models\Service;
 use App\Models\StatusPaket;
 use App\Models\User;
@@ -87,7 +87,7 @@ class DatabaseSeeder extends Seeder
         {
             $noResi = Paket::pluck('noResi')->toArray();
             $idKurir = Kurir::pluck('nik')->toArray();
-            $idDroppoint = Droppoint::pluck('id')->toArray();
+            $idDroppoint = DropPoint::pluck('id')->toArray();
             $idStatusPaket = StatusPaket::pluck('id')->toArray();
             DB::table('penghantarans')->insert([
                 'noResi' => $faker->randomElement($noResi),

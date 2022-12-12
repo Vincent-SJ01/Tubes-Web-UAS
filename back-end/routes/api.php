@@ -82,6 +82,8 @@ Route::get('statuspaket', 'Api\StatusPaketController@index')->middleware(['auth:
 
 Route::get('jenispaket', 'Api\JenisPaketController@index')->middleware(['auth:admins-api,kurirs-api']);
 
+Route::get('printResi/{id}', 'Api\PdfController@resiPaket');
+
 // Route::group(['middleware' => ['auth:api']], function(){
 //     Route::get('user', 'Api\AuthController@user');
 //     Route::get('kurir', 'Api\AuthController@kurir');

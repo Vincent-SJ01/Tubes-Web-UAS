@@ -180,6 +180,9 @@ return [
         // PDF
         Barryvdh\DomPDF\ServiceProvider::class,
 
+        // QrCode
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
+
     ],
 
     /*

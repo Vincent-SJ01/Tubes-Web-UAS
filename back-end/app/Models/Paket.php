@@ -28,7 +28,7 @@ class Paket extends Model
         return $this->belongsTo(User::class, 'idPengirim', 'id');
     }
 
-    public function jenisPaket()
+    public function jenis_paket()
     {
         return $this->belongsTo(JenisPaket::class, 'jenisPaket', 'id');
     }
