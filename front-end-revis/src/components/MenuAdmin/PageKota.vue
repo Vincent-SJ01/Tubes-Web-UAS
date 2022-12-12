@@ -308,9 +308,7 @@
             },
 
             resetForm() {
-				this.formInput = {
-					namaKota : null,
-				};
+				this.formInput = {}; 
 
 			},
 
