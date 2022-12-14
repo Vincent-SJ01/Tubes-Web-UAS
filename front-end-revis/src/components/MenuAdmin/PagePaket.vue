@@ -76,12 +76,13 @@
                     <td :colspan="headers.length" class="pb-5 mb-5">
 
                         <div class="row mb-0 mt-0">
-                            <div class="col-12 my-0 py-0">
+                            <div 
+                                class="col-12 my-0 py-0 d-flex justify-center"
+                                width = "100%">
 
                                 <v-card 
                                     elevation="2" 
-                                    class= "col-4 my-4 mx-4 pt-0 float-left"
-                                    width= "31%"
+                                    class= "col-3 my-4 mx-4 pt-0 float-left"
                                     height="90px"
                                     color="#BBDEFB">
 
@@ -97,8 +98,7 @@
 
                                 <v-card 
                                     elevation="2" 
-                                    class= "col-4 my-4 mx-4 pt-0 float-left"
-                                    width= "31%"
+                                    class= "col-3 my-4 mx-4 pt-0 float-left"
                                     height="90px"
                                     color="#BBDEFB">
 
@@ -114,8 +114,7 @@
 
                                 <v-card 
                                     elevation="2" 
-                                    class= "col-4 my-4 mx-4 pt-0 float-left"
-                                    width= "31%"
+                                    class= "col-3 my-4 mx-4 pt-0 float-left"
                                     height="90px"
                                     color="#BBDEFB">
 

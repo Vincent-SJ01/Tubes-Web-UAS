@@ -276,7 +276,6 @@
                         
                     })
                     .catch(error => {
-                        console.log(error);
 
                         let option = {
                             color : "error",
