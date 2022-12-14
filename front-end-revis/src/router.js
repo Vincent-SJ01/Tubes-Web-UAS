@@ -14,52 +14,40 @@ const router = new VueRouter({
     routes: [
 
         {
+            path: "/",
+            name: "Beranda",
+            component: importComponent("BerandaHome"), 
+
+            children : [
+
+                {
+                    path: "/login",
+                    name: "Beranda.Login",
+                    component: importComponent("LoginPage"),
+                },
+
+                {
                     path: "/RegisterUser",
                     name: "Beranda.RegisterUser",
                     component: importComponent("RegisterUser"),
                     
                     //import komponen ke register User
-        },
-        {
-             path: "/RegisterKurir",
-             name: "Beranda.RegisterKurir",
-             component: importComponent("RegisterKurir"),
-        },
-        {
-            path: "/login",
-            name: "Login",
-            component: importComponent("LoginPage"),
-        },
+                },
 
-        {
-            path: "/",
-            name: "BerandaHome",
-            component: importComponent("BerandaHome"), 
-
-             
+                {
+                    path: "/RegisterKurir",
+                    name: "Beranda.RegisterKurir",
+                    component: importComponent("RegisterKurir"),
+               },  
             
-
-            //nanti import ke beranda
-            // component: importComponent("MenuHome/Home"),
-
-            children : [
-                // {
-                //     path: "/Login",
-                //     name: "Beranda.Login",
-                //     component: importComponent("LoginPage"),
-                
-                //     //import componnt milik login
-                // },
-
-                // {
-                //     path: "/RegisterKurir",
-                //     name: "Beranda.RegisterKurir",
-                //     component: importComponent("registerKurir"),
-                // }, 
-
-                
             ]
-        },     
+        },
+
+        
+        
+        
+
+     
 
 
         {
@@ -105,11 +93,6 @@ const router = new VueRouter({
 
             ],
                 
-
-                
-            
-            
-
         }
     ]
 })

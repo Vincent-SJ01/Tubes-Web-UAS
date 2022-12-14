@@ -246,6 +246,7 @@
 						value: "namaKota",
                         width : "75%",
 					},
+                    
                     { 
                         text: "Actions", 
                         value: "actions", 
