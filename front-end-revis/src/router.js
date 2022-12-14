@@ -14,33 +14,50 @@ const router = new VueRouter({
     routes: [
 
         {
+                    path: "/RegisterUser",
+                    name: "Beranda.RegisterUser",
+                    component: importComponent("RegisterUser"),
+                    
+                    //import komponen ke register User
+        },
+        {
+             path: "/RegisterKurir",
+             name: "Beranda.RegisterKurir",
+             component: importComponent("RegisterKurir"),
+        },
+        {
+            path: "/login",
+            name: "Login",
+            component: importComponent("LoginPage"),
+        },
+
+        {
             path: "/",
-            name: "Beranda",
+            name: "BerandaHome",
+            component: importComponent("BerandaHome"), 
+
+             
+            
 
             //nanti import ke beranda
             // component: importComponent("MenuHome/Home"),
 
             children : [
-                {
-                    path: "/Login",
-                    name: "Beranda.Login",
+                // {
+                //     path: "/Login",
+                //     name: "Beranda.Login",
+                //     component: importComponent("LoginPage"),
                 
-                    //import componnt milik login
-                },
+                //     //import componnt milik login
+                // },
 
-                {
-                    path: "/RegisterKurir",
-                    name: "Beranda.RegisterKurir",
+                // {
+                //     path: "/RegisterKurir",
+                //     name: "Beranda.RegisterKurir",
+                //     component: importComponent("registerKurir"),
+                // }, 
 
-                    //import component milik register
-                }, 
-
-                {
-                    path: "/RegisterUser",
-                    name: "Beranda.RegisterUser",
-                    
-                    //import komponen ke register User
-                }
+                
             ]
         },     
 
