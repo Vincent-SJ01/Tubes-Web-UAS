@@ -112,7 +112,8 @@
     }
     .RegisterBackground {
         background: url("../assets/delivery.jpg");
-        height: 100vh; 
+        height: 88.5vh; 
+        overflow: hidden; 
         background-size: cover;
     }   
 </style>

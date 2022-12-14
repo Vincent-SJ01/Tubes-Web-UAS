@@ -43,27 +43,19 @@
 				:search="search"
 				item-key="noResi"
                 show-expand
-				class="elevation-1">
+				class="elevation-1"
+                :loading = "loadingState"
+            >
 				
                 <template v-slot:[`item.actions`]="{ item }">
-
-                    <v-btn
-						class="ma-2"
-						outlined
-						small
-						color="primary"
-						@click="getItemUpdate(item);"
-						><v-icon>mdi-pencil</v-icon>
-
-                    </v-btn>
 
                     <v-btn 
                         class="ma-2" 
                         outlined 
                         small 
                         color="error"
-                        @click=deleteItem(item)
-                        >
+                        @click=deleteItem(item.id)
+                    >
                         
                         <v-icon> mdi-trash-can-outline</v-icon>
 						<!-- tambahkan dialog untuk konfirmasi delete agar bisa delete data -->
@@ -107,7 +99,7 @@
                                     </v-card-text>
 
                                     <v-card-title class="mt-0 pt-1">
-                                        {{ item.noTelp }}
+                                        {{ item.noTelpPenerima }}
                                     </v-card-title>
                                     
                                 </v-card>
@@ -150,12 +142,12 @@
                                         <tbody>
                                             <tr
                                                 v-for="antar in item.pengantaran"
-                                                :key="antar.dropPoint"
+                                                :key="antar.noResi"
                                             >
-                                                    <td>{{ antar.kurir }}</td>
-                                                    <td>{{ antar.dropPoint }}</td>
+                                                    <td>{{ antar.kurir.nama }}</td>
+                                                    <td>{{ antar.drop_point.namaDropPoint }}</td>
                                                     <td>{{ antar.keterangan }}</td>
-                                                    <td>{{ antar.status }}</td>
+                                                    <td>{{ antar.status_paket.status }}</td>
                                             </tr>
                                         </tbody>
 
@@ -246,27 +238,93 @@
 		</v-dialog>
 
 
+        <v-snackbar
+            v-model="snackbarState"
+            :timeout="snackbarTimeout"
+            auto-height
+            multi-line
+            top
+            right
+            :color="snackbarOption.color"
+        >
+            <v-layout align-center pr-4>
+                
+                <v-icon class="pr-3" dark large>{{ snackbarOption.icon }}</v-icon>
+
+                <v-layout column>
+                    <div>
+                        <strong>{{ snackbarOption.title }}</strong>
+                    </div>
+                    
+                    <div>
+                        <span v-for="(message, index) in snackbarOption.text" :key="index">
+                            {{ message }} <br/>
+                        </span>
+                        
+                    </div>
+                
+                </v-layout>
+
+            </v-layout>
+            
+        </v-snackbar>
+
+
 	</v-main>
 
     
 </template>
 <script>
+
+    import axios from "axios";
+    import * as API from "../../repository/APIRoute.js";
+    import * as cookiesHandle from "../../repository/cookiesHandle.js";
+
+
+    //nanti diganti pake cookies yaaa.. :")
+    let token = cookiesHandle.getCookies();
+
+
+    let axiosConfig = {
+        headers : {
+            'Authorization': "Bearer " + token,
+        }
+    }
+
+
+
 	export default {
 		name: "PaketList",
 		data() {
 			return {
-                
-                dialogDelete: false,
-                itemIndex : -1,
 
+                //data utama
+                dataPaket : [],
+                dataJenisPaket : [],
+
+                formInput : {},
+                indexData : null,
+                
+                loadingState : true,
+         
                 dialog : false,
                 dialogMessage : "",
+                
+                dialogDelete: false,
+
+                
+                snackbarState : false,
+                snackbarTimeout : 3000,
+                snackbarOption : {
+                    color : null,
+                    icon : null,
+                    title : null,
+                    text : [],
+                },
 
 
 				search: null,
-				timeout: 1000,
-				itemContent: [],
-				indexItem: null,
+	
 				headers: [
 					{
 						text: "Nomor Resi",
@@ -279,23 +337,27 @@
                         text : "Pengirim",
                         sortable : true,
 
-                        value : "idPengirim",
+                        value : "pengirim.nama",
                     },
 
                     {
                         text : "Jenis Paket",
                         sortable : true,
 
-                        value : "jenisPaket",
+                        value : "jenis_paket.namaJenisPaket",
                     },
 
                     {
-                        text : "Berat",
+                        text : "Berat (Kg)",
                         value : "berat",
+
+                        //add suffix : kg
+                        
+
                     },
 
                     {
-                        text : "Volume",
+                        text : "Volume (cm³)",
                         value : "volume",
                     }, 
 
@@ -329,137 +391,88 @@
                     },
                     
                 ],
-
-				dataPaket: [
-					{
-						noResi : "000000000",
-                        idPengirim : "0",
-                        jenisPaket : "Express", 
-                        berat : 12,
-                        volume : 14, 
-                        
-                        namaPenerima : "Penerima 1",
-                        noTelp : "081247342838",
-                        alamatTujuan : "Alamat 1",
-
-                        pengantaran : [
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 1",
-                                keterangan : "Keterangan 1",
-                                status : "Status 1",
-                            },
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 1",
-                                keterangan : "Keterangan 1",
-                                status : "Status 1",
-                            }, 
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 1",
-                                keterangan : "Keterangan 1",
-                                status : "Status 1",
-                            }, 
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 1",
-                                keterangan : "Keterangan 1",
-                                status : "Status 1",
-                            }, 
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 1",
-                                keterangan : "Keterangan 1",
-                                status : "Status 1",
-                            }
-                        ],
-					},
-                    
-                    {
-                        noResi : "111111111",
-                        idPengirim : "1",
-                        jenisPaket : "Reguler",
-                        berat : 12,
-                        volume : 14,
-                        
-                        namaPenerima : "Penerima 2",
-                        noTelp : "081247342838",
-                        alamatTujuan : "Alamat 2",
-
-                        pengantaran : [
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 2",
-                                keterangan : "Keterangan 2",
-                                status : "Status 2",
-                            }
-                        ],
-
-                    },
-
-                    {
-                        noResi : "222222222",
-                        idPengirim : "2",
-                        jenisPaket : "Express",
-                        berat : 12,
-                        volume : 14,
-                        
-                        namaPenerima : "Penerima 3",
-                        noTelp : "081247342838",
-                        alamatTujuan : "Alamat 3",
-
-                        pengantaran : [
-                            {
-                                kurir : "JNE",
-                                dropPoint : "Drop Point 3",
-                                keterangan : "Keterangan 3",
-                                status : "Status 3",
-                            }
-                        ],
-                    }
-				],
-
-				formInput: {
-					noResi : "",
-                    idPengirim : "",
-                    jenisPaket : "",
-                    berat : "",
-                    volume : "",
-                    penerima : "",
-				},
 			};
 		},
 
+
+        mounted(){
+            this.getDataJenisPaket(); 
+            this.getDataPaket();
+        },
+
+
 		methods: {
             
+            getDataPaket(){
+
+                this.setLoading(true);
+
+                axios.get(API.BaseRoute + 'paket', axiosConfig)
+                    .then((response) => {
+
+                        this.dataPaket = response.data.data;
+
+                        console.log(this.dataPaket);
+                        this.setLoadingState(false);
+                    
+                    })
+                    
+                    .catch((error) => {
+                        
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Mengambil Data Paket!', `Code Error : ${error.response.status}`],
+                        }
+
+                        this.openSnackbar(option);
+                        this.setLoading(false);
+
+                    })
+            },
+
+            getDataJenisPaket(){
+
+                this.setLoading(true);
+
+                axios.get(API.BaseRoute + 'jenispaket', axiosConfig)
+                    .then((response) => {
+
+                        this.dataJenisPaket = response.data.data;
+                        this.setLoading(false);
+                    
+                    })
+                    
+                    .catch((error) => {
+                        
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Mengambil Data Jenis Paket!', `Code Error : ${error.response.status}`],
+                        }
+
+                        this.openSnackbar(option);
+                        this.setLoading(false);
+
+                    })
+
+            },
+
+            setLoading(value){
+                this.loadingState = value;
+            },
+            
+
             openDialog(message){
                 this.dialog = true;
                 this.dialogMessage = message;
             },
 
-			save() {
-				// tambahkan code untuk dapat menyimpan data yang ingin ditambah
-                this.dataPaket.push(this.formInput);
-                
+            closeDialog(){
                 this.dialog = false;
                 this.resetForm();
-			},
-
-			saveUpdate() {
-
-                this.dataPaket[this.itemIndex].noResi = this.formInput.namaKota;
-                
-                this.dialog = false;
-                this.resetForm();
-			},
-
-            getItemUpdate(item){
-                //copy item withour pointer to formTodo
-                this.formInput = Object.assign({}, item);
-                this.itemIndex = this.dataKota.indexOf(item);
-                
-                this.openDialog("Edit Data");
             },
 
 			resetForm() {
@@ -468,22 +481,56 @@
 				};
 
 			},
+
+            openSnackbar(option = null){
+                this.snackbarState = true;
+                this.snackbarOption = option;
+            },
+
+
 			//tambahkan code untuk delete data
 
-            deleteItem(item){
-                this.itemIndex = this.dataKota.indexOf(item)
-                this.dialogDelete = true
+            deleteItem(value){
+                this.indexData = value;
+                this.dialogDelete = true;
             },  
 
             confirmDelete(){
-                this.dataKota.splice(this.itemIndex, 1)
-                this.dialogDelete = false
+
+                axios.delete(API.BaseRoute + `paket/${this.indexData}`, axiosConfig)
+                    .then(() => {
+
+                        let option = {
+                            color : "success",
+                            icon : "mdi-check-circle",
+                            title : "Success",
+                            text : ['Berhasil Menghapus Data Paket!'],
+                        }
+
+                        this.openSnackbar(option);
+
+                        this.getDataPaket();                    
+                    })
+                    
+                    .catch((error) => {
+                        
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Menghapus Data Paket!', `Code Error : ${error.response.status}`],
+                        }
+
+                        this.openSnackbar(option);
+
+                    })
+
+                this.dialogDelete = false;
             },
 
             cancelConfirmation(){
                 this.dialogDelete = false;
-                this.dialog = false;
-                this.resetForm();
+                this.closeDialog();
             },
             
 		},

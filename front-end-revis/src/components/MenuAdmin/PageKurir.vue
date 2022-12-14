@@ -313,16 +313,18 @@
 <script>
 
     import axios from "axios";
+    import * as API from "../../repository/APIRoute.js";
+    import * as cookiesHandle from "../../repository/cookiesHandle.js";
 
 
-    //nanti diganti pake cookies yaaa.. :")
-    let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYjllMzM1NDNkNWUxMGVkMzhlYzEyZmRhYmI1ZWI2Njk2OTYxZmFmMjhlYzEyY2RkYmQ5NGUwZmExMzVjZWI2NmVmMGI3MzkxYTM1MjQ2Y2UiLCJpYXQiOjE2NzEwMTA4NDIuOTAyNDgyLCJuYmYiOjE2NzEwMTA4NDIuOTAyNDg0LCJleHAiOjE3MDI1NDY4NDIuODk5ODY0LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.JT2dTphq413dmwjjWzjlLucLflRGHZK2LI_TMpCKwBZbLFEIBCxrzTG5f0aJo5BtYpzeYdwP_ePJpJWBEBZTqmEMLkW3Ax5LEwsnmD-_Lb6s6alLIe2YV_8fUQUlWus1-o7HQqQA5vDyiCkUXlIEi-WjJ6RMmCrvmBvEWpLkg4xuSe0JOS75CiVZe36w_dE3WGdocfCoBK1zDuVfW_v2tTCFA3KD9Vdm-0GZuPL_ayG-HYAfSyQ6GKKU0wWoTQ8Z2dVi42ZuQ8zuPxYAbfP9yU82cEcL5SZ9Rc7SM7GFuonBp1fSQUy3jpuSZjRDOYterD7OMGHDkiCIkltg_YAvLHd3iowfMPVP7K5ccqcmt9rRPP2dmJ6F_z-h994bqwq8eil9KrjjIo3zWuX_QzeWEE443akZfVw-jT35tCTUjuhwtA9ribUWCHuyv6hPXw6n6WFtVZFBkMUTMjnZ0d8Qzkx6znwnXM9_g1JDBMfa4Nj8i02Qr5rfh3xsBw-EWlVA6k1706-6JwAGFHRdKuuw8CS-J16YRqZHvbRtIHDU7RQzB5edifHgAEngGmWoVBkS03SFdy8Jxw5RBVGXkmQb80WQgJjTte-HkePfz02S678yPy8llqGWK6Vp266mCEmuN-YYiCa_2cWgAFadu0lvKtTPKbGu9SjCcW2sU9IRJtY';
+    let token = cookiesHandle.getCookies();
+
 
     let axiosConfig = {
         headers : {
             'Authorization': "Bearer " + token,
         }
-    } 
+    }
 
 
 	export default {
@@ -420,7 +422,7 @@
 		methods: {
 
             getGender(){
-                axios.get('https://henryyg.com/ngurir/public/api/gender', axiosConfig)
+                axios.get(API.BaseRoute + 'gender', axiosConfig)
                     .then(response => {
                         this.dataGender = response.data.data;
                     })
@@ -439,7 +441,7 @@
             },
 
             getStatus(){
-                axios.get('https://henryyg.com/ngurir/public/api/status', axiosConfig)
+                axios.get(API.BaseRoute + 'status', axiosConfig)
                     .then(response => {
                         this.dataStatus = response.data.data;
                     })
@@ -461,7 +463,7 @@
             getData(){
                 this.setLoading(true);
 
-                axios.get('https://henryyg.com/ngurir/public/api/kurir', axiosConfig)
+                axios.get(API.BaseRoute + 'kurir', axiosConfig)
                     .then(response => {
                         this.dataKurir = response.data.data;
                         this.setLoading(false);
@@ -520,7 +522,7 @@
 
             saveUpdate() {
 
-                axios.put(`https://henryyg.com/ngurir/public/api/kurir/${this.formInput.id}`, this.formInput, axiosConfig)
+                axios.put(API.BaseRoute + `kurir/${this.formInput.id}`, this.formInput, axiosConfig)
                     .then(() => {
 
                         let option = {
@@ -563,7 +565,7 @@
 
             confirmDelete(){
                 
-                axios.delete(`https://henryyg.com/ngurir/public/api/kurir/${this.indexData}`, axiosConfig)
+                axios.delete(API.BaseRoute + `kurir/${this.indexData}`, axiosConfig)
                     .then(() => {
 
                         let option = {

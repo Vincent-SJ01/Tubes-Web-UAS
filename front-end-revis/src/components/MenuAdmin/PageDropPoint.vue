@@ -235,10 +235,13 @@
 <script>
 
     import axios from "axios";
+    import * as API from "../../repository/APIRoute.js";
+    import * as cookiesHandle from "../../repository/cookiesHandle.js";
 
 
     //nanti diganti pake cookies yaaa.. :")
-    let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYTBkMmQ0YWFkM2RkMTE2ZGZjYmZiZDFlN2ZiZjg3Y2E3MjUxZmEzZWVjMzI0ZmFmYzkyNjRkNGYwODIxM2U1MGY5MjM4M2RmMDI5MmYxYjUiLCJpYXQiOjE2NzA4NDIwOTcuMjUxOTc4LCJuYmYiOjE2NzA4NDIwOTcuMjUxOTgsImV4cCI6MTcwMjM3ODA5Ny4yNDU2Mywic3ViIjoiMiIsInNjb3BlcyI6W119.nSe1jHHpRZJwBubRUvZXgDQZCaFVkIS4Zt6MWtMQpqqxcj2aH4BIEX0bAMtCd1-JWUFZAC04rQfBwW0dFKRHDcLAxOrECk4cukEXuFReoF8bKjGUTDJT4GaGzUHHRhxmPotr0A36aKkmk9EAD4HNktEvb4ELQWSDqahzXXYTCSbBwvR-Vg4yvJfLXzxz_YM07qUWJ88Qzl-T3-FYFZNxFfsdLdonrDYom-ooeYIgcT5ZM2UNPQgclwvPTz7-wefgE0NHICdUZXhYiuKfWUsNZqw44JOBEpPffxoVYxSTKJQhE-apKRQla1jGqfGvVOMp1zmrrNtbBD2QIYX4n-HoSxLFxNWrvu6qpR46A5lZvHXtYbzeFBilXhrpR4pwEVTs8Df7xYk6daohiDqXuQtNMqJBtgHC9N1rHVN-JkbNFSXXwCig24PxwU7roOYK8CxLxqfYOu9r0aZL_9CbxjkwHvYBSwsiaskF1WDs4v38Bp4SW-CZ1CR21zqSBNaW0YIYTyIZl22s-YrKOy8fYgXRYh2NCudfxflQwj9MiAEoAmgmdY2EVI2-HbQBQNRJcFRLmtQuPWEriCY3L1Ir4T3eXl1qWVvz1danjmAPPPbufMcfntgdQOQo8KQSmXnq-zwy-8__QMWeimLWXJ2ei_0b4jxxn0_J7uUcHv6h9vDbiDg';
+    let token = cookiesHandle.getCookies();
+
 
     let axiosConfig = {
         headers : {
@@ -328,7 +331,7 @@
 
             getDataKota(){
 
-                axios.get('https://henryyg.com/ngurir/public/api/kota', axiosConfig)
+                axios.get(API.BaseRoute + 'kota', axiosConfig)
                     .then((response) => {
                         this.dataKota = response.data.data;
                     })
@@ -349,7 +352,7 @@
 
                 this.setLoading(true);
 
-                axios.get('https://henryyg.com/ngurir/public/api/droppoint', axiosConfig)
+                axios.get(API.BaseRoute + 'droppoint', axiosConfig)
                     .then((response) => {
 
                         this.dataDropPoint = response.data.data;
@@ -401,7 +404,7 @@
 
 			save() {
 
-                axios.post('https://henryyg.com/ngurir/public/api/droppoint', this.formInput, axiosConfig)
+                axios.post(API.BaseRoute + 'droppoint', this.formInput, axiosConfig)
                     .then(() => {
 
                         let option = {
@@ -448,7 +451,7 @@
 
 			saveUpdate() {
 
-                axios.put(`https://henryyg.com/ngurir/public/api/droppoint/${this.formInput.id}`, this.formInput, axiosConfig)
+                axios.put(API.BaseRoute + `droppoint/${this.formInput.id}`, this.formInput, axiosConfig)
                     .then(() => {
 
                         let option = {
@@ -494,7 +497,7 @@
 
             confirmDelete(){
 
-                axios.delete(`https://henryyg.com/ngurir/public/api/droppoint/${this.indexData}`, axiosConfig)
+                axios.delete(API.BaseRoute + `droppoint/${this.indexData}`, axiosConfig)
                     .then(() => {
 
                         let option = {

@@ -6,7 +6,8 @@
 			v-model="drawer"
 			absolute
 			temporary
-			color="grey lighten-5">
+			color="grey lighten-5"
+            position="fixed">
             
 			<v-list-item>
 				<v-list-item-content>
@@ -69,7 +70,7 @@
 
         <div class="fullheight pa-5">
 
-            <router-view></router-view>
+            <router-view height="90vh"></router-view>
 
         </div>
 

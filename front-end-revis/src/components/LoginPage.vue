@@ -133,7 +133,7 @@
     }
     .LoginBackground {
         background: url("../assets/delivery.jpg");
-        height: 100vh; 
+        height: 88.5vh; 
         background-size: cover;
     }   
 </style>

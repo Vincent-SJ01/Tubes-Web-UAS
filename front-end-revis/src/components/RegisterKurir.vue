@@ -20,7 +20,7 @@
                     <span class="headline text-center"><b> Register </b></span>
                 </v-card-title>
                 
-                <v-card-text>
+                <v-card-text class="pb-0">
 
                     <v-container>
 
@@ -66,48 +66,65 @@
                             :rules="alamatRules" 
                             required>
                         </v-textarea>
-
-                        <v-text-field 
-                            label="No Telepon" 
-                            v-model="formInput.noTelp"
-                            :rules="noTelpRules"
-                            required>
-                        </v-text-field>
                             
-                        <v-menu
-                            v-model="showDatePicker"
-                            :close-on-content-click="false"
-                            transition="scale-transition"
-                            offset-y
-                            max-width="290px"
-                            min-width="auto"
-                        >
-
-                            <template v-slot:activator="{ on, attrs }">
-
-                                <v-text-field
-                                    v-model="formInput.tanggalLahir"
-                                    label="Tanggal Lahir"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                ></v-text-field>
-
-                            </template>
-
-                            <v-date-picker
-                                v-model="formInput.tanggalLahir"
-                                no-title
-                                @input="showDatePicker = false"
-                            ></v-date-picker>
-                    
-                        </v-menu>
-
-                        <v-container>
+                        <v-container class="pa-0 ">
                             <v-row>
                                 <v-col
                                     cols="12"
                                     md="6"
+                                    class="px-1 py-0"
+                                >
+                                    <v-text-field 
+                                        label="No Telepon" 
+                                        v-model="formInput.noTelp"
+                                        :rules="noTelpRules"
+                                        required>
+                                    </v-text-field>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                    class="px-1 py-0"
+                                >
+                                    <v-menu
+                                        v-model="showDatePicker"
+                                        :close-on-content-click="false"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="auto"
+                                    >
+
+                                        <template v-slot:activator="{ on, attrs }">
+
+                                            <v-text-field
+                                                v-model="formInput.tanggalLahir"
+                                                label="Tanggal Lahir"
+                                                readonly
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            ></v-text-field>
+
+                                        </template>
+
+                                        <v-date-picker
+                                            v-model="formInput.tanggalLahir"
+                                            no-title
+                                            @input="showDatePicker = false"
+                                        ></v-date-picker>
+                                
+                                    </v-menu>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+
+                        <v-container class="pa-0">
+                            <v-row>
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                    class="px-1 py-0"
                                 >
                                     <v-select 
                                         v-model="formInput.gender" 
@@ -124,6 +141,7 @@
                                 <v-col
                                     cols="12"
                                     md="6"
+                                    class="px-1 py-0"
                                 >
                                     <v-select 
                                         v-model="formInput.idStatus" 
@@ -136,25 +154,14 @@
                                         required>
                                     </v-select>
                                 </v-col>
-
-
                             </v-row>
-
-
-
-
-
                         </v-container>
                             
-
-                            
-                        
-
                     </v-container>
                 
                 </v-card-text>
                 
-                <v-card-actions class="justify-center">    
+                <v-card-actions class="justify-center pt-0 pb-4 ma-0">    
                     <v-btn color="red" @click="registerKurir()"> Register </v-btn>
                 </v-card-actions>
 
@@ -203,7 +210,7 @@
     }
     .RegisterBackground {
         background: url("../assets/delivery.jpg");
-        height: 100vh; 
+        height: 88.5vh; 
         background-size: cover;
     }   
 </style>
