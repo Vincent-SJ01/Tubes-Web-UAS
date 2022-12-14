@@ -102,6 +102,7 @@ const router = new VueRouter({
 
                     component: importComponent("MenuAdmin/PagePaket"),
                 }
+
             ],
                 
 
