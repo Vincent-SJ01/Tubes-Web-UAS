@@ -14,12 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('kurirs', function (Blueprint $table) {
-            $table->id();
+            $table->string('nik')->primary();
             $table->string('username');
             $table->string('password');
             $table->string('email');
             $table->string('nama');
-            $table->string('nik');
             $table->string('noTelp');
             $table->string('alamat');
             $table->date('tanggalLahir');

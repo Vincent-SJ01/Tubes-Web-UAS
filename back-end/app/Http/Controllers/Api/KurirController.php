@@ -11,7 +11,7 @@ class KurirController extends Controller
 {
     public function index() // Method read atau menampilkan semua data product
     {
-        $kurirs = Kurir::all(); //  Mengambil semua data product
+        $kurirs = Kurir::with('gender', 'status', 'role')->get(); //  Mengambil semua data product
 
         if(count($kurirs) > 0){
             return response([
@@ -28,7 +28,7 @@ class KurirController extends Controller
 
     public function show($id) // Method read atau menampilkan data product berdasarkan id
     {
-        $kurir = Kurir::find($id); //  Mengambil data product berdasarkan id
+        $kurir = Kurir::with('gender', 'status', 'role')->where('nik', '=', $id)->first(); //  Mengambil data product berdasarkan id
 
         if(!is_null($kurir)){
             return response([
@@ -73,7 +73,7 @@ class KurirController extends Controller
 
     public function destroy($id) // Method delete atau menghapus data product berdasarkan id
     {
-        $kurir = Kurir::find($id); //  Mengambil data product berdasarkan id
+        $kurir = Kurir::where('nik', '=', $id)->first(); //  Mengambil data product berdasarkan id
 
         if(is_null($kurir)){
             return response([
@@ -97,7 +97,7 @@ class KurirController extends Controller
 
     public function update(Request $request, $id) // Method update atau mengubah data product berdasarkan id
     {
-        $kurir = Kurir::find($id); //  Mengambil data product berdasarkan id
+        $kurir = Kurir::where('nik', '=', $id)->first(); //  Mengambil data product berdasarkan id
 
         if(is_null($kurir)){
             return response([
@@ -109,24 +109,22 @@ class KurirController extends Controller
         $updateData = $request->all();  // Mengambil seluruh data input dan menyimpan dalam variabel updateData
         $validate = Validator::make($updateData, [
             'nama' => 'required',
-            'username' => 'required',
             'password' => 'required',
-            'email' => 'required',
-            'nik' => 'required',
             'noTelp' => 'required',
             'alamat' => 'required',
             'tanggalLahir' => 'required',
             'gender' => 'required',
-            'status' => 'required',
-            'idRole' => 'required',
         ]);    // rule validasi input saat register
 
         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
 
-        $kurir->namaKurir = $updateData['namaKurir'];
+        $kurir->nama = $updateData['nama'];
+        $kurir->password = $updateData['password'];
         $kurir->noTelp = $updateData['noTelp'];
         $kurir->alamat = $updateData['alamat'];
+        $kurir->tanggalLahir = $updateData['tanggalLahir'];
+        $kurir->gender = $updateData['gender'];
 
         if($kurir->save()){
             return response([

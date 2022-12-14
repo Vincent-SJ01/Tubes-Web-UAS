@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controller\Api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index() // Method read atau menampilkan semua data user
     {
-        $customers = User::all(); //  Mengambil semua data user
+        $customers = User::with('role', 'status')->get(); //  Mengambil semua data user
 
         if(count($customers) > 0){
             return response([
@@ -30,7 +30,7 @@ class UserController extends Controller
 
     public function show($id) // Method read atau menampilkan data user berdasarkan id
     {
-        $user = User::find($id); //  Mengambil data user berdasarkan id
+        $user = User::with('role', 'status')->where('id', '=', $id)->first(); //  Mengambil data user berdasarkan id
 
         if(!is_null($user)){
             return response([
@@ -70,7 +70,7 @@ class UserController extends Controller
 
     public function destroy($id) // Method delete atau menghapus data user berdasarkan id
     {
-        $user = User::find($id); //  Mengambil data user berdasarkan id
+        $user = User::where('id', '=', $id)->first(); //  Mengambil data user berdasarkan id
 
         if(is_null($user)){
             return response([
@@ -93,7 +93,7 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        $user = User::find($id); //  Mengambil data user berdasarkan id
+        $user = User::where('id', '=', $id)->first(); //  Mengambil data user berdasarkan id
 
         if(is_null($user)){
             return response([
@@ -105,9 +105,7 @@ class UserController extends Controller
         $updateData = $request->all(); // Mengambil seluruh data input dan menyimpan dalam variabel updateData
         $validate = Validator::make($updateData, [
             'nama' => 'required',
-            'username' => 'username',
             'password' => 'required',
-            'email' => 'required',
             'alamat' => 'required',
         ]);
 
@@ -115,9 +113,7 @@ class UserController extends Controller
             return response(['message' => $validate->errors()], 400); // return error validasi
 
         $user->nama = $updateData['nama'];
-        $user->username = $updateData['username'];
         $user->password = $updateData['password'];
-        $user->email = $updateData['email'];
         $user->alamat = $updateData['alamat'];
 
         if($user->save()){

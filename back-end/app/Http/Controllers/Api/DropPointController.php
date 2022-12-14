@@ -11,7 +11,7 @@ class DropPointController extends Controller
 {
     public function index() // Method read atau menampilkan semua data drop point
     {
-        $dropPoints = DropPoint::all(); //  Mengambil semua data drop point
+        $dropPoints = DropPoint::with('kota')->get(); //  Mengambil semua data drop point
 
         if(count($dropPoints) > 0){
             return response([

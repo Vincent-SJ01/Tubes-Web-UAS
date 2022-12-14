@@ -11,7 +11,7 @@ class PenghantaranController extends Controller
 {
     public function index()
     {
-        $penghantaran = Penghantaran::all();
+        $penghantaran = Penghantaran::with('paket', 'kurir', 'dropPoint', 'statusPaket')->get();
 
         if(count($penghantaran) > 0){
             return response([
@@ -28,7 +28,7 @@ class PenghantaranController extends Controller
 
     public function show($id)
     {
-        $penghantaran = Penghantaran::find($id);
+        $penghantaran = Penghantaran::with('paket', 'kurir', 'dropPoint', 'statusPaket')->where('noResi','=',$id)->first();
 
         if(!is_null($penghantaran)){
             return response([
@@ -50,7 +50,6 @@ class PenghantaranController extends Controller
             'noResi' => 'required',
             'idKurir' => 'required',
             'idDropPoint' => 'required',
-            'idService' => 'required',
             'status' => 'required',
             'keterangan' => 'required',
         ]);
@@ -67,7 +66,7 @@ class PenghantaranController extends Controller
 
     public function destroy($id)
     {
-        $penghantaran = Penghantaran::find($id);
+        $penghantaran = Penghantaran::where('noResi','=',$id)->first();
 
         if(is_null($penghantaran)){
             return response([
@@ -91,7 +90,7 @@ class PenghantaranController extends Controller
 
     public function update(Request $request, $id)
     {
-        $penghantaran = Penghantaran::find($id);
+        $penghantaran = Penghantaran::where('noResi','=',$id)->first();
         if(is_null($penghantaran)){
             return response([
                 'message' => 'Penghantaran Not Found',
@@ -103,7 +102,6 @@ class PenghantaranController extends Controller
             'noResi' => 'required',
             'idKurir' => 'required',
             'idDropPoint' => 'required',
-            'idService' => 'required',
             'status' => 'required',
             'keterangan' => 'required',
         ]);
@@ -114,7 +112,6 @@ class PenghantaranController extends Controller
         $penghantaran->noResi = $updateData['noResi'];
         $penghantaran->idKurir = $updateData['idKurir'];
         $penghantaran->idDropPoint = $updateData['idDropPoint'];
-        $penghantaran->idService = $updateData['idService'];
         $penghantaran->status = $updateData['status'];
         $penghantaran->keterangan = $updateData['keterangan'];
         

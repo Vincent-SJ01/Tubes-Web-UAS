@@ -38,21 +38,21 @@ class AuthController extends Controller
             'user' => $user
         ], 200); // return data user dalam bentuk json
 
-        try {
-            //Mengisi variabel yang akan ditampilkan pada view mail
-            $content = [
-                'body' => $request->nama,
-            ];
+        // try {
+        //     //Mengisi variabel yang akan ditampilkan pada view mail
+        //     $content = [
+        //         'body' => $request->nama,
+        //     ];
 
-            //Mengirim email ke emailtujuan@gmail.com
-            Mail::to('???.id@gmail.com')->send(new LoginMail($content));
+        //     //Mengirim email ke emailtujuan@gmail.com
+        //     Mail::to('???.id@gmail.com')->send(new LoginMail($content));
 
-            //Redirect jika berhasil mengirim email
-            return redirect()->route('register.index')->with(['success' => 'Data Berhasil Disimpan, email telah terkirim!']);
-        } catch (Exception $e) {
-            //Redirect jika gagal mengirim email
-            return redirect()->route('register.index')->with(['success' => 'Data Berhasil Disimpan, namun gagal mengirim email!']);
-        }
+        //     //Redirect jika berhasil mengirim email
+        //     return redirect()->route('register.index')->with(['success' => 'Data Berhasil Disimpan, email telah terkirim!']);
+        // } catch (Exception $e) {
+        //     //Redirect jika gagal mengirim email
+        //     return redirect()->route('register.index')->with(['success' => 'Data Berhasil Disimpan, namun gagal mengirim email!']);
+        // }
 
     }
 
@@ -149,21 +149,21 @@ class AuthController extends Controller
             return response(['message' => 'Invalid Credentials user'], 401);  // Mengembalikan error gagal login
         }
 
-        try {
-            //Mengisi variabel yang akan ditampilkan pada view mail
-            $content = [
-                'body' => $request->nama,
-            ];
+        // try {
+        //     //Mengisi variabel yang akan ditampilkan pada view mail
+        //     $content = [
+        //         'body' => $request->nama,
+        //     ];
 
-            //Mengirim email ke emailtujuan@gmail.com
-            Mail::to('???.id@gmail.com')->send(new LoginMail($content));
+        //     //Mengirim email ke emailtujuan@gmail.com
+        //     Mail::to('???.id@gmail.com')->send(new LoginMail($content));
 
-            //Redirect jika berhasil mengirim email
-            return redirect()->route('login.index')->with(['success' => 'Data Berhasil Disimpan, email telah terkirim!']);
-        } catch (Exception $e) {
-            //Redirect jika gagal mengirim email
-            return redirect()->route('login.index')->with(['success' => 'Data Berhasil Disimpan, namun gagal mengirim email!']);
-        }
+        //     //Redirect jika berhasil mengirim email
+        //     return redirect()->route('login.index')->with(['success' => 'Data Berhasil Disimpan, email telah terkirim!']);
+        // } catch (Exception $e) {
+        //     //Redirect jika gagal mengirim email
+        //     return redirect()->route('login.index')->with(['success' => 'Data Berhasil Disimpan, namun gagal mengirim email!']);
+        // }
 
     }
 
