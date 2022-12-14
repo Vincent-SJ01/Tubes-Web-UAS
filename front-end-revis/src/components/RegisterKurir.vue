@@ -13,6 +13,7 @@
                 persistent 
                 min-width="400px" 
                 elevation="8"
+                width="30%"
                 class="justify-center">
                 
                 <v-card-title class="mains">
@@ -25,28 +26,28 @@
 
                         <v-text-field 
                             label="NIK" 
-                            v-model="nik" 
+                            v-model="formInput.nik" 
                             :rules="nikRules" 
                             required>
                         </v-text-field>
 
                         <v-text-field 
                             label="Nama" 
-                            v-model="nama" 
+                            v-model="formInput.nama" 
                             :rules="nameRules" 
                             required>
                         </v-text-field>
                             
                         <v-text-field 
                             label="Username" 
-                            v-model="username" 
+                            v-model="formInput.username" 
                             :rules="usernameRules"
                             required>
                         </v-text-field>
 
                         <v-text-field 
                             label="Password" 
-                            v-model="password" 
+                            v-model="formInput.password" 
                             type="password" 
                             :rules="passwordRules"
                             required>
@@ -54,62 +55,143 @@
                             
                         <v-text-field 
                             label="E-mail" 
-                            v-model="email" 
+                            v-model="formInput.email" 
                             :rules="emailRules" 
                             required>
                         </v-text-field>
                             
-                        <v-text-field 
+                        <v-textarea
                             label="Alamat" 
-                            v-model="alamat" 
+                            v-model="formInput.alamat" 
                             :rules="alamatRules" 
                             required>
-                        </v-text-field>
+                        </v-textarea>
 
                         <v-text-field 
                             label="No Telepon" 
-                            v-model="noTelp" 
+                            v-model="formInput.noTelp"
                             :rules="noTelpRules"
                             required>
                         </v-text-field>
                             
-                        <v-text-field 
-                            label="Tanggal Lahir" 
-                            input 
-                            type="date"
-                            v-model="tanggalLahir"
-                            :rules="tanggalLahirRules" 
-                            required>
-                        </v-text-field>
+                        <v-menu
+                            v-model="showDatePicker"
+                            :close-on-content-click="false"
+                            transition="scale-transition"
+                            offset-y
+                            max-width="290px"
+                            min-width="auto"
+                        >
+
+                            <template v-slot:activator="{ on, attrs }">
+
+                                <v-text-field
+                                    v-model="formInput.tanggalLahir"
+                                    label="Tanggal Lahir"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                ></v-text-field>
+
+                            </template>
+
+                            <v-date-picker
+                                v-model="formInput.tanggalLahir"
+                                no-title
+                                @input="showDatePicker = false"
+                            ></v-date-picker>
+                    
+                        </v-menu>
+
+                        <v-container>
+                            <v-row>
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-select 
+                                        v-model="formInput.gender" 
+                                        :items="dataGender"
+                                        item-text="namaGender" 
+                                        item-value="id"
+
+                                        label="Gender" 
+                                        :rules="genderRules" 
+                                        required>
+                                    </v-select>
+                                </v-col>
+
+                                <v-col
+                                    cols="12"
+                                    md="6"
+                                >
+                                    <v-select 
+                                        v-model="formInput.idStatus" 
+                                        :items="dataStatus"
+                                        item-text="namaStatus"
+                                        item-value="id"
+                                        
+                                        label="Status" 
+                                        :rules="statusRules" 
+                                        required>
+                                    </v-select>
+                                </v-col>
+
+
+                            </v-row>
+
+
+
+
+
+                        </v-container>
                             
-                        <v-select 
-                            v-model="gender" 
-                            :items="dataGender" 
-                            label="Gender" 
-                            :rules="genderRules" 
-                            required>
-                        </v-select>
+
                             
-                        <v-select 
-                            v-model="status" 
-                            :items="dataStatus" 
-                            label="Status" 
-                            :rules="statusRules" 
-                            required>
-                        </v-select>
+                        
 
                     </v-container>
                 
                 </v-card-text>
                 
                 <v-card-actions class="justify-center">    
-                    <v-btn color="red" @click="register"> Register </v-btn>
+                    <v-btn color="red" @click="registerKurir()"> Register </v-btn>
                 </v-card-actions>
 
             </v-card>
         </v-form>
             
-          
+        <v-snackbar
+            v-model="snackbarState"
+            :timeout="snackbarTimeout"
+            auto-height
+            multi-line
+            top
+            right
+            :color="snackbarOption.color"
+        >
+            <v-layout align-center pr-4>
+                
+                <v-icon class="pr-3" dark large>{{ snackbarOption.icon }}</v-icon>
+
+                <v-layout column>
+                    <div>
+                        <strong>{{ snackbarOption.title }}</strong>
+                    </div>
+                    
+                    <div>
+                        <span v-for="(message, index) in snackbarOption.text" :key="index">
+                            {{ message }} <br/>
+                        </span>
+                        
+                    </div>
+                
+                </v-layout>
+
+            </v-layout>
+            
+        </v-snackbar>  
+
     </v-main>
 </template>
 
@@ -127,11 +209,27 @@
 </style>
 
 <script>
+
+    import axios from "axios";
+    import * as API from "../repository/APIRoute.js";
+
+
     export default {
-        name: "LoginPage",
+        name: "RegisterKurir",
 
         data() {
             return {
+
+                showDatePicker : false, 
+                
+                snackbarState : false,
+                snackbarTimeout : 3000,
+                snackbarOption : {
+                    color : null,
+                    icon : null,
+                    title : null,
+                    text : [],
+                },
 
                 formInput : {
                     nama : null,
@@ -148,8 +246,26 @@
                     idRole : 2,
                 },
 
-                dataStatus : [],
-                dataGender : [],
+                dataStatus : [
+                    {
+                        id : 1,
+                        namaStatus : "Aktif"
+                    },
+                    {
+                        id : 0,
+                        namaStatus : "Tidak Aktif"
+                    }
+                ],
+                dataGender : [
+                    {
+                        id : 1,
+                        namaGender : "Laki-Laki"
+                    },
+                    {
+                        id : 0,
+                        namaGender : "Perempuan"
+                    }
+                ],
 
                 valid: false,
 
@@ -166,17 +282,58 @@
                 statusRules: [(v) => !!v || "Status tidak boleh kosong !!"],
             };
         },
+        
         methods: {
 
+            registerKurir(){
 
+                axios.post(API.BaseRoute + 'registerKurir', this.formInput)
+                    .then(() => {
+                        
+                        let option = {
+                                color : "success",
+                                icon : "mdi-check-circle",
+                                title : "Success",
+                                text : ['Register Berhasil'],
+                            }
 
-            
-            login() {
+                        this.openSnackbar(option);
+                        this.resetForm();
+
+                        this.$router.push({name : 'Beranda.Login'});
+                    })
+
+                    .catch((error) => {
+                        console.log(error);
+
+                        let option = {
+                                color : "warning",
+                                icon : "mdi-alert-circle",
+                                title : "Warning",
+                                text : ['Register Gagal'],
+                            }
+
+                        for(let errorAttribute in error.response.data.message){
+                            option.text.push(`${error.response.data.message[errorAttribute]}`);
+                        }
+
+                        this.openSnackbar(option);
+
+                    });
+
 
             },
-            clear() {
-                this.$refs.form.reset(); // clear form login
+
+            resetForm() {
+                this.formInput();
             },
+
+            openSnackbar(option = null) {
+                this.snackbarState = true;
+                this.snackbarOption = option;
+            },
+
+
         },
     };
 </script>

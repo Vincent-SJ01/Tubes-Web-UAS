@@ -15,11 +15,6 @@ function clearCookies(){
     document.cookie = "";
 }
 
-function saySomething(){
-    console.log("Hello");
-}
-
-
 //export all function
-export {setCookies, getCookies, clearCookies, saySomething};
+export {setCookies, getCookies, clearCookies};
 

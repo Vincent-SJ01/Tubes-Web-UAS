@@ -71,9 +71,16 @@ export default {
                     name: "Beranda.Login"
                 },
                 {
-                    title: "Contact",
-                    name: "Contact"
+                    title: "Register Kurir",
+                    name: "Beranda.RegisterKurir"
+                },
+                {
+                    title: "Register User",
+                    name: "Beranda.RegisterUser"
                 }
+
+
+            
             ]
 
 

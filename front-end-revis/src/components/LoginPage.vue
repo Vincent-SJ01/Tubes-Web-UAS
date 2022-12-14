@@ -184,9 +184,10 @@
                             text : ['Berhasil Login'],
                         }
 
-                        this.openSnackbar(option);
-
+                        
                         this.switchPage(response.data.user.idRole);
+                        
+                        this.openSnackbar(option);
 
                     })
 
