@@ -317,7 +317,7 @@
     import * as cookiesHandle from "../../repository/cookiesHandle.js";
 
 
-    let token = cookiesHandle.getCookies();
+    let token = cookiesHandle.getCookies("token");
 
 
     let axiosConfig = {

@@ -196,7 +196,7 @@
 
 
     //nanti diganti pake cookies yaaa.. :")
-    let token = cookiesHandle.getCookies();
+    let token = cookiesHandle.getCookies("token");
 
 
     let axiosConfig = {

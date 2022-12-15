@@ -125,7 +125,7 @@
 
 
     export default {
-        name: "RegisterKurir",
+        name: "RegisterUser",
 
         data() {
             return {
@@ -155,6 +155,7 @@
                 nameRules: [(v) => !!v || "Name tidak boleh kosong !!"],
                 usernameRules: [(v) => !!v || "Username tidak boleh kosong !!"],         
                 passwordRules: [(v) => !!v || "Password tidak boleh kosong !!"],
+                emailRules: [(v) => !!v || "E-mail tidak boleh kosong !!"],
                 alamatRules: [(v) => !!v || "Alamat tidak boleh kosong !!"],
             };
         },

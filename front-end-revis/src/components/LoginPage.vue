@@ -141,6 +141,7 @@
 <script>
 
     import axios from "axios";
+    import * as API from "../repository/APIRoute.js";
     import * as cookiesHandle from "../repository/cookiesHandle";
 
     export default {
@@ -171,11 +172,17 @@
         },
         methods: {
             login() {
-                axios.post('https://henryyg.com/ngurir/public/api/login', this.formInput)
+                axios.post(API.BaseRoute + 'login', this.formInput)
                     .then(response => {
                         console.log(response);
 
-                        cookiesHandle.setCookies(response.data.access_token);
+                        //delete cookies
+
+                        cookiesHandle.deleteAllCookies();  
+
+                        cookiesHandle.setCookies("token", response.data.access_token, 30);
+
+                        console.log(response.data.access_token);
 
                         let option = {
                             color : "success",
@@ -224,10 +231,10 @@
                     case 1:
                         this.$router.push({ name: 'Admin.Home' });
                         break;
-                    case 2:
-                        this.$router.push({ path: '/User' });
-                        break;
                     case 3:
+                        this.$router.push({ name: 'User' });
+                        break;
+                    case 2:
                         this.$router.push({ path: '/Kurir' });
                         break;
                     default:

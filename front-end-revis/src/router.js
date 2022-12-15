@@ -44,7 +44,45 @@ const router = new VueRouter({
         },
 
         
-        
+        {
+            path: "/user",
+            name: "User",
+
+            component: importComponent("MenuUser/DashboardUser"),
+
+            children: [
+                {
+                    path: "/user/PagePaket",
+                    name: "User.Paket",
+
+                    component: importComponent("MenuUser/PagePaket"),
+                }, 
+
+                {
+                    path: "/user/Profile",
+                    name: "User.Profile",
+
+                    component: importComponent("MenuUser/Profile"),
+                }
+            ]
+        },
+
+
+        {
+            path: "/kurir",
+            name: "Kurir",
+
+            component: importComponent("MenuKurir/DashboardKurir"),
+
+            children: [
+                {
+                    path: "/kurir/PagePengantaran",
+                    name: "Kurir.Pengantaran",
+
+                    component: importComponent("MenuKurir/PagePengantaran"),
+                }
+            ]
+        },
         
 
      
