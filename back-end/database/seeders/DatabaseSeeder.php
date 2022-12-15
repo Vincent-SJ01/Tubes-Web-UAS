@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         foreach(range(1, 10) as $index)
         {
             DB::table('kurirs')->insert([
-                'nik' => $faker->unique(true)->numberBetween(1000000000000000, 9999999999999999),
+                'nik' => $faker->unique(true)->numberBetween(1000000, 9999999),
                 'nama' => $faker->name,
                 'username' => $faker->username,
                 'password' => $faker->password,
@@ -69,8 +69,9 @@ class DatabaseSeeder extends Seeder
             $user = User::pluck('id')->toArray();
             $jenisPaket = JenisPaket::pluck('id')->toArray();
             $idService = Service::pluck('id')->toArray();
+            $idStatusPaket = StatusPaket::pluck('id')->toArray();
             DB::table('pakets')->insert([
-                'noResi' => $faker->unique(true)->numberBetween(1000000000000000, 9999999999999999),
+                'noResi' => $faker->unique(true)->numberBetween(1000000, 9999999),
                 'idPengirim' => $faker->randomElement($user),
                 'idService' => $faker->randomElement($idService),
                 'jenisPaket' => $faker->randomElement($jenisPaket),
@@ -79,6 +80,7 @@ class DatabaseSeeder extends Seeder
                 'namaPenerima' => $faker->name,
                 'noTelpPenerima' => $faker->phoneNumber,
                 'AlamatTujuan' => $faker->address,
+                'idStatus' => $faker->randomElement($idStatusPaket),
             ]);
         }
 
@@ -88,12 +90,10 @@ class DatabaseSeeder extends Seeder
             $noResi = Paket::pluck('noResi')->toArray();
             $idKurir = Kurir::pluck('nik')->toArray();
             $idDroppoint = DropPoint::pluck('id')->toArray();
-            $idStatusPaket = StatusPaket::pluck('id')->toArray();
-            DB::table('penghantarans')->insert([
+            DB::table('pengantarans')->insert([
                 'noResi' => $faker->randomElement($noResi),
                 'nikKurir' => $faker->randomElement($idKurir),
                 'idDropPoint' => $faker->randomElement($idDroppoint),
-                'status' => $faker->randomElement($idStatusPaket),
                 'keterangan' => $faker->text,
             ]);
         }

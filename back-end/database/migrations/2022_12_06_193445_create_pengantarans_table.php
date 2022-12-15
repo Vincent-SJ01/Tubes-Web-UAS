@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penghantarans', function (Blueprint $table) {
+        Schema::create('pengantarans', function (Blueprint $table) {
             $table->string('noResi');
             $table->foreign('noResi')->references('noResi')->on('pakets')->onDelete('cascade');
             $table->string('nikKurir');
             $table->foreign('nikKurir')->references('nik')->on('kurirs')->onDelete('cascade');
             $table->unsignedBigInteger('idDropPoint');
             $table->foreign('idDropPoint')->references('id')->on('drop_points')->onDelete('cascade');
-            $table->unsignedBigInteger('status');
-            $table->foreign('status')->references('id')->on('status_pakets')->onDelete('cascade');
             $table->string('keterangan');
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penghantarans');
+        Schema::dropIfExists('pengantarans');
     }
 };

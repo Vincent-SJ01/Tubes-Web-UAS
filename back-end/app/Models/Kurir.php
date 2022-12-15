@@ -16,6 +16,10 @@ class Kurir extends Authenticatable
 
     protected $primaryKey = 'nik';
 
+    protected $casts = [
+        'nik' => 'string',
+    ];
+
     protected $fillable = [
         'nama',
         'username',

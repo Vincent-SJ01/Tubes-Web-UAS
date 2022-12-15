@@ -15,6 +15,7 @@ class Paket extends Model
         'noResi',
         'idPengirim',
         'idService',
+        'idStatus',
         'jenisPaket',
         'berat',
         'volume',
@@ -37,4 +38,15 @@ class Paket extends Model
     {
         return $this->belongsTo(Service::class, 'idService', 'id');
     }
+
+    public function pengantaran()
+    {
+        return $this->hasMany(Pengantaran::class, 'noResi', 'noResi')->with('kurir', 'dropPoint');
+    }
+    
+    public function statusPaket()
+    {
+        return $this->belongsTo(StatusPaket::class, 'idStatus', 'id');
+    }
+
 }

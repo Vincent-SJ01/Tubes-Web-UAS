@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penghantaran extends Model
+class Pengantaran extends Model
 {
     use HasFactory;
 
@@ -13,7 +13,6 @@ class Penghantaran extends Model
         'noResi',
         'nikKurir',
         'idDropPoint',
-        'status',
         'keterangan'
     ];
 
@@ -30,11 +29,6 @@ class Penghantaran extends Model
     public function dropPoint()
     {
         return $this->belongsTo(DropPoint::class, 'idDropPoint', 'id');
-    }
-
-    public function statusPaket()
-    {
-        return $this->belongsTo(StatusPaket::class, 'status', 'id');
     }
 
     public function noResi()

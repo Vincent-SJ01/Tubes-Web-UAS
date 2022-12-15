@@ -22,7 +22,8 @@ class AuthController extends Controller
             'username' => 'required|unique:users|unique:kurirs|unique:admins', 
             'password' => 'required',
             'email' => 'required|email:rfc,dns|unique:users|unique:kurirs',
-            'alamat' => 'required'
+            'alamat' => 'required',
+            'idStatus' => 'required',
             
          ]);    // rule validasi input saat register
 
@@ -68,7 +69,8 @@ class AuthController extends Controller
             'noTelp' => 'required',
             'tanggalLahir' => 'required',
             'gender' => 'required',
-            'status' => 'required'
+            'idStatus' => 'required',
+
             
          ]);    // rule validasi input saat register
 
@@ -113,11 +115,19 @@ class AuthController extends Controller
     public function login (Request $request){
         $loginData = $request->all();
         $status = 0;
- 
-        $validate = Validator::make($loginData, [
-            'email' => 'required|email:rfc, dns',
-            'password' => 'required'
-        ]);
+        
+        if(!is_null($request->get('email'))){
+            $validate = Validator::make($loginData, [
+                'email' => 'required|email:rfc, dns',
+                'password' => 'required'
+            ]);
+        }else{
+            $validate = Validator::make($loginData, [
+                'username' => 'required',
+                'password' => 'required'
+            ]);
+        }
+        
 
         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
@@ -210,6 +220,16 @@ class AuthController extends Controller
         return response([
             'message' => 'Logout Succes',
             'user' => $dataKurir
+        ]);
+    }
+
+    public function logoutAdmin(Request $request){
+        $admin = Auth::admin()->token();
+        $dataAdmin = Auth::admin();
+        $admin->revoke();
+        return response([
+            'message' => 'Logout Succes',
+            'user' => $dataAdmin
         ]);
     }
 

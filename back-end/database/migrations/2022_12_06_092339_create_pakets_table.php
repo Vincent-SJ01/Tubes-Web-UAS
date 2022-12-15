@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('jenisPaket')->references('id')->on('jenis_pakets')->onDelete('cascade');
             $table->unsignedBigInteger('idService');
             $table->foreign('idService')->references('id')->on('services')->onDelete('cascade');
+            $table->unsignedBigInteger('idStatus');
+            $table->foreign('idStatus')->references('id')->on('status_pakets')->onDelete('cascade');
             $table->float('berat');
             $table->float('volume');
             $table->string('namaPenerima');

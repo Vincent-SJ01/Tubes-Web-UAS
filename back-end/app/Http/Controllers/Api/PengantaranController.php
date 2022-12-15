@@ -4,19 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Penghantaran;
+use App\Models\Pengantaran;
 use Illuminate\Support\Facades\Validator;
 
-class PenghantaranController extends Controller
+class PengantaranController extends Controller
 {
     public function index()
     {
-        $penghantaran = Penghantaran::with('paket', 'kurir', 'dropPoint', 'statusPaket')->get();
+        $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint')->get();
 
-        if(count($penghantaran) > 0){
+        if(count($pengantaran) > 0){
             return response([
                 'message' => 'Retrieve All Success',
-                'data' => $penghantaran
+                'data' => $pengantaran
             ], 200);
         }
 
@@ -28,17 +28,17 @@ class PenghantaranController extends Controller
 
     public function show($id)
     {
-        $penghantaran = Penghantaran::with('paket', 'kurir', 'dropPoint', 'statusPaket')->where('noResi','=',$id)->first();
+        $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint')->where('noResi','=',$id)->first();
 
-        if(!is_null($penghantaran)){
+        if(!is_null($pengantaran)){
             return response([
-                'message' => 'Retrieve Penghantaran Success',
-                'data' => $penghantaran
+                'message' => 'Retrieve Pengantaran Success',
+                'data' => $pengantaran
             ], 200);
         }
 
         return response([
-            'message' => 'Penghantaran Not Found',
+            'message' => 'Pengantaran Not Found',
             'data' => null
         ], 404);
     }
@@ -57,43 +57,43 @@ class PenghantaranController extends Controller
         if($validate->fails())
             return response(['message' => $validate->errors()], 400);
 
-        $penghantaran = Penghantaran::create($storeData);
+        $pengantaran = Pengantaran::create($storeData);
         return response([
-            'message' => 'Add Penghantaran Success',
-            'data' => $penghantaran,
+            'message' => 'Add Pengantaran Success',
+            'data' => $pengantaran,
         ], 200);
     }
 
     public function destroy($id)
     {
-        $penghantaran = Penghantaran::where('noResi','=',$id)->first();
+        $pengantaran = Pengantaran::where('noResi','=',$id)->first();
 
-        if(is_null($penghantaran)){
+        if(is_null($pengantaran)){
             return response([
-                'message' => 'Penghantaran Not Found',
+                'message' => 'Pengantaran Not Found',
                 'data' => null
             ], 404);
         }
 
-        if($penghantaran->delete()){
+        if($pengantaran->delete()){
             return response([
-                'message' => 'Delete Penghantaran Success',
-                'data' => $penghantaran,
+                'message' => 'Delete Pengantaran Success',
+                'data' => $pengantaran,
             ], 200);
         }
 
         return response([
-            'message' => 'Delete Penghantaran Failed',
+            'message' => 'Delete Pengantaran Failed',
             'data' => null,
         ], 400);
     }
 
     public function update(Request $request, $id)
     {
-        $penghantaran = Penghantaran::where('noResi','=',$id)->first();
-        if(is_null($penghantaran)){
+        $pengantaran = Pengantaran::where('noResi','=',$id)->first();
+        if(is_null($pengantaran)){
             return response([
-                'message' => 'Penghantaran Not Found',
+                'message' => 'Pengantaran Not Found',
                 'data' => null
             ], 404);
         }
@@ -109,21 +109,21 @@ class PenghantaranController extends Controller
         if($validate->fails())
             return response(['message' => $validate->errors()], 400);
 
-        $penghantaran->noResi = $updateData['noResi'];
-        $penghantaran->idKurir = $updateData['idKurir'];
-        $penghantaran->idDropPoint = $updateData['idDropPoint'];
-        $penghantaran->status = $updateData['status'];
-        $penghantaran->keterangan = $updateData['keterangan'];
+        $pengantaran->noResi = $updateData['noResi'];
+        $pengantaran->idKurir = $updateData['idKurir'];
+        $pengantaran->idDropPoint = $updateData['idDropPoint'];
+        $pengantaran->status = $updateData['status'];
+        $pengantaran->keterangan = $updateData['keterangan'];
         
-        if($penghantaran->save()){
+        if($pengantaran->save()){
             return response([
-                'message' => 'Update Penghantaran Success',
-                'data' => $penghantaran,
+                'message' => 'Update Pengantaran Success',
+                'data' => $pengantaran,
             ], 200);
         }
 
         return response([
-            'message' => 'Update Penghantaran Failed',
+            'message' => 'Update Pengantaran Failed',
             'data' => null,
         ], 400);
 

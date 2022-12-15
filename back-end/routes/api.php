@@ -20,7 +20,7 @@ Route::post('registerAdmin', 'Api\AuthController@registerAdmin');
 Route::post('login', 'Api\AuthController@login');
 Route::post('logoutUser', 'Api\AuthController@logoutUser');
 Route::post('logoutKurir', 'Api\AuthController@logoutKurir');
-
+Route::post('logoutAdmin', 'Api\AuthController@logoutAdmin');
 
 // Route::get('droppoint', 'Api\DroppointController@index')->middleware('auth:api', 'auth:kurirs-api');
 // Route::group(['middleware' => 'auth:kurirs-api'], function(){
@@ -33,11 +33,11 @@ Route::post('logoutKurir', 'Api\AuthController@logoutKurir');
 //     Route::delete('droppoint/{id}', 'Api\DroppointController@destroy');
 // });
 
-Route::get('droppoint', 'Api\DroppointController@index')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::get('droppoint/{id}', 'Api\DroppointController@show')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::post('droppoint', 'Api\DroppointController@store')->middleware(['auth:admins-api']);
-Route::put('droppoint/{id}', 'Api\DroppointController@update')->middleware(['auth:admins-api']);
-Route::delete('droppoint/{id}', 'Api\DroppointController@destroy')->middleware(['auth:admins-api']);
+Route::get('droppoint', 'Api\DropPointController@index')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('droppoint/{id}', 'Api\DropPointController@show')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::post('droppoint', 'Api\DropPointController@store')->middleware(['auth:admins-api']);
+Route::put('droppoint/{id}', 'Api\DropPointController@update')->middleware(['auth:admins-api']);
+Route::delete('droppoint/{id}', 'Api\DropPointController@destroy')->middleware(['auth:admins-api']);
 
 Route::get('user', 'Api\UserController@index')->middleware(['auth:admins-api']);
 Route::get('user/{id}', 'Api\UserController@show')->middleware(['auth:admins-api, api']);
@@ -54,9 +54,9 @@ Route::get('kurir/{id}', 'Api\KurirController@show')->middleware(['auth:admins-a
 Route::put('kurir/{id}', 'Api\KurirController@update')->middleware(['auth:admins-api, kurirs-api']);
 Route::delete('kurir/{id}', 'Api\KurirController@destroy')->middleware(['auth:admins-api, kurirs-api']);
 
-Route::get('penghantaran', 'Api\PenghantaranController@index')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::get('penghantaran/{id}', 'Api\PenghantaranController@show')->middleware(['auth:admins-api,kurirs-api,api']);
-Route::post('penghantaran', 'Api\PenghantaranController@store')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('pengantaran', 'Api\PengantaranController@index')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('pengantaran/{id}', 'Api\PengantaranController@show')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::post('pengantaran', 'Api\PengantaranController@store')->middleware(['auth:admins-api,kurirs-api,api']);
 
 Route::get('paket', 'Api\PaketController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::get('paket/{id}', 'Api\PaketController@show')->middleware(['auth:admins-api,kurirs-api,api']);

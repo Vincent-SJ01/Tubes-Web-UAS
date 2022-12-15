@@ -11,7 +11,7 @@ class PaketController extends Controller
 {
     public function index() // Method read atau menampilkan semua data paket
     {
-        $pakets = Paket::with('pengirim', 'jenisPaket', 'service')->get(); //  Mengambil semua data paket
+        $pakets = Paket::with('pengirim', 'service', 'pengantaran', 'statusPaket')->get(); //  Mengambil semua data paket
 
         if(count($pakets) > 0){
             return response([
@@ -28,7 +28,7 @@ class PaketController extends Controller
 
     public function show($id) // Method read atau menampilkan data paket berdasarkan id
     {
-        $paket = Paket::with('pengirim', 'jenis_paket', 'service')->where('noResi', '=', $id)->first()->get(); //  Mengambil data paket berdasarkan id
+        $paket = Paket::with('pengirim', 'jenis_paket', 'service', 'pengantaran', 'statusPaket')->where('noResi', '=', $id)->first()->get(); //  Mengambil data paket berdasarkan id
 
         if(!is_null($paket)){
             return response([
