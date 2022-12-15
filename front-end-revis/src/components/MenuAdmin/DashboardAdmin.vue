@@ -33,6 +33,26 @@
 
 				</v-list-item>
 			</v-list>
+
+            <template v-slot:append>
+
+                <div class="pa-2">
+                
+                    <v-btn 
+                        block
+                        
+                        tag="router-link"
+                        :to="{name : 'Beranda'}"
+                        color="red lighten-3"
+                        dark
+                    >
+                    Logout</v-btn>
+                
+                </div>
+
+            </template>
+
+
 		</v-navigation-drawer>
 
 
@@ -83,6 +103,10 @@
                         title: "Paket", 
                         name: "Admin.Paket" 
                     },
+
+                    //logout path, position bottom
+
+
                 ],
             };
         },
