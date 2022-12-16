@@ -113,13 +113,16 @@
                 drawer: false,
                 group : null, 
                 items: [
+
+                    {
+                        title: "Home", 
+                        name : "Beranda"
+                    },
+
                     { 
                         title: "Pengantaran", 
                         name: "Kurir.Pengantaran",
                     },
-
-                    //logout path, position bottom
-
 
                 ],
             };

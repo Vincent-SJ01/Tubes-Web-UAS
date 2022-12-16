@@ -182,8 +182,6 @@
 
                         cookiesHandle.setCookies("token", response.data.access_token, 30);
 
-                        console.log(response.data.access_token);
-
                         let option = {
                             color : "success",
                             icon : "mdi-check-circle",
@@ -235,7 +233,7 @@
                         this.$router.push({ name: 'User' });
                         break;
                     case 2:
-                        this.$router.push({ path: '/Kurir' });
+                        this.$router.push({ name: 'Kurir' });
                         break;
                     default:
                         this.$router.push({ name: 'Login' });

@@ -202,7 +202,7 @@
             },
 
             resetForm() {
-                this.formInput();
+                this.formInput = {};
             },
 
             openSnackbar(option = null) {
