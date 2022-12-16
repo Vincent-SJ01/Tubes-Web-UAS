@@ -30,6 +30,15 @@
                 </v-text-field>
 			
                 <v-spacer></v-spacer>
+
+                <v-btn 
+                    color="primary" 
+                    dark 
+                    @click="openDialog('Tambah Paket', 0)"
+                >
+                    Tambah Paket
+                </v-btn>
+			    
 				
 			</v-card-title>
 		
@@ -61,22 +70,6 @@
 						<!-- tambahkan dialog untuk konfirmasi delete agar bisa delete data -->
 					</v-btn>
 
-                </template>
-
-
-                <template
-                    v-slot:[`item.status_paket.status`]="{ item }"
-                >
-                    <v-card
-                        large
-                        label
-                        width="100px"
-                        :class="getColorClass(item.idStatus)"
-                    >
-                        {{ item.status_paket.status }}
-                    </v-card>
-            
-            
                 </template>
 
                 <template v-slot:expanded-item="{ headers, item }">
@@ -163,7 +156,7 @@
                                                     <td>{{ antar.kurir.nama }}</td>
                                                     <td>{{ antar.drop_point.namaDropPoint }}</td>
                                                     <td>{{ antar.keterangan }}</td>
-                                                    <td>{{ (antar.idStatus) ? "Gagal" : "Sukses" }}</td>
+                                                    <td>{{ antar.status_paket.status }}</td>
                                             </tr>
                                         </tbody>
 
@@ -215,7 +208,7 @@
                     Cancel
                 </v-btn>
                 
-                <v-btn color="green darken-1" text @click="(dialogMessage == 'Tambah Kota') ? save() : saveUpdate()">
+                <v-btn color="green darken-1" text @click="(dialogMode == 0) ? save() : saveUpdate()">
                     Save
                 </v-btn>
             
@@ -325,6 +318,7 @@
          
                 dialog : false,
                 dialogMessage : "",
+                dialogMode : null,
                 
                 dialogDelete: false,
 
@@ -368,17 +362,14 @@
                         value : "berat",
 
                         //add suffix : kg
+                        
+
                     },
 
                     {
                         text : "Volume (cm³)",
                         value : "volume",
                     }, 
-
-                    {
-                        text : "Status",
-                        value : "status_paket.status",
-                    },
 
                     { 
                         text: "Actions", 
@@ -387,6 +378,29 @@
                         sortable: false,
                     },
 				],
+
+                pengantaranHeaders : [
+                    {
+                        text : "Kurir",
+                        value : "kurir",
+                    },
+                    
+                    {
+                        text : "Drop Point",
+                        value : "dropPoint",
+                    }, 
+                    
+                    {
+                        text : "Keterangan",
+                        value : "keterangan",
+                    },
+
+                    {
+                        text : "Status",
+                        value : "status",
+                    },
+                    
+                ],
 			};
 		},
 
@@ -403,7 +417,7 @@
 
                 this.setLoading(true);
 
-                axios.get(API.BaseRoute + 'paket', axiosConfig)
+                axios.get(API.BaseRoute + 'paketbyuser', axiosConfig)
                     .then((response) => {
 
                         this.dataPaket = response.data.data;
@@ -461,9 +475,10 @@
             },
             
 
-            openDialog(message){
+            openDialog(message, mode){
                 this.dialog = true;
                 this.dialogMessage = message;
+                this.dialogMode = mode;
             },
 
             closeDialog(){
@@ -527,33 +542,6 @@
             cancelConfirmation(){
                 this.dialogDelete = false;
                 this.closeDialog();
-            },
-
-            getColorClass(value){
-
-                value = parseInt(value);
-
-                
-
-                switch(value){
-
-                    //pending
-                    case 1 : 
-                        return "amber lighten-1 text-center pa-1";
-
-                    case 2 : 
-                    case 4 : 
-                        return "blue lighten-1 text-center pa-1";
-
-                    case 3 : 
-                    case 5 : 
-                        return "light-green accent-3 text-center pa-1";
-
-                    case 6 : 
-                        return "red lighten-1 text-center pa-1";
-                        
-                }
-                
             },
             
 		},

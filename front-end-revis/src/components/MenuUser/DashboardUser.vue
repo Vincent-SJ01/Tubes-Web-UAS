@@ -12,7 +12,7 @@
 			<v-list-item>
 				<v-list-item-content>
 					<v-list-item-title class="title">Ngurir</v-list-item-title>
-					<v-list-item-subtitle>Admin Page</v-list-item-subtitle>
+					<v-list-item-subtitle>User Page</v-list-item-subtitle>
 				</v-list-item-content>
 			</v-list-item>
 
@@ -114,28 +114,15 @@
                 group : null, 
                 items: [
                     { 
-                        title: "Kota", 
-                        name: "Admin.Kota",
+                        title: "Profile", 
+                        name: "User.Kota",
                     },
     
                     { 
-                        title: "Drop Point", 
-                        name: "Admin.DropPoint", 
-                    },
-					
-                    { 
-                        title: "Kurir", 
-                        name: "Admin.Kurir" 
-                    },
-					
-                    { 
                         title: "Paket", 
-                        name: "Admin.Paket" 
+                        name: "User.Paket", 
                     },
-
-                    //logout path, position bottom
-
-
+				
                 ],
             };
 

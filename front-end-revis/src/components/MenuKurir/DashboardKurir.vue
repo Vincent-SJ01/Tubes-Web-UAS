@@ -114,23 +114,8 @@
                 group : null, 
                 items: [
                     { 
-                        title: "Kota", 
-                        name: "Admin.Kota",
-                    },
-    
-                    { 
-                        title: "Drop Point", 
-                        name: "Admin.DropPoint", 
-                    },
-					
-                    { 
-                        title: "Kurir", 
-                        name: "Admin.Kurir" 
-                    },
-					
-                    { 
-                        title: "Paket", 
-                        name: "Admin.Paket" 
+                        title: "Pengantaran", 
+                        name: "Kurir.Pengantaran",
                     },
 
                     //logout path, position bottom
