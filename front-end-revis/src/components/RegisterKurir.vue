@@ -304,8 +304,8 @@
                                 text : ['Register Berhasil'],
                             }
 
-                        this.openSnackbar(option);
                         this.resetForm();
+                        this.openSnackbar(option);
 
                         this.$router.push({name : 'Beranda.Login'});
                     })
@@ -332,7 +332,7 @@
             },
 
             resetForm() {
-                this.formInput();
+                this.formInput = {};
             },
 
             openSnackbar(option = null) {

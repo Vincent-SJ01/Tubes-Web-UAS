@@ -38,7 +38,6 @@
                 >
                     Tambah Paket
                 </v-btn>
-			    
 				
 			</v-card-title>
 		
@@ -58,18 +57,45 @@
 				
                 <template v-slot:[`item.actions`]="{ item }">
 
+                    <v-btn
+						class="ma-2"
+						outlined
+						small
+						color="primary"
+                        :disabled="item.idStatus != 1"
+						@click="getDataDialog(item);"
+						><v-icon>mdi-pencil</v-icon>
+
+                    </v-btn>
+
                     <v-btn 
                         class="ma-2" 
                         outlined 
                         small 
                         color="error"
-                        @click=deleteItem(item.id)
+                        :disabled="item.idStatus != 1"
+                        @click=deleteItem(item.noResi)
                     >
                         
                         <v-icon> mdi-trash-can-outline</v-icon>
 						<!-- tambahkan dialog untuk konfirmasi delete agar bisa delete data -->
 					</v-btn>
 
+                </template>
+
+                <template
+                    v-slot:[`item.status_paket.status`]="{ item }"
+                >
+                    <v-card
+                        large
+                        label
+                        width="100px"
+                        :class="getColorClass(item.idStatus)"
+                    >
+                        {{ item.status_paket.status }}
+                    </v-card>
+            
+            
                 </template>
 
                 <template v-slot:expanded-item="{ headers, item }">
@@ -191,12 +217,59 @@
 				
             <v-card-text>
                 <v-container>
+
+                    <v-select
+                        v-model="formInput.jenisPaket"
+                        :items="dataJenisPaket"
+                        item-text="namaJenisPaket"
+                        item-value="id"
+                        label="Jenis Paket"
+                    >
+                    </v-select>
+
+                    <v-select
+                        v-model="formInput.idService"
+                        :items="dataService"
+                        item-text="nama"
+                        item-value="id"
+                        label="Service"
+                    >
+                    </v-select>
+
                     <v-text-field
-                        v-model="formInput.namaKota"
-                        label="Nama Kota"
+                        v-model="formInput.berat"
+                        label="Berat"
+                        type="number"
+                        required
+                        suffix="Kg"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="formInput.volume"
+                        label="Volume"
+                        type="number"
+                        required
+                        suffix="cm³"
+                    ></v-text-field>
+
+                    <v-text-field
+                        v-model="formInput.namaPenerima"
+                        label="Nama Penerima"
                         required
                     ></v-text-field>
-                
+
+                    <v-text-field
+                        v-model="formInput.noTelpPenerima"
+                        label="Nomor Telepon Penerima"
+                        required
+                    ></v-text-field>
+
+                    <v-textarea
+                        v-model="formInput.alamatTujuan"
+                        label="Alamat Tujuan"
+                        required
+                    ></v-textarea>
+                    
                 </v-container>
             
             </v-card-text>
@@ -226,7 +299,7 @@
 				<v-card-title>
 					
                     <span class="headline">
-                        Apakah Yakin Ingin Menghapus Kota
+                        Apakah Yakin Ingin Menghapus Paket? 
                     </span>
 
 				</v-card-title>
@@ -310,6 +383,7 @@
                 //data utama
                 dataPaket : [],
                 dataJenisPaket : [],
+                dataService : [],
 
                 formInput : {},
                 indexData : null,
@@ -344,18 +418,28 @@
 					},
 
                     {
+                        text : "Jenis Paket",
+                        sortable : true,
+
+                        value : "jenis_paket.namaJenisPaket",
+                    },
+
+                    {
+                        text : "Service",
+                        sortable : true,
+
+                        value : "service.nama",
+
+                    }, 
+
+                    {
                         text : "Pengirim",
                         sortable : true,
 
                         value : "pengirim.nama",
                     },
 
-                    {
-                        text : "Jenis Paket",
-                        sortable : true,
-
-                        value : "jenis_paket.namaJenisPaket",
-                    },
+                    
 
                     {
                         text : "Berat (Kg)",
@@ -371,6 +455,11 @@
                         value : "volume",
                     }, 
 
+                    {
+                        text : "Status",
+                        value : "status_paket.status",
+                    },
+
                     { 
                         text: "Actions", 
                         value: "actions", 
@@ -379,34 +468,13 @@
                     },
 				],
 
-                pengantaranHeaders : [
-                    {
-                        text : "Kurir",
-                        value : "kurir",
-                    },
-                    
-                    {
-                        text : "Drop Point",
-                        value : "dropPoint",
-                    }, 
-                    
-                    {
-                        text : "Keterangan",
-                        value : "keterangan",
-                    },
-
-                    {
-                        text : "Status",
-                        value : "status",
-                    },
-                    
-                ],
 			};
 		},
 
 
         mounted(){
             this.getDataJenisPaket(); 
+            this.getDataService();
             this.getDataPaket();
         },
 
@@ -422,7 +490,33 @@
 
                         this.dataPaket = response.data.data;
 
-                        console.log(this.dataPaket);
+                        this.setLoading(false);
+                    
+                    })
+                    
+                    .catch((error) => {
+                        
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Mengambil Data Paket!', `Code Error : ${error.request.status}`],
+                        }
+
+                        this.openSnackbar(option);
+                        this.setLoading(false);
+
+                    })
+            },
+
+            getDataService(){
+                this.setLoading(true);
+
+                axios.get(API.BaseRoute + 'service', axiosConfig)
+                    .then((response) => {
+
+                        this.dataService = response.data.data;
+
                         this.setLoadingState(false);
                     
                     })
@@ -433,13 +527,13 @@
                             color : "error",
                             icon : "mdi-alert-circle",
                             title : "Error",
-                            text : ['Gagal Mengambil Data Paket!', `Code Error : ${error.response.status}`],
+                            text : ['Gagal Mengambil Data Service!', `Code Error : ${error.response.status}`],
                         }
 
                         this.openSnackbar(option);
                         this.setLoading(false);
 
-                    })
+                    })         
             },
 
             getDataJenisPaket(){
@@ -487,9 +581,7 @@
             },
 
 			resetForm() {
-				this.formInput = {
-					namaKota : null,
-				};
+				this.formInput = {}; 
 
 			},
 
@@ -498,8 +590,98 @@
                 this.snackbarOption = option;
             },
 
+            save(){
 
-			//tambahkan code untuk delete data
+                //set id = 1 ; artinya pending;
+                this.formInput.idStatus = 1; 
+
+                axios.post(API.BaseRoute + "paket", this.formInput, axiosConfig)
+                    .then(() => {
+
+                        let option = {
+                            color : "success",
+                            icon : "mdi-check-circle",
+                            title : "Success",
+                            text : ['Berhasil Menambahkan Data Paket!'],
+                        }
+
+                        this.getDataPaket(); 
+                        this.openSnackbar(option);
+                        this.closeDialog();
+
+                    })
+                    .catch((error) => {
+                        
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Menambahkan Data Paket!'],
+                        }
+
+                        for(let errorAttribute in error.response.data.message){
+                            option.text.push(error.response.data.message[errorAttribute][0]);
+                        }
+
+                        this.openSnackbar(option);
+
+                    })
+
+
+            }, 
+
+
+            getDataDialog(item){
+                this.formInput = Object.assign({}, item);
+
+                this.formInput.jenisPaket = parseInt(this.formInput.jenisPaket);
+                this.formInput.idService = parseInt(this.formInput.idService);
+                
+
+                console.log(this.formInput);
+
+                this.openDialog("Edit Data Paket", 1);
+            },
+
+            saveUpdate(){
+
+                this.formInput.idStatus = 1; 
+
+                axios.put(API.BaseRoute + `paket/${this.formInput.noResi}`, this.formInput, axiosConfig)
+                    .then(() => {
+
+                        let option = {
+                            color : "success",
+                            icon : "mdi-check-circle",
+                            title : "Success",
+                            text : ['Berhasil Mengubah Data Paket!'],
+                        }
+
+                        this.getDataPaket();
+                        this.openSnackbar(option);
+                        this.closeDialog();
+
+                    })
+                    .catch((error) => {
+                        
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Mengubah Data Paket!'],
+                        }
+
+                        for(let errorAttribute in error.response.data.message){
+                            option.text.push(error.response.data.message[errorAttribute][0]);
+                        }
+
+                        this.openSnackbar(option);
+
+                    })
+
+
+            }, 
+
 
             deleteItem(value){
                 this.indexData = value;
@@ -542,6 +724,30 @@
             cancelConfirmation(){
                 this.dialogDelete = false;
                 this.closeDialog();
+            },
+            
+            getColorClass(value){
+                value = parseInt(value);
+
+                switch(value){
+
+                    //pending
+                    case 1 : 
+                        return "amber lighten-1 text-center pa-1";
+
+                    case 2 : 
+                    case 4 : 
+                        return "blue lighten-1 text-center pa-1";
+
+                    case 3 : 
+                    case 5 : 
+                        return "light-green accent-3 text-center pa-1";
+
+                    case 6 : 
+                        return "red lighten-1 text-center pa-1";
+                        
+                }
+
             },
             
 		},
