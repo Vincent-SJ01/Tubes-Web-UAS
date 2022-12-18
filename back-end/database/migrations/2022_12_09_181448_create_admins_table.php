@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('idStatus')->references('id')->on('statuses')->onDelete('cascade');
             $table->unsignedBigInteger('idRole')->default(1);
             $table->foreign('idRole')->references('id')->on('roles')->onDelete('cascade');
-            $table->dateTime('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

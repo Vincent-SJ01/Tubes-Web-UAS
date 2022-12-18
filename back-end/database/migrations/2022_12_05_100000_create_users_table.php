@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('idRole')->references('id')->on('roles')->onDelete('cascade');
             $table->Integer('idStatus')->default(0);
             $table->foreign('idStatus')->references('id')->on('statuses')->onDelete('cascade');
-            $table->dateTime('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

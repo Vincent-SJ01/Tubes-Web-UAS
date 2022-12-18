@@ -22,7 +22,7 @@ class AuthController extends Controller
             'nama' => 'required',
             'username' => 'required|unique:users|unique:kurirs|unique:admins', 
             'password' => 'required',
-            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs',
+            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs|unique:admins',
             'alamat' => 'required',
             'idStatus' => 'required',
             
@@ -52,9 +52,9 @@ class AuthController extends Controller
         $registrationData = $request->all();    // Mengambil seluruh data input dan menyimpan dalam variabel registratinoData
         $validate = Validator::make($registrationData, [
             'nama' => 'required',
-            'username' => 'required|unique:users|unique:kurirs', 
+            'username' => 'required|unique:users|unique:kurirs|unique:admins', 
             'password' => 'required',
-            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs',
+            'email' => 'required|email:rfc,dns|unique:users|unique:kurirs|unique:admins',
             'alamat' => 'required',
             'nik' => 'required',
             'noTelp' => 'required',
@@ -69,10 +69,12 @@ class AuthController extends Controller
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
 
         $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
+        // return $registrationData;
 
         $kurir = Kurir::create($registrationData);    // Membuat user baru
         event(new Registered($kurir));
         auth()->login($kurir);
+        $kurir->sendEmailVerificationNotification();
 
         return response([
             'message' => 'Register Success',
@@ -97,8 +99,9 @@ class AuthController extends Controller
         $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
 
         $admin = Admin::create($registrationData);    // Membuat user baru
-        event(new Registered($kurir));
-        auth()->login($kurir);
+        // event(new Registered($admin));
+        // auth()->login($admin);
+        $admin->sendEmailVerificationNotification();
         return response([
             'message' => 'Register Success',
             'user' => $admin
@@ -131,7 +134,7 @@ class AuthController extends Controller
         if(Auth::guard('web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
             $user = Auth::user();
-            if(!$user->hasVerifiedEmail()){
+            if($user->email_verified_at == null){
                 return response()->json([
                     'message' => 'Please verify your email'
                 ], 401);

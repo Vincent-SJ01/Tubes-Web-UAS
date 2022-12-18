@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class Kurir extends Authenticatable
+class Kurir extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -19,8 +20,8 @@ class Kurir extends Authenticatable
     protected $casts = [
         'nik' => 'string',
         'email_verified_at' => 'datetime',
-
     ];
+    public $incrementing = false;
 
     protected $fillable = [
         'nama',
