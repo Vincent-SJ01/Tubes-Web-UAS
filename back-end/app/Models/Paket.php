@@ -10,6 +10,10 @@ class Paket extends Model
     use HasFactory;
 
     protected $primaryKey = 'noResi';
+    
+    protected $casts = [
+        'noResi' => 'string',
+    ];
 
     protected $fillable = [
         'noResi',

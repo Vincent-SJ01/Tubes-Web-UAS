@@ -18,8 +18,10 @@ return new class extends Migration
             $table->foreign('noResi')->references('noResi')->on('pakets')->onDelete('cascade');
             $table->string('nikKurir');
             $table->foreign('nikKurir')->references('nik')->on('kurirs')->onDelete('cascade');
-            $table->unsignedBigInteger('idDropPoint');
+            $table->unsignedBigInteger('idDropPoint')->nullable();
             $table->foreign('idDropPoint')->references('id')->on('drop_points')->onDelete('cascade');
+            $table->integer('idStatus');
+            $table->foreign('idStatus')->references('id')->on('status_pengantarans')->onDelete('cascade');
             $table->string('keterangan');
             $table->timestamps();
         });

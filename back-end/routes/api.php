@@ -22,17 +22,6 @@ Route::post('logoutUser', 'Api\AuthController@logoutUser');
 Route::post('logoutKurir', 'Api\AuthController@logoutKurir');
 Route::post('logoutAdmin', 'Api\AuthController@logoutAdmin');
 
-// Route::get('droppoint', 'Api\DroppointController@index')->middleware('auth:api', 'auth:kurirs-api');
-// Route::group(['middleware' => 'auth:kurirs-api'], function(){
-//     Route::get('user', 'Api\AuthController@user');
-//     Route::get('kurir', 'Api\AuthController@kurir');
-//     Route::get('droppoint', 'Api\DroppointController@index');
-//     Route::get('droppoint/{id}', 'Api\DroppointController@show');
-//     Route::post('droppoint', 'Api\DroppointController@store');
-//     Route::put('droppoint/{id}', 'Api\DroppointController@update');
-//     Route::delete('droppoint/{id}', 'Api\DroppointController@destroy');
-// });
-
 Route::get('droppoint', 'Api\DropPointController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::get('droppoint/{id}', 'Api\DropPointController@show')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::post('droppoint', 'Api\DropPointController@store')->middleware(['auth:admins-api']);
@@ -55,13 +44,17 @@ Route::put('kurir/{id}', 'Api\KurirController@update')->middleware(['auth:admins
 Route::delete('kurir/{id}', 'Api\KurirController@destroy')->middleware(['auth:admins-api, kurirs-api']);
 
 Route::get('pengantaran', 'Api\PengantaranController@index')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('pengantaranbykurir', 'Api\PengantaranController@showbykurir')->middleware(['auth:admins-api,kurirs-api']);
 Route::get('pengantaran/{id}', 'Api\PengantaranController@show')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::put('updatestatuspengantaran/{noresi}-{date}', 'Api\PengantaranController@updateStatus')->middleware(['auth:admins-api,kurirs-api']);
 Route::post('pengantaran', 'Api\PengantaranController@store')->middleware(['auth:admins-api,kurirs-api,api']);
 
 Route::get('paket', 'Api\PaketController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::get('paket/{id}', 'Api\PaketController@show')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::get('paketbyUser/{id}', 'Api\PaketController@showbyUser')->middleware(['auth:admins-api,kurirs-api,api']);
 Route::post('paket', 'Api\PaketController@store')->middleware(['auth:admins-api,api']);
-Route::put('paket/{id}', 'Api\PaketController@update')->middleware(['auth:admins-api']);
+Route::put('paket/{id}', 'Api\PaketController@update')->middleware(['auth:admins-api,kurirs-api,api']);
+Route::put('updatestatuspaket/{id}', 'Api\PaketController@updateStatus')->middleware(['auth:admins-api,kurirs-api']);
 Route::delete('paket/{id}', 'Api\PaketController@destroy')->middleware(['auth:admins-api,api']);
 
 Route::get('kota', 'Api\KotaController@index')->middleware(['auth:admins-api,kurirs-api,api']);
@@ -78,9 +71,11 @@ Route::get('gender', 'Api\GenderController@index')->middleware(['auth:admins-api
 
 Route::get('status', 'Api\StatusController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 
+Route::get('statusPengantaran', 'Api\StatusController@index')->middleware(['auth:admins-api,kurirs-api']);
+
 Route::get('statuspaket', 'Api\StatusPaketController@index')->middleware(['auth:admins-api,kurirs-api']);
 
-Route::get('jenispaket', 'Api\JenisPaketController@index')->middleware(['auth:admins-api,kurirs-api']);
+Route::get('jenispaket', 'Api\JenisPaketController@index')->middleware(['auth:admins-api,kurirs-api,api']);
 
 Route::get('printResi/{id}', 'Api\PdfController@resiPaket');
 

@@ -13,6 +13,9 @@ use App\Models\Service;
 use App\Models\StatusPaket;
 use App\Models\User;
 use App\Models\JenisPaket;
+use App\Models\StatusPengantaran;
+use Illuminate\Support\Facades\Hash;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,13 +26,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        
         $this->role();
         $this->jenisPaket();
         $this->service();
         $this->statusPaket();
         $this->droppoint();
         $this->status();
+        $this->statusPengantaran();
         $this->gender();
+
+        // $this->createAdmin();
         // \App\Models\User::factory(10)->create();
         $faker = Faker::create();
         foreach(range(1, 10) as $index)
@@ -90,13 +97,16 @@ class DatabaseSeeder extends Seeder
             $noResi = Paket::pluck('noResi')->toArray();
             $idKurir = Kurir::pluck('nik')->toArray();
             $idDroppoint = DropPoint::pluck('id')->toArray();
+            $idStatusPengantaran = StatusPengantaran::pluck('id')->toArray();
             DB::table('pengantarans')->insert([
                 'noResi' => $faker->randomElement($noResi),
                 'nikKurir' => $faker->randomElement($idKurir),
                 'idDropPoint' => $faker->randomElement($idDroppoint),
+                'idStatus' => $faker->randomElement($idStatusPengantaran),
                 'keterangan' => $faker->text,
             ]);
         }
+        
     }
 
     public function role(){
@@ -129,6 +139,21 @@ class DatabaseSeeder extends Seeder
 
         DB::table('statuses')->insert($status);
     }
+
+    public function statusPengantaran(){
+        $status = [
+            [
+                'id' => 0,
+                'namaStatus' => 'Gagal',
+            ],[
+                'id' => 1,
+                'namaStatus' => 'Berhasil',
+            ]
+        ];
+
+        DB::table('status_pengantarans')->insert($status);
+    }
+
 
     public function gender(){
         $gender = [
@@ -284,5 +309,19 @@ class DatabaseSeeder extends Seeder
         ];
 
         DB::table('status_pakets')->insert($statusPaket);
+    }
+
+    public function createAdmin(){
+        $admin = [
+            [
+                'nama' => 'admin',
+                'email' => 'admin',
+                'password' => Hash::make('admin'),
+                'idStatus' => 1,
+                'username' => 'admin',
+            ]
+        ];
+        
+        DB::table('admins')->insert($admin);
     }
 }

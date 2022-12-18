@@ -9,10 +9,18 @@ class Pengantaran extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'noResi';
+
+    protected $casts = [
+        'noResi' => 'string',
+    ];
+
+
     protected $fillable = [
         'noResi',
         'nikKurir',
         'idDropPoint',
+        'idStatus',
         'keterangan'
     ];
 
@@ -36,5 +44,8 @@ class Pengantaran extends Model
         return $this->belongsTo(Paket::class, 'noResi', 'noResi');
     }
 
-
+    public function status()
+    {
+        return $this->belongsTo(StatusPengantaran::class, 'idStatus', 'id');
+    }
 }
