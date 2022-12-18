@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Mail;
 use App\Mail\LoginMail;
 use App\Mail\RegisterMail;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -30,30 +31,20 @@ class AuthController extends Controller
          if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
 
-        $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
 
+            $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
+         
+            $registrationData['idRole'] = 1;
         $user = User::create($registrationData);    // Membuat user baru
+        event(new Registered($user));
+        auth()->login($user);
 
         return response([
             'message' => 'Register Success',
             'user' => $user
         ], 200); // return data user dalam bentuk json
 
-        // try {
-        //     //Mengisi variabel yang akan ditampilkan pada view mail
-        //     $content = [
-        //         'body' => $request->nama,
-        //     ];
-
-        //     //Mengirim email ke emailtujuan@gmail.com
-        //     Mail::to('???.id@gmail.com')->send(new LoginMail($content));
-
-        //     //Redirect jika berhasil mengirim email
-        //     return redirect()->route('register.index')->with(['success' => 'Data Berhasil Disimpan, email telah terkirim!']);
-        // } catch (Exception $e) {
-        //     //Redirect jika gagal mengirim email
-        //     return redirect()->route('register.index')->with(['success' => 'Data Berhasil Disimpan, namun gagal mengirim email!']);
-        // }
+     
 
     }
 
@@ -80,6 +71,8 @@ class AuthController extends Controller
         $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
 
         $kurir = Kurir::create($registrationData);    // Membuat user baru
+        event(new Registered($kurir));
+        auth()->login($kurir);
 
         return response([
             'message' => 'Register Success',
@@ -104,11 +97,14 @@ class AuthController extends Controller
         $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
 
         $admin = Admin::create($registrationData);    // Membuat user baru
-
+        event(new Registered($kurir));
+        auth()->login($kurir);
         return response([
             'message' => 'Register Success',
             'user' => $admin
         ], 200); // return data user dalam bentuk json
+
+
 
     }
 
@@ -135,14 +131,29 @@ class AuthController extends Controller
         if(Auth::guard('web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
             $user = Auth::user();
+            if(!$user->hasVerifiedEmail()){
+                return response()->json([
+                    'message' => 'Please verify your email'
+                ], 401);
+            }
         }else 
         if(Auth::guard('kurirs-web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
             $user = Auth('kurirs-web')->user();
+            if(!$user->hasVerifiedEmail()){
+                return response()->json([
+                    'message' => 'Please verify your email'
+                ], 401);
+            }
         }
         if(Auth::guard('admins-web')->attempt($loginData)){    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             $status = 1;
             $user = Auth('admins-web')->user();
+            if(!$user->hasVerifiedEmail()){
+                return response()->json([
+                    'message' => 'Please verify your email'
+                ], 401);
+            }
         }
 
         if($status == 1){

@@ -6,7 +6,8 @@
 			v-model="drawer"
 			absolute
 			temporary
-			color="grey lighten-5">
+			color="grey lighten-5"
+            position="fixed">
             
 			<v-list-item>
 				<v-list-item-content>
@@ -40,9 +41,7 @@
                 
                     <v-btn 
                         block
-                        
-                        tag="router-link"
-                        :to="{name : 'Beranda'}"
+                        @click="dialogLogout = true"
                         color="red lighten-3"
                         dark
                     >
@@ -67,20 +66,50 @@
 
         </v-app-bar>
 
-        <div class="fullheight pa-5">
+        <div class="pa-5" height="100vh">
 
-            <router-view></router-view>
+            <router-view height="90vh"></router-view>
 
         </div>
+
+
+        <v-dialog 
+            v-model="dialogLogout" 
+            persistent max-width="600px">
+			<v-card>
+				<v-card-title>
+					<span class="headline"
+						>Apakah Yakin Ingin Logout?</span
+					>
+				</v-card-title>
+
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="blue darken-1" text @click="cancelConfirmation()"
+						>Cancel</v-btn
+					>
+					<v-btn color="red darken-1" text @click="confirmLogout()"
+						>Logout</v-btn
+					>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 
 	</div>
 </template>
 
 <script>
+
+    import * as cookiesHandle from "../../repository/cookiesHandle.js";
+
+
     export default {
         name: "DashboardIndex",
         data() {
             return {
+
+                dialogLogout : false,
+
                 drawer: false,
                 group : null, 
                 items: [
@@ -109,7 +138,20 @@
 
                 ],
             };
+
+
         },
+
+        methods : {
+            confirmLogout() {
+                cookiesHandle.deleteAllCookies();
+                this.$router.push({name : 'Beranda'});
+            },
+
+            cancelConfirmation() {
+                this.dialogLogout = false;
+            }
+        }
     };
 </script>
 

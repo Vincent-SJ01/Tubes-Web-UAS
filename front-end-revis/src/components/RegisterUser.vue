@@ -1,72 +1,216 @@
 <template>
-    <v-main style="height: 100%">
-        <img src="../assets/delivery.jpg" style="width: 100%" />
-        <center></center>
 
-        <div class="d-flex justify-content-center"
-            style=" position: absolute; top: 20%; left: 40%; width: 40%; text-align: center; padding: 5px; padding-top: 3%; padding-bottom: 5%;;"
-            align="center">
-            <v-form v-model="valid" ref="form">
-                <v-card persistent min-width="400px" elevation="7">
-                    <v-card-title class="mains">
-                        <span class="headline"><b>Register</b></span>
-                    </v-card-title>
-                    <v-card-text>
-                        <v-container>
-                            <v-text-field label="Nama" v-model="nama" :rules="nameRules" required></v-text-field>
-                            <v-text-field label="Username" v-model="username" :rules="usernameRules"
-                                required></v-text-field>
-                            <v-text-field label="Password" v-model="password" type="password" :rules="passwordRules"
-                                required></v-text-field>
-                            <v-text-field label="E-mail" v-model="email" :rules="emailRules" required></v-text-field>
-                            <v-text-field label="Alamat" v-model="alamat" :rules="alamatRules" required></v-text-field>
-                        </v-container>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red" @click="register" style="color: white;"> Register </v-btn>
-                        <center></center>
-                    </v-card-actions>
-                </v-card>
-            </v-form>
-        </div>
+    <v-main fluid class="pa-0 ma-0 RegisterBackground">
+       
+        <v-form 
+            v-model="valid" 
+            ref="form"
+            :style = "{height: '100%'}"
+            class="d-flex justify-center align-center"
+            >
+            
+            <v-card 
+                persistent 
+                min-width="400px" 
+                elevation="8"
+                class="justify-center">
+                
+                <v-card-title class="mains">
+                    <span class="headline text-center"><b> Register </b></span>
+                </v-card-title>
+                
+                <v-card-text>
+
+                    <v-container>
+
+                        <v-text-field 
+                            label="Nama" 
+                            v-model="formInput.nama" 
+                            :rules="nameRules" 
+                            required>
+                        </v-text-field>
+                        
+                        <v-text-field 
+                            label="Username" 
+                            v-model="formInput.username" 
+                            :rules="usernameRules"
+                            required>
+                        </v-text-field>
+                        
+                        <v-text-field 
+                            label="Password" 
+                            v-model="formInput.password" 
+                            type="password" 
+                            :rules="passwordRules"
+                            required>
+                        </v-text-field>
+
+                        <v-text-field 
+                            label="E-mail" 
+                            v-model="formInput.email" 
+                            :rules="emailRules" 
+                            required>
+                        </v-text-field>
+                        
+                        <v-textarea 
+                            label="Alamat" 
+                            v-model="formInput.alamat" 
+                            :rules="alamatRules" 
+                            required>
+                        </v-textarea>
+
+                    </v-container>
+                
+                </v-card-text>
+                
+                <v-card-actions class="justify-center">    
+                    <v-btn color="red" @click="registerUser()"> Register </v-btn>
+                </v-card-actions>
+
+            </v-card>
+        </v-form>
+            
+        <v-snackbar
+            v-model="snackbarState"
+            :timeout="snackbarTimeout"
+            auto-height
+            multi-line
+            top
+            right
+            :color="snackbarOption.color"
+        >
+            <v-layout align-center pr-4>
+                
+                <v-icon class="pr-3" dark large>{{ snackbarOption.icon }}</v-icon>
+
+                <v-layout column>
+                    <div>
+                        <strong>{{ snackbarOption.title }}</strong>
+                    </div>
+                    
+                    <div>
+                        <span v-for="(message, index) in snackbarOption.text" :key="index">
+                            {{ message }} <br/>
+                        </span>
+                        
+                    </div>
+                
+                </v-layout>
+
+            </v-layout>
+            
+        </v-snackbar>  
 
     </v-main>
 </template>
 
 <style scoped>
-.mains {
-    background-color: rgb(198, 3, 3);
-    justify-content: center;
+    .mains {
+        background-color: rgb(235, 71, 71);
+        justify-content: center;
 
-
-}
+    }
+    .RegisterBackground {
+        background: url("../assets/delivery.jpg");
+        height: 88.5vh; 
+        overflow: hidden; 
+        background-size: cover;
+    }   
 </style>
 
 <script>
-export default {
-    name: "Register sterUser",
-    data() {
-        return {
-            color: "",
-            valid: false,
-            name: "",
-            nameRules: [(v) => !!v || "Name tidak boleh kosong !!"],
-            username: "",
-            usernameRules: [(v) => !!v || "Username tidak boleh kosong !!"], 
-            password: "",  
-            passwordRules: [(v) => !!v || "Password tidak boleh kosong !!"],
-            alamat: "",
-            alamatRules: [(v) => !!v || "Alamat tidak boleh kosong !!"],
-        };
-    },
-    methods: {
-        login() {
+
+    import axios from "axios";
+    import * as API from "../repository/APIRoute.js";
+
+
+    export default {
+        name: "RegisterUser",
+
+        data() {
+            return {
+                
+                snackbarState : false,
+                snackbarTimeout : 3000,
+                snackbarOption : {
+                    color : null,
+                    icon : null,
+                    title : null,
+                    text : [],
+                },
+
+                formInput : {
+                    nama : null,
+                    username : null,
+                    password : null,
+                    email : null,
+                    alamat : null,
+
+                    idStatus : 0,
+                },
+
+
+                valid: false,
+
+                nameRules: [(v) => !!v || "Name tidak boleh kosong !!"],
+                usernameRules: [(v) => !!v || "Username tidak boleh kosong !!"],         
+                passwordRules: [(v) => !!v || "Password tidak boleh kosong !!"],
+                emailRules: [(v) => !!v || "E-mail tidak boleh kosong !!"],
+                alamatRules: [(v) => !!v || "Alamat tidak boleh kosong !!"],
+            };
+        },
+        
+        methods: {
+
+            registerUser(){
+
+                axios.post(API.BaseRoute + 'registerUser', this.formInput)
+                    .then(() => {
+                        
+                        let option = {
+                                color : "success",
+                                icon : "mdi-check-circle",
+                                title : "Success",
+                                text : ['Register Berhasil'],
+                            }
+
+                        this.openSnackbar(option);
+                        this.resetForm();
+
+                        this.$router.push({name : 'Beranda.Login'});
+                    })
+
+                    .catch((error) => {
+                        console.log(error);
+
+                        let option = {
+                                color : "warning",
+                                icon : "mdi-alert-circle",
+                                title : "Warning",
+                                text : ['Register Gagal'],
+                            }
+
+                        for(let errorAttribute in error.response.data.message){
+                            option.text.push(`${error.response.data.message[errorAttribute]}`);
+                        }
+
+                        this.openSnackbar(option);
+
+                    });
+
+
+            },
+
+            resetForm() {
+                this.formInput = {};
+            },
+
+            openSnackbar(option = null) {
+                this.snackbarState = true;
+                this.snackbarOption = option;
+            },
+
 
         },
-        clear() {
-            this.$refs.form.reset(); // clear form login
-        },
-    },
-};
+    };
 </script>

@@ -18,6 +18,11 @@ class Admin extends Authenticatable
         'username',
         'email',
         'password',
-        'idRole'
+        'idRole',
+        'email_verified_at'
+    ];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+
     ];
 }

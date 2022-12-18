@@ -18,6 +18,8 @@ class Kurir extends Authenticatable
 
     protected $casts = [
         'nik' => 'string',
+        'email_verified_at' => 'datetime',
+
     ];
 
     protected $fillable = [
@@ -31,12 +33,14 @@ class Kurir extends Authenticatable
         'tanggalLahir',
         'gender',
         'idStatus',
-        'idRole'
+        'idRole',
+        'email_verified_at'
     ];
 
     protected $hidden = [
         'password',
     ];
+  
 
     public function gender()
     {
