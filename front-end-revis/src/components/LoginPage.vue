@@ -172,7 +172,28 @@
         },
         methods: {
             login() {
-                axios.post(API.BaseRoute + 'login', this.formInput)
+                
+                let pattern = /^[\w-.]+@([\w-]+.)+[\w-]{2,4}$/;
+                let sendObject = {};
+
+                if(pattern.test(this.formInput.email)) {
+                    
+                    sendObject = {
+                        email : this.formInput.email,
+                        password : this.formInput.password,
+                    }
+
+                }else{
+                    sendObject = {
+                        username : this.formInput.email,
+                        password : this.formInput.password,
+                    }
+                }
+
+                
+
+
+                axios.post(API.BaseRoute + 'login', sendObject)
                     .then(response => {
                         console.log(response);
 
@@ -197,7 +218,9 @@
                     })
 
                     .catch(error => {
-                        console.log(error);
+                        console.log(error.response.data);
+
+                        console.log(sendObject)
                     
                         let option = {
                             color : "error",

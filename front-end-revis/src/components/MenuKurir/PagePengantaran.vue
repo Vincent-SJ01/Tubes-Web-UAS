@@ -52,6 +52,7 @@
                         outlined 
                         small 
                         color="success"
+                        :disabled="disableDelivery(item.idStatus)"
                         @click=deliveryPaket(item)
                     >
                         
@@ -65,27 +66,64 @@
 
         </v-card>
 
-		<v-dialog 
-            v-model="dialogDelivery" 
-            persistent max-width="600px">
-			<v-card>
-				<v-card-title>
-					<span class="headline"
-						>Mengantar Paket</span
-					>
-				</v-card-title>
+        <v-dialog
+			transition="dialog-top-transition"
+			v-model="dialogDelivery"
+			persistent
+			max-width="600px"
+		>
+            <v-card>
+                
+                <v-toolbar color="brown darken-1" dark class="headline"> Mengantar paket </v-toolbar>
+                    
+                <v-card-text class="mt-5 mb-0 pb-0">
+                    <v-container class="pb-0">
 
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn color="blue darken-1" text @click="cancelConfirmation()"
-						>Cancel</v-btn
-					>
-					<v-btn color="green darken-1" text @click="confirmDelivery()"
-						>Berhasil Mengantar</v-btn
-					>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
+                        <!-- sementara, keterangan diisi di Admin -->
+                        <!-- <v-text-field
+                            v-model="formInput.keterangan"
+                            label="Keterangan"
+                            class="mb-0 mt-5"
+                            outlined 
+                            dense
+                            clearable
+                            required
+                        ></v-text-field> -->
+
+                        <v-radio-group
+                            v-model="formInput.idStatus"
+                            row
+                        >
+                            <v-radio
+                                label="Gagal"
+                                value="0"
+                            ></v-radio>
+
+                            <v-radio
+                                label="Berhasil"
+                                value="1"
+                            ></v-radio>
+                            </v-radio-group>
+                    
+                    </v-container>
+                </v-card-text>
+                    
+                <v-card-actions class="mt-0">
+                    <v-spacer></v-spacer>
+                    
+                    <v-btn color="blue darken-1" text @click="cancelConfirmation()">
+                        Cancel
+                    </v-btn>
+                    
+                    <v-btn color="green darken-1" text @click="confirmDelivery()">
+                        Save
+                    </v-btn>
+                
+                </v-card-actions>   
+                
+            </v-card>
+		
+        </v-dialog>
 		
 
         <v-snackbar
@@ -147,9 +185,9 @@
 
                 dataPengantaran : [],
 
-
                 //object untuk penampung data;
                 tempObject: {},
+                formInput : {}, 
                 loadingState : true,
 
                 dialogDelivery : false,
@@ -176,7 +214,7 @@
                     {
 						text: "Drop Point",
 						sortable: true,
-						value: "drop_point_namaDropPoint",
+						value: "drop_point.namaDropPoint",
 					},
 
                     {
@@ -188,7 +226,7 @@
                     {
 						text: "Status",
                         //text align middle
-						value: "idStatus",
+						value: "status.namaStatus",
 					},
 
                     { 
@@ -250,17 +288,40 @@
 
             deliveryPaket(value){
                 this.tempObject = value;
+                this.dialogDelivery = true;
             }, 
 
+            resetForm() {
+				this.formInput = {}; 
+
+			},
+
+            openSnackbar(option = null){
+                this.snackbarState = true;
+                this.snackbarOption = option;
+            },
+
+            cancelConfirmation(){
+                this.dialogDelivery = false;
+                this.closeDialog();
+            },
+
+
             confirmDelivery(){
-                axios.put(API.BaseRoute + `updatestatuspengantaran/${this.tempObject.noResi}_${this.tempObject.create_at}`, axiosConfig)
+
+                let objectSend = {
+                    idStatus : this.formInput.idStatus,
+                }
+
+
+                axios.put(API.BaseRoute + `updatestatuspengantaran/${this.tempObject.noResi}_${this.tempObject.updated_at}`, objectSend, axiosConfig)
                     .then(() => {
 
                         let option = {
                             color : "success",
                             icon : "mdi-check",
                             title : "Success",
-                            text : ["Paket Berhasil Dikirim!"],
+                            text : ["Berhasil Melakukan Tindakan Pengantaran!"],
                         }
 
                         this.openSnackbar(option);
@@ -278,70 +339,47 @@
                         this.openSnackbar(option);
                         this.closeDialog();
                     })
+
+
+                    let paket = this.tempObject.paket;
+
+                    let id = (this.formInput.idStatus == 0) ?  //apabila membatalkan, maka ubah menjadi pending
+                            1
+                        : (paket.idStatus == 2 || paket.idStatus == 7) ?   //kalau dari status dijemput atau dikirim, ubah menjadi diterima 
+                            3 
+                        :   5;  //kalau bukan semua, maka pasti diantar, kalau diantar, maka ubah menjadi selesai
+
+                    let updateData = {
+                        idStatus : id,
+                    }
+
+                    axios.put(API.BaseRoute + `updatestatuspaket/${this.indexData}`, updateData, axiosConfig)
+                        .then(() => {
+                            
+                        })
+
+                        .catch((error) => {
+                            
+                            let option = {
+                                color : "error",
+                                icon : "mdi-alert-circle",
+                                title : "Error",
+                                text : ['Gagal Mengubah Data Paket!', `Code Error : ${error.response.status}`],
+                            }
+
+                            this.openSnackbar(option);
+                        })
+
+
             },  
 
-            resetForm() {
-				this.formInput = {}; 
+            disableDelivery(value){
+                value = parseInt(value);
 
-			},
+                if(value == 1) return false; //hanya enabled kalau status diproses
 
-            openSnackbar(option = null){
-                this.snackbarState = true;
-                this.snackbarOption = option;
-            },
-
-
-			save() {
-                //post data yoooo
-                axios.post(API.BaseRoute + "kota", this.formInput, axiosConfig)
-                    .then(() => {
-                        
-
-                        let option = {
-                            color : "success",
-                            icon : "mdi-check",
-                            title : "Success",
-                            text : ["Kota Berhasil Ditambahkan!"],
-                        }
-
-                        this.openSnackbar(option);
-
-                        //ingat close dialog hanya pada saat sudah berhasil
-                        this.closeDialog();
-
-                        //mengambil ulang data setelah kita menambahkan data;
-                        this.getData();
-
-                        
-                    })
-
-                    .catch(error => {
-                        console.log(error.response.data.message);
-
-                        let option = {
-                            color : "warning",
-                            icon : "mdi-alert-circle",
-                            title : "Warning",
-                            text : ['Gagal Menambahkan Kota'],
-                        }
-
-                        //Ambil semua pesan errornya buat ditampilkan, ini seperti validation di backend
-                        for(let errorAttribute in error.response.data.message){
-                            option.text.push(`${error.response.data.message[errorAttribute][0]}`);
-                        }
-
-                        this.openSnackbar(option);
-                    })
-                
-
-                
-			},
-
-
-            cancelConfirmation(){
-                this.dialogDelivery = false;
-                this.closeDialog();
-            },
+                return true;
+            }
             
 		},
 	};
