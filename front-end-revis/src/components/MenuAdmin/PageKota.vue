@@ -95,39 +95,39 @@
 			max-width="600px"
 		>
 
-        <v-card>
-			
-            <v-toolbar color="brown darken-1" dark class="headline"> {{ dialogMessage }} </v-toolbar>
-				
-            <v-card-text class="mt-5 mb-0 pb-0">
-                <v-container class="pb-0">
-                    <v-text-field
-                        v-model="formInput.namaKota"
-                        label="Nama Kota"
-                        class="mb-0"
-                        outlined 
-                        dense
-                        clearable
-                        required
-                    ></v-text-field>
+            <v-card>
                 
-                </v-container>
-            </v-card-text>
-				
-            <v-card-actions class="mt-0">
-                <v-spacer></v-spacer>
+                <v-toolbar color="brown darken-1" dark class="headline"> {{ dialogMessage }} </v-toolbar>
+                    
+                <v-card-text class="mt-5 mb-0 pb-0">
+                    <v-container class="pb-0">
+                        <v-text-field
+                            v-model="formInput.namaKota"
+                            label="Nama Kota"
+                            class="mb-0"
+                            outlined 
+                            dense
+                            clearable
+                            required
+                        ></v-text-field>
+                    
+                    </v-container>
+                </v-card-text>
+                    
+                <v-card-actions class="mt-0">
+                    <v-spacer></v-spacer>
+                    
+                    <v-btn color="blue darken-1" text @click="cancelConfirmation()">
+                        Cancel
+                    </v-btn>
+                    
+                    <v-btn color="green darken-1" text @click="(dialogMode == 0) ? save() : saveUpdate()">
+                        Save
+                    </v-btn>
                 
-                <v-btn color="blue darken-1" text @click="cancelConfirmation()">
-                    Cancel
-                </v-btn>
+                </v-card-actions>   
                 
-                <v-btn color="green darken-1" text @click="(dialogMode == 0) ? save() : saveUpdate()">
-                    Save
-                </v-btn>
-            
-            </v-card-actions>   
-			
-        </v-card>
+            </v-card>
 		
         </v-dialog>
 		

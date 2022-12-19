@@ -166,7 +166,8 @@
 
                 axios.post(API.BaseRoute + 'registerUser', this.formInput)
                     .then(() => {
-                        
+
+
                         let option = {
                                 color : "success",
                                 icon : "mdi-check-circle",

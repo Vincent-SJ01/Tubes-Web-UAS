@@ -55,6 +55,7 @@
                         outlined 
                         small 
                         color="success"
+                        :disabled="disableDelivery(item.idStatus)"
                         @click=deliveryItem(item)
                     >
                         
@@ -67,7 +68,8 @@
                         outlined 
                         small 
                         color="error"
-                        @click=deleteItem(item.noResi)
+                        :disabled="disableDelivery(item.idStatus)"
+                        @click=cancelItem(item.noResi)
                     >
                         
                         <v-icon> mdi-trash-can-outline</v-icon>
@@ -175,7 +177,7 @@
                                                     <td>{{ antar.kurir.nama }}</td>
                                                     <td>{{ (antar.drop_point)? antar.drop_point.namaDropPoint : " " }}</td>
                                                     <td>{{ antar.keterangan }}</td>
-                                                    <td>{{ (antar.idStatus == 0) ? "Gagal" : (antar.idStatus == 1) ? "Proses" : "Sukses" }}</td>
+                                                    <td>{{ (antar.idStatus == 0) ? "Gagal" : (antar.idStatus == 1) ? "Berhasil" : "Diproses" }}</td>
                                             </tr>
                                         </tbody>
 
@@ -237,6 +239,7 @@
 
                         <v-checkbox
                             v-model="checkAntar"
+                            :disabled="(tempPaket.idStatus == 1)"
                             label="Antar ke Penerima?">
                         </v-checkbox>
                     
@@ -263,13 +266,14 @@
 		
 
 		<v-dialog 
-            v-model="dialogDelete" 
-            persistent max-width="600px">
+            v-model="dialogCancel" 
+            persistent 
+            max-width="625px">
 			<v-card>
 				<v-card-title>
 					
                     <span class="headline">
-                        Apakah Yakin Ingin Menghapus Kota
+                        Apakah Yakin Ingin Membatalkan Pengiriman Paket?
                     </span>
 
 				</v-card-title>
@@ -281,8 +285,8 @@
                         Cancel
                     </v-btn>
 					
-                    <v-btn color="red darken-1" text @click="confirmDelete()">
-                        Delete
+                    <v-btn color="red darken-1" text @click="confirmCancel()">
+                        Confirm
                     </v-btn>
 
 				</v-card-actions>
@@ -356,6 +360,7 @@
                 dataDropPoint : [],
                 dataJenisPaket : [],
 
+                tempPaket : {}, 
                 formInput : {},
                 formDelivery : {},
                 indexData : null,
@@ -365,7 +370,7 @@
                 loadingState : true,
                 
                 dialogDelivery : false,
-                dialogDelete: false,
+                dialogCancel: false,
 
                 
                 snackbarState : false,
@@ -557,9 +562,7 @@
             },
 
 			resetForm() {
-				this.formInput = {
-					namaKota : null,
-				};
+				this.formInput = {}
 
 			},
 
@@ -574,15 +577,13 @@
 
 
 			//tambahkan code untuk delete data
-
-            deleteItem(value){
+            cancelItem(value){
                 this.indexData = value;
-                this.dialogDelete = true;
+                this.dialogCancel = true;
             },  
 
 
             deliveryItem(value){
-                console.log(value)
                 this.tempPaket = value; 
                 this.indexData = value.noResi; 
                 this.dialogDelivery = true;
@@ -592,7 +593,9 @@
 
                 this.formDelivery.noResi = this.indexData;
                 this.formDelivery.keterangan = "-";
-                this.formDelivery.idStatus = 1; 
+
+                //route 2 artinya diproses yaaa... 
+                this.formDelivery.idStatus = 2; 
 
                 axios.post(API.BaseRoute + "pengantaran", this.formDelivery, axiosConfig)
                     .then(() => {
@@ -602,7 +605,7 @@
                             icon : "mdi-check-circle",
                             title : "Success",
                             text: ['Berhasil Menambahkan Data Pengantaran!'],
-                        }
+                        }   
 
                         this.openSnackbar(option);
                         this.getDataPaket();
@@ -627,7 +630,8 @@
                     })
 
 
-                let id = (this.checkAntar == true) ? 4 : 7;
+                
+                let id = (this.tempPaket.idStatus == 1) ? 2 : (this.checkAntar == true) ? 4 : 7;
 
                 let updateData = {
                     idStatus : id,
@@ -653,20 +657,24 @@
                 
             },
 
-            confirmDelete(){
+            confirmCancel(){
 
-                axios.delete(API.BaseRoute + `paket/${this.indexData}`, axiosConfig)
+                //idStatus 6 artinya batal
+                let updateData = {
+                    idStatus : 6,
+                } 
+
+                axios.put(API.BaseRoute + `updatestatuspaket/${this.indexData}`, updateData,  axiosConfig)
                     .then(() => {
 
                         let option = {
                             color : "success",
                             icon : "mdi-check-circle",
                             title : "Success",
-                            text : ['Berhasil Menghapus Data Paket!'],
+                            text : ['Berhasil Membatalkan Pengiriman Paket'],
                         }
 
                         this.openSnackbar(option);
-
                         this.getDataPaket();                    
                     })
                     
@@ -676,19 +684,19 @@
                             color : "error",
                             icon : "mdi-alert-circle",
                             title : "Error",
-                            text : ['Gagal Menghapus Data Paket!', `Code Error : ${error.response.status}`],
+                            text : ['Gagal Membatalkan Pengiriman Paket', `Code Error : ${error.response.status}`],
                         }
 
                         this.openSnackbar(option);
 
                     })
 
-                this.dialogDelete = false;
+                this.dialogCancel = false;
                 this.setLoading(false);
             },
 
             cancelConfirmation(){
-                this.dialogDelete = false;
+                this.dialogCancel = false;
                 this.closeDialog();
             },
 
@@ -702,20 +710,33 @@
                     case 1 : 
                         return "amber lighten-1 text-center pa-1";
 
+                    //dijemput, dikirim, ataupun diantar
                     case 2 : 
                     case 4 : 
                     case 7 : 
                         return "blue lighten-1 text-center pa-1";
 
+                    //diteirma atau selesai
                     case 3 : 
                     case 5 : 
                         return "green lighten-1 text-center pa-1";
 
+                    //batal
                     case 6 : 
                         return "red lighten-1 text-center pa-1";
                         
                 }
                 
+            },
+
+            disableDelivery(value){
+                value = parseInt(value);
+                
+                //apabila statusnya pending atau diterima, baru deh bisa dikirim
+                if(value == 1 || value == 3) return false; 
+
+                return true;
+
             },
             
 		},
