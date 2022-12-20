@@ -68,7 +68,7 @@ export default {
             menuItem : [
                 {
                     title: "Home",
-                    name: "Beranda"
+                    name: "Beranda.HomePage"
                 },
                 {
                     title: "Login",
