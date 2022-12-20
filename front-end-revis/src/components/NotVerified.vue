@@ -11,81 +11,33 @@
             
             <v-card 
                 persistent 
-                min-width="400px" 
+                max-width="50%"
                 elevation="8"
                 class="justify-center">
                 
                 <v-card-title class="mains">
-                    <span class="headline text-center"><b>Login</b></span>
+                    <span 
+                        class="headline text-center">
+                        <b>USER NOT VIRIFIED</b>
+                    </span>
                 </v-card-title>
                 
-                <v-card-text>
-
-                    <v-container>
-
-                        <v-text-field 
-                            label="E-mail" 
-                            v-model="formInput.email" 
-                            :rules="emailRules"
-                            required>
-                        </v-text-field>
-                        
-                        <v-text-field 
-                            label="Password" 
-                            v-model="formInput.password" 
-                            type="password" 
-                            :rules="passwordRules"
-                            required>
-                        </v-text-field>
+                <v-img 
+                    :src="require('../assets/NotVerifiedUser.jpg')" 
+                    alt="Not Verified" 
+                    max-width="48%"
+                    max-height="77%"
+                    class="mx-auto"
                     
-                    </v-container>
+                    >
+                    
+                </v-img>
+
+                <v-card-text class="text-center text-h6" >
+
+                    <b>Please kindly check your email to verify your account :)</b>
                 
                 </v-card-text>
-                
-                <v-card-actions 
-                    class="justify-center" >    
-                    
-                    <v-btn color="red" @click="login()"> Login </v-btn>
-                
-                </v-card-actions>
-
-                <v-card-text class="text-center">
-                    ----------------------------- New Account? -----------------------------
-                </v-card-text>
-
-                <v-card-actions 
-                    class="justify-center" >    
-                    
-                    <router-link 
-                        :to="{ path: '/RegisterUser' }" 
-                        class="text-decoration-none"
-                    >
-                        <v-btn 
-                            class="mr-2" 
-                            color="primary" 
-                            text
-                        > 
-                            Register User? 
-                        </v-btn>
-
-                    </router-link>
-
-
-                    <router-link 
-                        :to="{ path: '/RegisterKurir' }" 
-                        class="text-decoration-none"
-                    >
-                        <v-btn 
-                            class="mr-2" 
-                            color="primary" 
-                            text
-                        > 
-                            Register Kurir? 
-                        
-                        </v-btn>
-                    </router-link>
-                
-                </v-card-actions>
 
             </v-card>
         </v-form>
@@ -127,7 +79,7 @@
 
 <style scoped>
     .mains {
-        background-color: rgb(198, 3, 3);
+        background-color: rgb(233, 77, 77);
         justify-content: center;
 
     }
@@ -190,13 +142,16 @@
                     }
                 }
 
-            
+
 
                 axios.post(API.BaseRoute + 'login', sendObject)
                     .then(response => {
                         console.log(response);
 
+                        //delete cookies
+
                         cookiesHandle.deleteAllCookies();  
+
                         cookiesHandle.setCookies("token", response.data.access_token, 30);
 
                         let option = {
@@ -208,6 +163,7 @@
 
                         
                         this.switchPage(response.data.user.idRole);
+                        
                         this.openSnackbar(option);
 
                     })
@@ -215,31 +171,17 @@
                     .catch(error => {
                         console.log(error.response.data);
 
-                        let message = error.response.data.message;
-
-                        if(message == "Please verify your email"){
-                        
-                            this.$router.push({ name: 'NotVerified' });
-                        
-                        }else{
-
-                            if(message == "Invalid Credentials user"){
-                                message = "Email atau Password Salah";
-                            }else{
-                                message = "Invalid Input"
-                            }
-
-                            let option = {
-                                color : "error",
-                                icon : "mdi-alert-circle",
-                                title : "Error",
-                                text : [message],
-                            }
-
-                            this.openSnackbar(option);
-                        }
+                        console.log(sendObject)
                     
-                
+                        let option = {
+                            color : "error",
+                            icon : "mdi-alert-circle",
+                            title : "Error",
+                            text : ['Gagal Login'],
+                        }
+
+                        this.openSnackbar(option);
+                    
                     });
 
             },

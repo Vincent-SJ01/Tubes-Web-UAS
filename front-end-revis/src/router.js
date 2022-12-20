@@ -38,10 +38,19 @@ const router = new VueRouter({
                     path: "/RegisterKurir",
                     name: "Beranda.RegisterKurir",
                     component: importComponent("RegisterKurir"),
-               },  
+                },  
+
+                {
+                    path: "/NotVerified",
+                    name: "NotVerified",
+        
+                    component: importComponent("NotVerified"),
+                }
             
             ]
         },
+
+        
 
         
         {

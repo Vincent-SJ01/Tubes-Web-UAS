@@ -40,11 +40,24 @@
 				:headers="headers"
 				:items="dataPengantaran"
 				:search="search"
-				item-key="noResi"
+				item-key="created_at"
 				class="elevation-1"
                 :loading = "loadingState"
 			>
 				
+                <template v-slot:[`item.status.namaStatus`]="{ item }">
+                        <v-card
+                            large
+                            label
+                            width="100px"
+                            :class="getColorClass(item.idStatus)"
+                        >
+                            {{ item.status.namaStatus }}
+                        </v-card>
+            
+                </template>
+
+
                 <template v-slot:[`item.actions`]="{ item }">
 
                     <v-btn 
@@ -79,8 +92,7 @@
                 <v-card-text class="mt-5 mb-0 pb-0">
                     <v-container class="pb-0">
 
-                        <!-- sementara, keterangan diisi di Admin -->
-                        <!-- <v-text-field
+                        <v-text-field
                             v-model="formInput.keterangan"
                             label="Keterangan"
                             class="mb-0 mt-5"
@@ -88,7 +100,7 @@
                             dense
                             clearable
                             required
-                        ></v-text-field> -->
+                        ></v-text-field>
 
                         <v-radio-group
                             v-model="formInput.idStatus"
@@ -229,6 +241,12 @@
 						value: "status.namaStatus",
 					},
 
+                    {
+						text: "Keterangan",
+                        //text align middle
+						value: "keterangan",
+					},
+
                     { 
                         text: "Actions", 
                         value: "actions", 
@@ -311,10 +329,25 @@
 
                 let objectSend = {
                     idStatus : this.formInput.idStatus,
+                    keterangan : this.formInput.keterangan,
                 }
 
+                //split created_at 
+                let dateObject = this.tempObject.created_at.split("T");
+                dateObject[1] = dateObject[1].substring(0, 8);
 
-                axios.put(API.BaseRoute + `updatestatuspengantaran/${this.tempObject.noResi}_${this.tempObject.updated_at}`, objectSend, axiosConfig)
+                let dateTemp = dateObject[0].split("-");
+                let timeTemp = dateObject[1].split(":");
+                
+                let datetimeInput = new Date(dateTemp[0], dateTemp[1]-1, dateTemp[2], timeTemp[0], timeTemp[1], timeTemp[2], 0);
+                datetimeInput.setHours(datetimeInput.getHours() + 7);
+
+                var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                let requestDate = new Date(datetimeInput - tzoffset).toISOString().slice(0, 19).replace('T', ' ');
+
+    
+
+                axios.put(API.BaseRoute + `updatestatuspengantaran/${this.tempObject.noResi}_${requestDate}`, objectSend, axiosConfig)
                     .then(() => {
 
                         let option = {
@@ -343,22 +376,28 @@
 
                     let paket = this.tempObject.paket;
 
-                    let id = (this.formInput.idStatus == 0) ?  //apabila membatalkan, maka ubah menjadi pending
+                    let id = (this.formInput.idStatus.toString() == "0") ?  //apabila membatalkan, maka ubah menjadi pending
                             1
                         : (paket.idStatus == 2 || paket.idStatus == 7) ?   //kalau dari status dijemput atau dikirim, ubah menjadi diterima 
                             3 
                         :   5;  //kalau bukan semua, maka pasti diantar, kalau diantar, maka ubah menjadi selesai
 
+                    console.log(id);
+
                     let updateData = {
                         idStatus : id,
                     }
 
-                    axios.put(API.BaseRoute + `updatestatuspaket/${this.indexData}`, updateData, axiosConfig)
-                        .then(() => {
+                    axios.put(API.BaseRoute + `updatestatuspaket/${this.tempObject.noResi}`, updateData, axiosConfig)
+                        .then((response) => {
                             
+                            console.log(response)
+
                         })
 
                         .catch((error) => {
+
+                            console.log(error);
                             
                             let option = {
                                 color : "error",
@@ -374,12 +413,31 @@
             },  
 
             disableDelivery(value){
-                value = parseInt(value);
 
-                if(value == 1) return false; //hanya enabled kalau status diproses
+                if(value == "2") return false; //hanya enabled kalau status diproses
+                else return true;
+            }, 
 
-                return true;
-            }
+            getColorClass(value){
+
+                switch(value){
+
+                    //gagal
+                    case "0" : 
+                        return "red lighten-1 text-center pa-1";
+
+                    //Selesai
+                    case "1" : 
+                        return "green lighten-1 text-center pa-1";
+
+                    //dijemput, dikirim, ataupun diantar
+                    case "2" : 
+                        return "blue lighten-1 text-center pa-1";
+
+                    
+                }
+
+            },
             
 		},
 	};
