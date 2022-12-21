@@ -38,6 +38,11 @@ const router = new VueRouter({
                     path: "/RegisterKurir",
                     name: "Beranda.RegisterKurir",
                     component: importComponent("RegisterKurir"),
+               },
+               {
+                    path: "/HomePage",
+                    name: "Beranda.HomePage",
+                    component: importComponent("HomePage"),
                },  
             
             ]
@@ -59,10 +64,9 @@ const router = new VueRouter({
                 }, 
 
                 {
-                    path: "/user/Profile",
+                    path: "/user/ProfileUser",
                     name: "User.Profile",
-
-                    component: importComponent("MenuUser/Profile"),
+                    component: importComponent("MenuUser/ProfileUser"),
                 }
             ]
         },

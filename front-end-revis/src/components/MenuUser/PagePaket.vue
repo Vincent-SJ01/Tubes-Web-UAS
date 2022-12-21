@@ -211,83 +211,83 @@
 			max-width="600px"
 		>
 
-        <v-card>
-			
-            <v-toolbar color="brown darken-1" dark class="headline"> {{ dialogMessage }} </v-toolbar>
-				
-            <v-card-text>
-                <v-container>
-
-                    <v-select
-                        v-model="formInput.jenisPaket"
-                        :items="dataJenisPaket"
-                        item-text="namaJenisPaket"
-                        item-value="id"
-                        label="Jenis Paket"
-                    >
-                    </v-select>
-
-                    <v-select
-                        v-model="formInput.idService"
-                        :items="dataService"
-                        item-text="nama"
-                        item-value="id"
-                        label="Service"
-                    >
-                    </v-select>
-
-                    <v-text-field
-                        v-model="formInput.berat"
-                        label="Berat"
-                        type="number"
-                        required
-                        suffix="Kg"
-                    ></v-text-field>
-
-                    <v-text-field
-                        v-model="formInput.volume"
-                        label="Volume"
-                        type="number"
-                        required
-                        suffix="cm³"
-                    ></v-text-field>
-
-                    <v-text-field
-                        v-model="formInput.namaPenerima"
-                        label="Nama Penerima"
-                        required
-                    ></v-text-field>
-
-                    <v-text-field
-                        v-model="formInput.noTelpPenerima"
-                        label="Nomor Telepon Penerima"
-                        required
-                    ></v-text-field>
-
-                    <v-textarea
-                        v-model="formInput.alamatTujuan"
-                        label="Alamat Tujuan"
-                        required
-                    ></v-textarea>
+            <v-card>
+                
+                <v-toolbar color="brown darken-1" dark class="headline"> {{ dialogMessage }} </v-toolbar>
                     
-                </v-container>
-            
-            </v-card-text>
-				
-            <v-card-actions>
-                <v-spacer></v-spacer>
+                <v-card-text>
+                    <v-container>
+
+                        <v-select
+                            v-model="formInput.jenisPaket"
+                            :items="dataJenisPaket"
+                            item-text="namaJenisPaket"
+                            item-value="id"
+                            label="Jenis Paket"
+                        >
+                        </v-select>
+
+                        <v-select
+                            v-model="formInput.idService"
+                            :items="dataService"
+                            item-text="nama"
+                            item-value="id"
+                            label="Service"
+                        >
+                        </v-select>
+
+                        <v-text-field
+                            v-model="formInput.berat"
+                            label="Berat"
+                            type="number"
+                            required
+                            suffix="Kg"
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="formInput.volume"
+                            label="Volume"
+                            type="number"
+                            required
+                            suffix="cm³"
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="formInput.namaPenerima"
+                            label="Nama Penerima"
+                            required
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="formInput.noTelpPenerima"
+                            label="Nomor Telepon Penerima"
+                            required
+                        ></v-text-field>
+
+                        <v-textarea
+                            v-model="formInput.alamatTujuan"
+                            label="Alamat Tujuan"
+                            required
+                        ></v-textarea>
+                        
+                    </v-container>
                 
-                <v-btn color="blue darken-1" text @click="cancelConfirmation()">
-                    Cancel
-                </v-btn>
+                </v-card-text>
+                    
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    
+                    <v-btn color="blue darken-1" text @click="cancelConfirmation()">
+                        Cancel
+                    </v-btn>
+                    
+                    <v-btn color="green darken-1" text @click="(dialogMode == 0) ? save() : saveUpdate()">
+                        Save
+                    </v-btn>
                 
-                <v-btn color="green darken-1" text @click="(dialogMode == 0) ? save() : saveUpdate()">
-                    Save
-                </v-btn>
-            
-            </v-card-actions>   
-			
-        </v-card>
+                </v-card-actions>   
+                
+            </v-card>
 		
         </v-dialog>
 		
