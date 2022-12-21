@@ -377,7 +377,7 @@
                     let paket = this.tempObject.paket;
 
                     let id = (this.formInput.idStatus.toString() == "0") ?  //apabila membatalkan, maka ubah menjadi pending
-                            1
+                            6
                         : (paket.idStatus == 2 || paket.idStatus == 7) ?   //kalau dari status dijemput atau dikirim, ubah menjadi diterima 
                             3 
                         :   5;  //kalau bukan semua, maka pasti diantar, kalau diantar, maka ubah menjadi selesai

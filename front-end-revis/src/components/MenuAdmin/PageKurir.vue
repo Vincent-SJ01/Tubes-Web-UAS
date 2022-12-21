@@ -28,6 +28,15 @@
 				>
             
                 </v-text-field>
+
+                <v-select
+					:items="[`All`, `Aktif`, `Tidak Aktif`]"
+                    outlined
+                    style="margin-top: 30px"
+					v-model="filterStatus"
+					class="ms-5"
+					label="Status Kurir">
+				</v-select>
 			
                 <v-spacer></v-spacer>
 				
@@ -40,7 +49,7 @@
 				:headers="headers"
 				:items="dataKurir"
 				:search="search"
-				item-key="nama"
+				item-key="nik"
                 show-expand
 				class="elevation-1"
                 :loading = "loadingState"
@@ -221,7 +230,7 @@
 
                         :items="dataStatus"
                         item-text="namaStatus"
-                        item-value="id"
+                        item-value = "id"
 
                         label="Status"
                         required
@@ -350,7 +359,7 @@
                 
                 dialogDelete: false,
 
-
+                filterStatus : "",
                 showDatePicker : false,
 
 
@@ -398,7 +407,15 @@
                     {
                         text : "Status",
                         sortable : true,
-                        value : "status.namaStatus"
+                        value : "status.namaStatus",
+
+                        filter : value => {
+							if(this.filterStatus == "" || this.filterStatus == "All"){
+								return true;
+							}
+
+							return value == this.filterStatus;
+						}
                     },
                     { 
                         text: "Actions", 
@@ -522,7 +539,13 @@
 
             saveUpdate() {
 
-                axios.put(API.BaseRoute + `kurir/${this.formInput.id}`, this.formInput, axiosConfig)
+                if(this.formInput.gender.id != null){
+                    this.formInput.gender = this.formInput.gender.id;
+                }
+            
+                console.log(this.formInput)
+
+                axios.put(API.BaseRoute + `kurir/${this.formInput.nik}`, this.formInput, axiosConfig)
                     .then(() => {
 
                         let option = {
@@ -547,9 +570,17 @@
                             text : ['Gagal Mengubah Data Kurir'],
                         };
 
-                        for(let errorAttribute in error.response.data.message){
-                            option.text.push(`${error.response.data.message[errorAttribute]}`);
+                        console.log(error);
+
+                        if(Array.isArray(error.response.data.message)){
+                            for(let errorAttribute in error.response.data.message)
+                                option.text.push(`${error.response.data.message[errorAttribute]}`);
+                        
+                        }else{
+                            option.text.push(`${error.response.data.message}`);
                         }
+
+                        
 
                         this.openSnackbar(option);
                     })

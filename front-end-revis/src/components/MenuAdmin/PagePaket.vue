@@ -28,6 +28,17 @@
 				>
             
                 </v-text-field>
+
+                <v-select
+					:items="dataStatusPaket"
+                    item-text="status"
+                    item-value="status"
+                    outlined
+                    style="margin-top: 30px"
+					v-model="filterStatus"
+					class="ms-5"
+					label="Status Paket">
+				</v-select>
 			
                 <v-spacer></v-spacer>
 				
@@ -230,7 +241,7 @@
                             outlined 
                             dense
                             required
-                            :items="dataKurir"
+                            :items="filteredDataKurir"
                             item-text="nama"
                             item-value="nik"
                         ></v-select>
@@ -370,12 +381,14 @@
                 dataKurir : [],
                 dataDropPoint : [],
                 dataJenisPaket : [],
+                dataStatusPaket : [],
 
                 tempPaket : {}, 
                 formInput : {},
                 formDelivery : {},
                 indexData : null,
 
+                filterStatus : "All",
                 checkAntar : false, //untuk cek apakah paket antar atau tidak
                 
                 loadingState : true,
@@ -433,6 +446,14 @@
                     {
                         text : "Status",
                         value : "status_paket.status",
+
+                        filter : value => {
+							if(this.filterStatus == "" || this.filterStatus == "All"){
+								return true;
+							}
+
+							return value == this.filterStatus;
+						} 
                     },
 
                     { 
@@ -445,12 +466,22 @@
 			};
 		},
 
+        computed : {
+
+            filteredDataKurir(){
+                return this.dataKurir.filter((item) => item.idStatus == 1)
+            }
+
+        },
+        
+
 
         mounted(){
             this.getDataKurir(); 
             this.getDataDropPoint();
             this.getDataJenisPaket(); 
             this.getDataPaket();
+            this.getDataStatusPaket();
         },
 
 
@@ -560,6 +591,41 @@
                     })
 
             },
+
+            getDataStatusPaket(){
+                    
+                    this.setLoading(true);
+    
+                    axios.get(API.BaseRoute + 'statuspaket', axiosConfig)
+                        .then((response) => {
+    
+                            this.dataStatusPaket = response.data.data;
+
+                            this.dataStatusPaket.unshift({
+                                id : 0,
+                                status : "All",
+                            })
+
+                            this.setLoading(false);
+                        
+                        })
+                        
+                        .catch((error) => {
+                            
+                            let option = {
+                                color : "error",
+                                icon : "mdi-alert-circle",
+                                title : "Error",
+                                text : ['Gagal Mengambil Data Status Paket!', `Code Error : ${error.response.status}`],
+                            }
+    
+                            this.openSnackbar(option);
+                            this.setLoading(false);
+    
+                        })
+    
+            },
+            
 
             setLoading(value){
                 this.loadingState = value;
