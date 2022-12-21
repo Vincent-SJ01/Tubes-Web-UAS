@@ -832,15 +832,16 @@
 
             getPDF(item){
 
-            
-                axios.get(API.BaseRoute + `printresi/${item.noResi}`, axiosConfig)
+                axios.get(API.BaseRoute + `printresi/${item.noResi}`, {
+                    headers: {
+                        'Authorization': "Bearer " + token,
+                    },
+                    responseType : 'blob'
+                })
                     .then((response) => {
-                        response.blob()
+                        window.open(URL.createObjectURL(response.data))
                     })
-                    .then(blob => {
-                        let url = window.URL.createObjectURL(blob);
-                        window.open(url, '_blank');
-                    })
+
                     .catch((error) => {
                         console.log(error);
                     })

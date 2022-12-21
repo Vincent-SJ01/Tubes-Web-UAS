@@ -541,9 +541,7 @@
 
                 if(this.formInput.gender.id != null){
                     this.formInput.gender = this.formInput.gender.id;
-                }
-            
-                console.log(this.formInput)
+                } 
 
                 axios.put(API.BaseRoute + `kurir/${this.formInput.nik}`, this.formInput, axiosConfig)
                     .then(() => {
