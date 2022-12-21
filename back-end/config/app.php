@@ -69,9 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Jakarta',
-    'locale' => 'id',
-    'faker_locate' => 'id_ID',
+    'timezone' => env('APP_TIMEZONE'),
 
     /*
     |--------------------------------------------------------------------------

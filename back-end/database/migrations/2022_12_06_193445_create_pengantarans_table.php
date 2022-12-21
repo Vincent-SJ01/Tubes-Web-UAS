@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('pengantarans', function (Blueprint $table) {
+            $table->id();
             $table->string('noResi');
             $table->foreign('noResi')->references('noResi')->on('pakets')->onDelete('cascade');
             $table->string('nikKurir');

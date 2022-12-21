@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\statusPengantaran;
+use App\Models\StatusPengantaran;
 use Illuminate\Http\Request;
 
 class StatusPengantaranController extends Controller
 {
     public function index()
     {
-        $status = statusPengantaran::all();
+        $status = StatusPengantaran::all();
 
         if(count($status) > 0){
             return response([

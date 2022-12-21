@@ -24,7 +24,7 @@ class PaketController extends Controller
         return response([
             'message' => 'Empty',
             'data' => null
-        ], 400);    // return message data course kosong
+        ], 200);    // return message data course kosong
     }
 
     public function show($noresi) // Method read atau menampilkan data paket berdasarkan id
@@ -59,7 +59,7 @@ class PaketController extends Controller
         return response([
             'message' => 'Paket Not Found',
             'data' => null
-        ], 404);    // return message data paket tidak ditemukan
+        ], 200);    // return message data paket tidak ditemukan
     }
 
     public function store(Request $request) // Method create atau menambah data paket
@@ -164,7 +164,7 @@ class PaketController extends Controller
             'data' => null,
         ], 400);
     }
-
+    
     public function updateStatus(Request $request, $id) // Method update atau mengubah data paket berdasarkan id
     {
         $paket = Paket::where('noResi', '=', $id)->first(); //  Mengambil data paket berdasarkan id

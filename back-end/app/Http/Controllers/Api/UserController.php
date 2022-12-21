@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
@@ -28,8 +29,9 @@ class UserController extends Controller
         ], 400);    // return message data course kosong
     }
 
-    public function show($id) // Method read atau menampilkan data user berdasarkan id
+    public function show() // Method read atau menampilkan data user berdasarkan id
     {
+        $id = Auth::id(); //  Mengambil id user yang sedang login
         $user = User::with('role', 'status')->where('id', '=', $id)->first(); //  Mengambil data user berdasarkan id
 
         if(!is_null($user)){

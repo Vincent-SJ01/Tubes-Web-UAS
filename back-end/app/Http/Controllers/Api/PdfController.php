@@ -16,6 +16,7 @@ class PdfController extends Controller
         $paket = Paket::with('pengirim', 'jenis_paket', 'service')->where('noResi', '=', $id)->get();
         $url = URL::current();
         // return $paket;
+        // return $paket;
         $data = [
             'url' => $url,
             'paket' => $paket
