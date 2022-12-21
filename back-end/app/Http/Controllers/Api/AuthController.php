@@ -34,7 +34,7 @@ class AuthController extends Controller
 
             $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
          
-            $registrationData['idRole'] = 1;
+            $registrationData['idRole'] = 3;
         $user = User::create($registrationData);    // Membuat user baru
         event(new Registered($user));
         auth()->login($user);
@@ -217,35 +217,16 @@ class AuthController extends Controller
 
     }
 
-    public function logoutUser(Request $request){
-        $user = Auth::user()->token();
-        $dataUser = Auth::user();
-        $user->revoke();
+    public function logout(Request $request){
+        $user = $request->user()->token();
+        $dataUser = $request->user();
+        $dataUser->revoke();
         return response([
             'message' => 'Logout Succes',
             'user' => $dataUser
         ]);
     }
 
-    public function logoutKurir(Request $request){
-        $kurir = Auth::kurir()->token();
-        $dataKurir = Auth::kurir();
-        $kurir->revoke();
-        return response([
-            'message' => 'Logout Succes',
-            'user' => $dataKurir
-        ]);
-    }
-
-    public function logoutAdmin(Request $request){
-        $admin = Auth::admin()->token();
-        $dataAdmin = Auth::admin();
-        $admin->revoke();
-        return response([
-            'message' => 'Logout Succes',
-            'user' => $dataAdmin
-        ]);
-    }
 
     public function verifyAccount($token)
     {

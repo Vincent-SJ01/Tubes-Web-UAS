@@ -11,8 +11,15 @@ class Pengantaran extends Model
 
     protected $primaryKey = 'noResi';
 
+    protected $dates = [
+        'created_at',
+    ];
+
+    
+
     protected $casts = [
         'noResi' => 'string',
+        'created_at' => 'datetime:siHdmy',
     ];
 
 

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Kurir;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class KurirController extends Controller
 {
@@ -26,8 +28,9 @@ class KurirController extends Controller
         ], 400);    // return message data course kosong
     }
 
-    public function show($id) // Method read atau menampilkan data product berdasarkan id
+    public function show() // Method read atau menampilkan data product berdasarkan id
     {
+        $id = Auth::id(); //  Mengambil id product yang sedang login
         $kurir = Kurir::with('gender', 'status', 'role')->where('nik', '=', $id)->first(); //  Mengambil data product berdasarkan id
 
         if(!is_null($kurir)){

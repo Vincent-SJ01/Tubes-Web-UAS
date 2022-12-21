@@ -91,9 +91,10 @@
                                 Due: February 1, 2015
                             </td>
                         </tr>
+                        {{ $paket[0]}}
                         <tr>
                             <td>
-                                <p style="padding-top:0px;margin-bottom:10px">{!! DNS1D::getBarcodeHTML($paket[0]->noResi, 'CODABAR') !!}</p>
+                                <p style="padding-top:0px;margin-bottom:10px">{!! DNS1D::getBarcodeHTML($paket[0]->noResi, 'C128B') !!}</p>
                                 <p style="font-size:small; margin-top:0px">No. Resi {{$paket[0]->noResi}}</p>
                             </td>
                             

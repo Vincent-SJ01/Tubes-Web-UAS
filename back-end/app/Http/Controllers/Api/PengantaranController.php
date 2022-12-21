@@ -7,13 +7,18 @@ use Illuminate\Http\Request;
 use App\Models\Pengantaran;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 
 class PengantaranController extends Controller
 {
     public function index()
     {
         $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint', 'status')->get();
+        //  $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint', 'status')->get();
+        // $datetime = $pengantaran[1];
+        // return $datetime;
+        // $datetime->setTimezone("Asia/Jakarta");
+        // return 'test'.$datetime;
 
         if(count($pengantaran) > 0){
             return response([
@@ -30,7 +35,7 @@ class PengantaranController extends Controller
 
     public function show($id)
     {
-        $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint', 'status')->where('noResi','=',$id)->first();
+        $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint', 'status')->where('noResi','=',$id)->get();
 
         if(!is_null($pengantaran)){
             return response([
@@ -44,25 +49,26 @@ class PengantaranController extends Controller
             'data' => null
         ], 404);
     }
-
+    
     public function showbykurir()
     {
         $kurir_id = Auth::id();
-        $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint', 'status')->where('nikKurir','=',$kurir_id)->first();
-
+        $pengantaran = Pengantaran::with('paket', 'kurir', 'dropPoint', 'status')->where('nikKurir','=',$kurir_id)->get();
+        
         if(!is_null($pengantaran)){
             return response([
                 'message' => 'Retrieve Pengantaran Success',
-                'data' => $pengantaran
+                'data' => $pengantaran,
+                'nik' => $kurir_id
             ], 200);
         }
 
         return response([
             'message' => 'Pengantaran Not Found',
-            'data' => null
+            'data' => null,
+            'nik' => $kurir_id
         ], 404);
     }
-
 
     public function store(Request $request)
     {
@@ -147,27 +153,30 @@ class PengantaranController extends Controller
         ], 400);
 
     }
-
+    
     public function updateStatus(Request $request, $noresi, $date)
     {
-        $pengantaran = Pengantaran::where('noResi','=',$noresi)->where('created_at','=',$date)->first();
+        $pengantaran = Pengantaran::where('created_at','=',$date)->where('noResi','=',$noresi)->first();
+
         if(is_null($pengantaran)){
             return response([
                 'message' => 'Pengantaran Not Found',
-                'data' => null
+                'data' => $pengantaran
             ], 404);
         }
         $updateData = $request->all();
         $validate = Validator::make($updateData, [
             'idStatus' => 'required',
+            'keterangan' => 'required'
         ]);
 
         if($validate->fails())
             return response(['message' => $validate->errors()], 400);
 
         $pengantaran->idStatus = $updateData['idStatus'];
+        $pengantaran->keterangan = $updateData['keterangan'];
         
-        if($pengantaran->save()){
+        if($pengantaran->update()){
             return response([
                 'message' => 'Update Status Pengantaran Success',
                 'data' => $pengantaran,

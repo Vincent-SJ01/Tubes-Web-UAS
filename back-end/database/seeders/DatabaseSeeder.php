@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
         $this->role();
         $this->jenisPaket();
         $this->service();
@@ -35,7 +34,7 @@ class DatabaseSeeder extends Seeder
         $this->status();
         $this->statusPengantaran();
         $this->gender();
-
+        
         // $this->createAdmin();
         // \App\Models\User::factory(10)->create();
         // $faker = Faker::create();
@@ -106,7 +105,6 @@ class DatabaseSeeder extends Seeder
         //         'keterangan' => $faker->text,
         //     ]);
         // }
-        
     }
 
     public function role(){
@@ -298,19 +296,22 @@ class DatabaseSeeder extends Seeder
                 'status' => 'Diterima',
             ],[
                 'id' => 4,
-                'status' => 'Diantar',
+                'status' => 'Dikirim',
             ],[
                 'id' => 5,
-                'status' => 'Selesai',
+                'status' => 'Diantar',
             ],[
                 'id' => 6,
+                'status' => 'Selesai',
+            ],[
+                'id' => 7,
                 'status' => 'Batal',
             ]
         ];
 
         DB::table('status_pakets')->insert($statusPaket);
     }
-
+    
     public function createAdmin(){
         $admin = [
             [
