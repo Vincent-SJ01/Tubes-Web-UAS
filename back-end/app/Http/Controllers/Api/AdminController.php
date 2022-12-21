@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-
 
 class AdminController extends Controller
 {
@@ -28,9 +26,8 @@ class AdminController extends Controller
         ], 400);
     }
 
-    public function show()
+    public function show($id)
     {
-        $id = Auth::id();
         $admin = Admin::find($id);
 
         if(!is_null($admin)){

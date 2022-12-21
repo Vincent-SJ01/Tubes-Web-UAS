@@ -34,7 +34,6 @@ class AuthController extends Controller
 
             $registrationData['password'] = bcrypt($request->password); // Untuk meng-enkripsi password
          
-            $registrationData['idRole'] = 3;
         $user = User::create($registrationData);    // Membuat user baru
         event(new Registered($user));
         auth()->login($user);
@@ -115,14 +114,14 @@ class AuthController extends Controller
         $loginData = $request->all();
         $status = 0;
         
-        if(!is_null($request->get('email'))){
+        if(!is_null($request->get('username'))){
             $validate = Validator::make($loginData, [
-                'email' => 'required|email:rfc, dns',
+                'username' => 'required',
                 'password' => 'required'
             ]);
         }else{
             $validate = Validator::make($loginData, [
-                'username' => 'required',
+                'email' => 'required|email:rfc, dns',
                 'password' => 'required'
             ]);
         }
@@ -218,15 +217,16 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
+        
         $user = $request->user()->token();
+        // return $user;
         $dataUser = $request->user();
-        $dataUser->revoke();
+        $user->revoke();
         return response([
             'message' => 'Logout Succes',
             'user' => $dataUser
         ]);
     }
-
 
     public function verifyAccount($token)
     {

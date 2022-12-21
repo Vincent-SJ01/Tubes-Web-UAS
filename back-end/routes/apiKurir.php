@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('registerUser', 'Api\AuthController@registerUser');
-Route::get('/email/verify/{id}/{hash}', 'Api\EmailRegisterLoginController@verify')->name('verification.verify');
 Route::post('registerKurir', 'Api\AuthController@registerKurir');
 Route::post('login', 'Api\AuthController@login');
 Route::post('logoutUser', 'Api\AuthController@logoutUser');

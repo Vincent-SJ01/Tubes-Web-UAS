@@ -5,21 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Pengantaran extends Model
 {
     use HasFactory;
-
-    protected $primaryKey = 'noResi';
-
-    protected $dates = [
-        'created_at',
-    ];
-
     
-
+    protected $primaryKey = 'created_at';
+    
     protected $casts = [
         'noResi' => 'string',
-        'created_at' => 'datetime:siHdmy',
+        'created_at' => 'string'
+        // 'created_at' => 'datetime:siHdmy',
+        // 'created_at' => 'timezoned:Asia/Jakarta',
     ];
 
 
@@ -55,4 +52,5 @@ class Pengantaran extends Model
     {
         return $this->belongsTo(StatusPengantaran::class, 'idStatus', 'id');
     }
+
 }

@@ -8,7 +8,6 @@ use App\Models\Kurir;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-
 class KurirController extends Controller
 {
     public function index() // Method read atau menampilkan semua data product
@@ -30,7 +29,7 @@ class KurirController extends Controller
 
     public function show() // Method read atau menampilkan data product berdasarkan id
     {
-        $id = Auth::id(); //  Mengambil id product yang sedang login
+        $id = Auth::id();
         $kurir = Kurir::with('gender', 'status', 'role')->where('nik', '=', $id)->first(); //  Mengambil data product berdasarkan id
 
         if(!is_null($kurir)){
@@ -54,12 +53,11 @@ class KurirController extends Controller
             'username' => 'required',
             'password' => 'required',
             'email' => 'required',
-            'nik' => 'required',
+            'nik' => 'required|unique:kurirs',
             'noTelp' => 'required',
             'alamat' => 'required',
             'tanggalLahir' => 'required',
             'gender' => 'required',
-            'status' => 'required',
             'idRole' => 'required',
         ]);    // rule validasi input saat register
 
@@ -112,22 +110,22 @@ class KurirController extends Controller
         $updateData = $request->all();  // Mengambil seluruh data input dan menyimpan dalam variabel updateData
         $validate = Validator::make($updateData, [
             'nama' => 'required',
-            'password' => 'required',
             'noTelp' => 'required',
             'alamat' => 'required',
             'tanggalLahir' => 'required',
             'gender' => 'required',
+            'idStatus' => 'required'
         ]);    // rule validasi input saat register
 
         if($validate->fails())    // Mengecek apakah inputan sudah sesuai dengan rule validasi
             return response(['message' => $validate->errors()], 400);   // Mengembalikan error validasi input
 
         $kurir->nama = $updateData['nama'];
-        $kurir->password = $updateData['password'];
         $kurir->noTelp = $updateData['noTelp'];
         $kurir->alamat = $updateData['alamat'];
         $kurir->tanggalLahir = $updateData['tanggalLahir'];
         $kurir->gender = $updateData['gender'];
+        $kurir->idStatus = $updateData['idStatus'];
 
         if($kurir->save()){
             return response([

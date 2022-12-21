@@ -39,7 +39,6 @@ class Kurir extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $hidden = [
-        'password',
     ];
   
 
