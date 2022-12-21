@@ -100,7 +100,17 @@
 
 <script>
 
+    import axios from "axios";
+    import * as API from "../../repository/APIRoute.js";
     import * as cookiesHandle from "../../repository/cookiesHandle.js";
+
+    let token = cookiesHandle.getCookies("token");
+
+    let axiosConfig = {
+        headers : {
+            'Authorization': "Bearer " + token,
+        }
+    }
 
 
     export default {
@@ -132,9 +142,28 @@
 
         methods : {
             confirmLogout() {
+
+                console.log("object kirim");
+                console.log(axiosConfig);
+
+                axios.post(API.BaseRoute + "logout", axiosConfig)
+                .then((response) => {
+                    console.log("suskes");
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log("gagal segagalgagalnya lalalalal");
+                    console.log(error);
+                    console.log("dilapisi berlapis2")
+                });
+
                 cookiesHandle.deleteAllCookies();
                 this.$router.push({name : 'Beranda'});
             },
+
+        
+
+            
 
             cancelConfirmation() {
                 this.dialogLogout = false;

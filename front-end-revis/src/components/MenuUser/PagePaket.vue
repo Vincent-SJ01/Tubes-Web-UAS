@@ -62,6 +62,16 @@
 						outlined
 						small
 						color="primary"
+						@click="getPDF(item);"
+						><v-icon>mdi-printer</v-icon>
+
+                    </v-btn>
+
+                    <v-btn
+						class="ma-2"
+						outlined
+						small
+						color="success"
                         :disabled="item.idStatus != 1"
 						@click="getDataDialog(item);"
 						><v-icon>mdi-pencil</v-icon>
@@ -182,7 +192,16 @@
                                                     <td>{{ antar.kurir.nama }}</td>
                                                     <td>{{ antar.drop_point.namaDropPoint }}</td>
                                                     <td>{{ antar.keterangan }}</td>
-                                                    <td>{{ antar.status_paket.status }}</td>
+                                                    <td>
+                                                        <v-card
+                                                            large
+                                                            label
+                                                            width="100px"
+                                                            :class="getColorStatus(antar.idStatus)"
+                                                        >
+                                                            {{ getPengantaranStatus(antar.idStatus) }}
+                                                        </v-card>
+                                                    </td>
                                             </tr>
                                         </tbody>
 
@@ -203,6 +222,34 @@
             </v-data-table>
 
         </v-card>
+
+        <v-dialog
+			transition="dialog-top-transition"
+			v-model="dialogPDF"
+			persistent
+			max-width="600px"
+		>
+
+            <v-card>
+                
+                <v-toolbar color="brown darken-1" dark class="headline"> Print Nomor Resi </v-toolbar>
+                    
+                <v-card-text>
+                    {{ linkPDF }}
+                </v-card-text>
+                    
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    
+                    <v-btn color="blue darken-1" text @click="cancelConfirmation()">
+                        Ok
+                    </v-btn>
+                
+                </v-card-actions>   
+                
+            </v-card>
+		
+        </v-dialog>
 
         <v-dialog
 			transition="dialog-top-transition"
@@ -396,6 +443,8 @@
                 
                 dialogDelete: false,
 
+                dialogPDF : false, 
+                linkPDF : null, 
                 
                 snackbarState : false,
                 snackbarTimeout : 3000,
@@ -444,9 +493,6 @@
                     {
                         text : "Berat (Kg)",
                         value : "berat",
-
-                        //add suffix : kg
-                        
 
                     },
 
@@ -722,6 +768,7 @@
             },
 
             cancelConfirmation(){
+                this.dialogPDF = false;
                 this.dialogDelete = false;
                 this.closeDialog();
             },
@@ -747,6 +794,57 @@
                         return "red lighten-1 text-center pa-1";
                         
                 }
+
+            },
+
+            getColorStatus(value){
+                switch(value){
+                    //gagal
+                    case "0" : 
+                        return "red lighten-1 text-center pa-1";
+
+                    //Selesai
+                    case "1" : 
+                        return "green lighten-1 text-center pa-1";
+
+                    //dijemput, dikirim, ataupun diantar
+                    case "2" : 
+                        return "blue lighten-1 text-center pa-1";
+                }
+            },
+
+            getPengantaranStatus(value){
+
+                switch(value){
+                    //gagal
+                    case "0" : 
+                        return "Gagal";
+
+                    //Selesai
+                    case "1" : 
+                        return "Berhasil";
+
+                    //dijemput, dikirim, ataupun diantar
+                    case "2" : 
+                        return "Diproses";
+                    }
+            },
+
+            getPDF(item){
+
+            
+                axios.get(API.BaseRoute + `printresi/${item.noResi}`, axiosConfig)
+                    .then((response) => {
+                        response.blob()
+                    })
+                    .then(blob => {
+                        let url = window.URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    })
+                    
 
             },
             

@@ -172,12 +172,23 @@
                                         <tbody>
                                             <tr
                                                 v-for="antar in item.pengantaran"
-                                                :key="antar.noResi"
+                                                :key="antar.created_at"
                                             >
                                                     <td>{{ antar.kurir.nama }}</td>
                                                     <td>{{ (antar.drop_point)? antar.drop_point.namaDropPoint : " " }}</td>
                                                     <td>{{ antar.keterangan }}</td>
-                                                    <td>{{ (antar.idStatus == 0) ? "Gagal" : (antar.idStatus == 1) ? "Berhasil" : "Diproses" }}</td>
+
+                                                    <td>
+                                                        <v-card
+                                                            large
+                                                            label
+                                                            width="100px"
+                                                            :class="getColorStatus(antar.idStatus)"
+                                                        >
+                                                            {{ getPengantaranStatus(antar.idStatus) }}
+                                                        </v-card>
+                                                    </td>
+                                                        
                                             </tr>
                                         </tbody>
 
@@ -631,7 +642,7 @@
 
 
                 
-                let id = (this.tempPaket.idStatus == 1) ? 2 : (this.checkAntar == true) ? 4 : 7;
+                let id = (this.tempPaket.idStatus.toString() == "1") ? 2 : (this.checkAntar == true) ? 4 : 7;
 
                 let updateData = {
                     idStatus : id,
@@ -729,11 +740,43 @@
                 
             },
 
+            getColorStatus(value){
+                switch(value){
+                    //gagal
+                    case "0" : 
+                        return "red lighten-1 text-center pa-1";
+
+                    //Selesai
+                    case "1" : 
+                        return "green lighten-1 text-center pa-1";
+
+                    //dijemput, dikirim, ataupun diantar
+                    case "2" : 
+                        return "blue lighten-1 text-center pa-1";
+                }
+            },
+
+            getPengantaranStatus(value){
+
+                switch(value){
+                    //gagal
+                    case "0" : 
+                        return "Gagal";
+
+                    //Selesai
+                    case "1" : 
+                        return "Berhasil";
+
+                    //dijemput, dikirim, ataupun diantar
+                    case "2" : 
+                        return "Diproses";
+                    }
+            },
+
             disableDelivery(value){
-                value = parseInt(value);
                 
                 //apabila statusnya pending atau diterima, baru deh bisa dikirim
-                if(value == 1 || value == 3) return false; 
+                if(value == "1" || value == "3") return false; 
 
                 return true;
 
