@@ -105,6 +105,7 @@
     import * as cookiesHandle from "../../repository/cookiesHandle.js";
 
 
+
     let token = cookiesHandle.getCookies("token");
 
     let axiosConfig = {
@@ -155,11 +156,8 @@
         methods : {
             confirmLogout() {
 
-                console.log("ini object yang dikirim");
-                console.log(axiosConfig);
 
-
-                axios.post(API.BaseRoute + "logout", axiosConfig)
+                axios.post(API.BaseRoute + "logout", {}, axiosConfig)
                 .then((response) => {
                     console.log("suskes");
                     console.log(response);
@@ -169,8 +167,6 @@
                     console.log(error);
                 });
 
-                console.log("ini object yang dikirim after");
-                console.log(axiosConfig);
 
                 cookiesHandle.deleteAllCookies();
                 this.$router.push({name : 'Beranda'});
