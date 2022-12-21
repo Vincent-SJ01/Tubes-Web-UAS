@@ -123,7 +123,7 @@
                 items: [
                     { 
                         title: "Profile", 
-                        name: "User.Kota",
+                        name: "User.Profile",
                     },
     
                     { 
@@ -140,7 +140,9 @@
         methods : {
             confirmLogout() {
 
-                axios.post(API.BaseRoute + "logout", {}, axiosConfig)
+                axios.post(API.BaseRoute + "logout", {
+                    token : token
+                }, axiosConfig)
                 .then((response) => {
 
                     console.log(response);

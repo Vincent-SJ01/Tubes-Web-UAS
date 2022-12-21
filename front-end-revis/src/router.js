@@ -57,9 +57,7 @@ const router = new VueRouter({
             ]
         },
 
-        
-
-        
+    
         {
             path: "/user",
             name: "User",
@@ -78,7 +76,7 @@ const router = new VueRouter({
                     path: "/user/Profile",
                     name: "User.Profile",
 
-                    component: importComponent("MenuUser/Profile"),
+                    component: importComponent("MenuUser/ProfileUser"),
                 }
             ]
         },
