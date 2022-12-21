@@ -41,6 +41,13 @@ const router = new VueRouter({
                 },  
 
                 {
+                    path: "/Home",
+                    name: "Beranda.HomePage",
+
+                    component: importComponent("HomePage"),
+                },
+
+                {
                     path: "/NotVerified",
                     name: "NotVerified",
         

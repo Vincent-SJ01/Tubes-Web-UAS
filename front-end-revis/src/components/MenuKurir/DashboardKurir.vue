@@ -143,18 +143,13 @@
         methods : {
             confirmLogout() {
 
-                console.log("object kirim");
-                console.log(axiosConfig);
-
-                axios.post(API.BaseRoute + "logout", axiosConfig)
+                axios.post(API.BaseRoute + "logout", {}, axiosConfig)
                 .then((response) => {
-                    console.log("suskes");
+
                     console.log(response);
                 })
                 .catch((error) => {
-                    console.log("gagal segagalgagalnya lalalalal");
                     console.log(error);
-                    console.log("dilapisi berlapis2")
                 });
 
                 cookiesHandle.deleteAllCookies();

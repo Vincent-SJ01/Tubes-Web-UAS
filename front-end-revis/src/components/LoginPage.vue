@@ -144,6 +144,14 @@
     import * as API from "../repository/APIRoute.js";
     import * as cookiesHandle from "../repository/cookiesHandle";
 
+    let token = cookiesHandle.getCookies("token");
+
+    let axiosConfig = {
+        headers : {
+            'Authorization': "Bearer " + token,
+        }
+    }
+
     export default {
         name: "LoginPage",
 
@@ -192,7 +200,7 @@
 
             
 
-                axios.post(API.BaseRoute + 'login', sendObject)
+                axios.post(API.BaseRoute + 'login', sendObject, axiosConfig)
                     .then(response => {
                         console.log(response);
                         console.log(response.data.access_token);

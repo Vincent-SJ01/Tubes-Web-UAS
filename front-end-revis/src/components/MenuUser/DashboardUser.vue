@@ -99,9 +99,17 @@
 </template>
 
 <script>
-
+    import axios from "axios";
+    import * as API from "../../repository/APIRoute.js";
     import * as cookiesHandle from "../../repository/cookiesHandle.js";
 
+    let token = cookiesHandle.getCookies("token");
+
+    let axiosConfig = {
+        headers : {
+            'Authorization': "Bearer " + token,
+        }
+    }
 
     export default {
         name: "DashboardIndex",
@@ -131,6 +139,16 @@
 
         methods : {
             confirmLogout() {
+
+                axios.post(API.BaseRoute + "logout", {}, axiosConfig)
+                .then((response) => {
+
+                    console.log(response);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
                 cookiesHandle.deleteAllCookies();
                 this.$router.push({name : 'Beranda'});
             },
