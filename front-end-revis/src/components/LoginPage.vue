@@ -195,6 +195,7 @@
                 axios.post(API.BaseRoute + 'login', sendObject)
                     .then(response => {
                         console.log(response);
+                        console.log(response.data.access_token);
 
                         cookiesHandle.deleteAllCookies();  
                         cookiesHandle.setCookies("token", response.data.access_token, 30);
